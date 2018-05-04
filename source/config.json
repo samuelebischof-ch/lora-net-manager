@@ -10,5 +10,6 @@
             "sendImmediately": false
         },
         "accept": "*/*"
-    }
+    },
+    "OWMApiKey": "7c319323c40f24a61f4fe2ec0fafbe0f"
 }

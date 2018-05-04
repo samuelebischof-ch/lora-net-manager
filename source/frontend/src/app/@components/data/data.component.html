@@ -39,7 +39,7 @@
             <mat-list role="list">
               <mat-divider></mat-divider>
               <mat-list-item *ngFor="let r of d.devices">
-                <mat-checkbox (change)="reloadData(); toggleLiveView(undefined);" [(ngModel)]="r.checked">{{r.deveui}}</mat-checkbox>
+                <mat-checkbox (change)="reloadData(); toggleLiveView(undefined);" [(ngModel)]="r.checked">{{r.desc}}</mat-checkbox>
                 <span style="width: 20px"></span>
                 <button mat-button color="primary" (click)="toggleLiveView(r.deveui)" *ngIf="deveui.length === 0 || (r.deveui !== '' && deveui !== r.deveui)">Live visualisation</button>
                 <button mat-button color="primary" (click)="toggleLiveView(r.deveui)" *ngIf="r.deveui !== '' && deveui === r.deveui">

@@ -36,6 +36,9 @@ build/Release
 **/node_modules/
 **/jspm_packages/
 
+# Packages lock file
+**/package-lock.json
+
 # Typescript v1 declaration files
 typings/
 
@@ -54,19 +57,20 @@ typings/
 # Yarn Integrity file
 **/.yarn-integrity
 
-# dotenv environment variables file
+# Dotenv environment variables file
 **/.env
 
-# realm DB files
+# Realm DB files
 **/*.realm
 **/*.lock
-**/*.default.realm.management
+source/backend/default.realm.management/
 
-# docker data folder
+# Docker data folder
 source/backend/docker/data
 
+# Folder data
 **/.DS_Store
+
+# OpenSSL certificates
 private-key.pem
 public-certificate.pem
-source/backend/default.realm.management/
-source/backend/package-lock.json

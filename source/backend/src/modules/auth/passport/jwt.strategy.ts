@@ -2,7 +2,10 @@ import * as passport from 'passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Component, Inject } from '@nestjs/common';
 import { AuthService } from '../service/auth/auth.service';
-import * as config from '../../../../../config.json';
+import * as configJSON from '../../../../../config.json';
+import { Config } from '../../interfaces/config.interface';
+
+const config: Config = configJSON as any;
 
 @Component()
 export class JwtStrategy extends Strategy {

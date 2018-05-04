@@ -5,7 +5,7 @@ export const DeviceSchema = {
         deveui: 'string',
         devaddr: {type: 'string', optional: true},
         model: 'string',
-        desc: {type: 'string', optional: true},
+        desc: {type: 'string'},
         room: {type: 'Room', optional: true},
         battery: {type: 'int', default: 0},
         rssi: {type: 'int', default: 0},

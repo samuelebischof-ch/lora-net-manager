@@ -4,20 +4,24 @@ import { Gateway } from '../../interfaces/gateway.interface';
 import { Device } from '../../interfaces/device.interface';
 import * as request from 'request';
 import * as rp from 'request-promise-native';
-import * as config from '../../../../../config.json';
-import * as gotthardpConfig from '../../../../gotthardp.config.json';
+import * as configJSON from '../../../../../config.json';
+import * as gotthardpConfigJSON from '../../../../gotthardp.config.json';
+import { Config } from '../../interfaces/config.interface';
 
-const loRaServerOptions = (config as any).loRaServerOptions;
-const gatewayOptions = (gotthardpConfig as any).gateway;
-const networkOptions = (gotthardpConfig as any).network;
-const profileOptions = (gotthardpConfig as any).profile;
-const handlerOptions = (gotthardpConfig as any).handler;
-const connectorOptions = (gotthardpConfig as any).connectors;
-const deviceOptions = (gotthardpConfig as any).device;
-const downlinkOptions = (gotthardpConfig as any).downlink;
+const config: Config = configJSON as any;
+const gotthardpConfig: any = gotthardpConfigJSON as any;
+const loRaServerOptions: Config["loRaServerOptions"] = config.loRaServerOptions;
+const gatewayOptions = gotthardpConfig.gateway;
+const networkOptions = gotthardpConfig.network;
+const profileOptions = gotthardpConfig.profile;
+const handlerOptions = gotthardpConfig.handler;
+const connectorOptions = gotthardpConfig.connectors;
+const deviceOptions = gotthardpConfig.device;
+const downlinkOptions = gotthardpConfig.downlink;
 
 @Component()
 export class GotthardpService {
+
     constructor(private readonly _realm: RealmService) {}
 
 /********************************** gateways *********************************/
@@ -49,14 +53,10 @@ export class GotthardpService {
         options.uri += 'api/gateways';
         options.method = 'POST';
         options.json = Object.assign({}, gatewayOptions);
-        if (body.mac !== undefined) {
-            options.json.mac = body.mac;
-        }
-        // options.json.gpspos = body.gpspos;
-        // options.json.description = body.description;
+        options.json.mac = body.mac;
         try {
             await rp(options);
-            console.log('SUCCESS at addGateway()');
+            console.log('SUCCESS: at addGateway()');
         } catch (err) {
             console.error('ERROR at addGateway(): ' + err);
             return err;
@@ -74,7 +74,7 @@ export class GotthardpService {
         options.method = 'DELETE';
         try {
             await rp(options);
-            console.log('SUCCESS at removeGateway()')
+            console.log('SUCCESS: at removeGateway()')
         } catch (err) {
             console.error('ERROR at removeGateway(): ' + err);
             return err;
@@ -205,7 +205,7 @@ export class GotthardpService {
         options.method = 'DELETE';
         try {
             await rp(options);
-            console.log('SUCCESS at removeDevice()')
+            console.log('SUCCESS: at removeDevice()')
         } catch (err) {
             console.error('ERROR at removeDevice(): ' + err);
             return err;

@@ -2,14 +2,16 @@ import { Component } from '@nestjs/common';
 import { Subject } from "rxjs/Rx"
 import { RealmService } from '../realm/realm.service';
 import * as WebSocket from 'ws';
-import * as config from '../../../../../config.json';
+import * as configJSON from '../../../../../config.json';
 import * as rnd from 'random-js';
 import { DataWS } from '../../interfaces/dataWS.interface';
 import { EventsWS } from '../../interfaces/eventsWS.interface';
 import { MeteoService } from '../meteo/meteo.service';
+import { Config } from '../../interfaces/config.interface';
 
-const gotthardpws = (config as any).gotthardpws;
-const gotthardpevtws = (config as any).gotthardpevtws;
+const config: Config = configJSON as any;
+const gotthardpws = config.gotthardpws;
+const gotthardpevtws = config.gotthardpevtws;
 
 @Component()
 export class GotthardpwsService {

@@ -1,0 +1,90 @@
+{
+  "gateways": [{
+    "mac": "B827EBFFFEE0EE33"
+  }],
+  "devices": [{
+      "deveui": "007C411FF7223000",
+      "appeui": "0000000000000001",
+      "appkey": "C2BDB80EACE6D597643A73E13DBA69FC",
+      "devaddr": "AAAAAAAA",
+      "desc": "Device #1",
+      "room": {
+        "roomName": "Room 1"
+      },
+      "battery": 23,
+      "rssi": 23,
+      "model": "esp32",
+      "has_temperature": true,
+      "has_pressure": true,
+      "has_humidity": true,
+      "has_moisture": false,
+      "has_movement": false,
+      "has_door_sensor": false,
+      "has_light_sensor": false
+    },
+    {
+      "deveui": "007C411FF7223001",
+      "appeui": "0000000000000001",
+      "appkey": "C2BDB80EACE6D597643A73E13DBA69FC",
+      "devaddr": "BBBBBBBB",
+      "desc": "Device #2",
+      "room": {
+        "roomName": "Room 1"
+      },
+      "battery": 23,
+      "rssi": 23,
+      "model": "esp32",
+      "has_temperature": true,
+      "has_pressure": true,
+      "has_humidity": true,
+      "has_moisture": false,
+      "has_movement": false,
+      "has_door_sensor": false,
+      "has_light_sensor": false
+    },
+    {
+      "deveui": "007C411FF7223002",
+      "appeui": "0000000000000001",
+      "appkey": "C2BDB80EACE6D597643A73E13DBA69FC",
+      "devaddr": "CCCCCCCC",
+      "desc": "Device #3",
+      "room": {
+        "roomName": "Room 2"
+      },
+      "battery": 23,
+      "rssi": 23,
+      "model": "esp32",
+      "has_temperature": true,
+      "has_pressure": true,
+      "has_humidity": true,
+      "has_moisture": false,
+      "has_movement": false,
+      "has_door_sensor": false,
+      "has_light_sensor": false
+    },
+    {
+      "deveui": "007C411FF7223003",
+      "appeui": "0000000000000001",
+      "appkey": "C2BDB80EACE6D597643A73E13DBA69FC",
+      "devaddr": "DDDDDDDD",
+      "desc": "Device #4",
+      "room": {
+        "roomName": "Room 2"
+      },
+      "battery": 23,
+      "rssi": 23,
+      "model": "esp32",
+      "has_temperature": true,
+      "has_pressure": true,
+      "has_humidity": true,
+      "has_moisture": false,
+      "has_movement": false,
+      "has_door_sensor": false,
+      "has_light_sensor": false
+    }
+  ],
+  "locations": [
+    "Lugano",
+    "Bellinzona"
+  ]
+}

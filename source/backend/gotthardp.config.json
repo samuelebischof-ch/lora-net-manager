@@ -1,5 +1,5 @@
 {
-    "network": {"gw_power":20,"init_chans":"0-2","join1_delay":5,"join2_delay":6,"max_datr":5,"max_eirp":16,"max_power":0,"min_power":7,"name":"BSC-Network","netid":"23B432","region":"EU868","rx1_delay":1,"rx2_delay":2,"rxwin_init":{"rx1_dr_offset":0,"rx2_dr":3,"rx2_freq":868.1},"subid":{"len":12,"val":"A4B0"},"tx_codr":"4/5"},
+    "network": {"gw_power":20,"init_chans":"0-2","join1_delay":5,"join2_delay":6,"max_datr":5,"max_eirp":16,"max_power":0,"min_power":7,"name":"BSC-Network","netid":"000001","region":"EU868","rx1_delay":1,"rx2_delay":2,"rxwin_init":{"rx1_dr_offset":0,"rx2_dr":3,"rx2_freq":868.1},"subid":{"len":12,"val":"A4B0"},"tx_codr":"4/5"},
     "gateway": {"ant_gain":2,"desc":"ttn-ic880a","gpsalt":0,"gpspos":{"lat":0,"lon":0},"mac":"0000000000000000","tx_rfch":0},
     "profile": {"adr_mode":1,"adr_set":{"chans":"0-2","datr":null,"power":null},"app":"LoRaHandler","can_join":true,"fcnt_check":1,"max_datr":6,"name":"BSC-Profile","network":"BSC-Network","request_devstat":true,"rxwin_set":{"rx1_dr_offset":0,"rx2_dr":null,"rx2_freq":868.1},"txwin":0},
     "device": {"appeui":"0000000000000001","appkey":"C2BDB80EACE6D597643A73E13DBA69FC","desc":"","deveui":"007C411FF7223000","node":"","profile":"BSC-Profile"},

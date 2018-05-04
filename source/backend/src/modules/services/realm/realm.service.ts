@@ -18,6 +18,10 @@ import { EventsWS } from '../../interfaces/eventsWS.interface';
 import { Node } from '../../interfaces/node.interface';
 import { RoomDB } from '../../interfaces/roomDB.interface';
 import { subscribeOn } from 'rxjs/operator/subscribeOn';
+import * as configJSON from '../../../../../config.json';
+import { Config } from '../../interfaces/config.interface';
+
+const config: Config = configJSON as any;
 
 @Component()
 export class RealmService {
@@ -29,18 +33,21 @@ export class RealmService {
     * @description the opened Realm Object DB
     */
     private OpenedRealm = Realm.open(
-        {schema: [
-            DeviceSchema,
-            LogSchema,
-            SensorSchema,
-            RoomSchema,
-            DataSheetSchema,
-            SettingSchema,
-        ], 
-        schemaVersion: 0,
-        migration: (oldRealm, newRealm) => {}});
+        {
+            path: 'realm/db.realm',
+            schema: [
+                DeviceSchema,
+                LogSchema,
+                SensorSchema,
+                RoomSchema,
+                DataSheetSchema,
+                SettingSchema,
+            ], 
+            schemaVersion: 0,
+            migration: (oldRealm, newRealm) => {}
+        });
         
-        /************************************keys*************************************/
+/************************************keys*************************************/
         
         /**
         * @name generateKeys
@@ -89,7 +96,7 @@ export class RealmService {
             return keys;
         }
         
-        /***********************************devices***********************************/
+/***********************************devices***********************************/
         
         /**
         * @name createDevice
@@ -180,6 +187,10 @@ export class RealmService {
             });
         }
         
+        /**
+         * @name getDevicesByRoom
+         * @returns an array of rooms with the associated devices
+         */
         async getDevicesByRoom() {
             let devicesByRoom = [];
             await this.OpenedRealm.then(realm => {
@@ -189,7 +200,11 @@ export class RealmService {
                         let roomName = (rooms[c] as RoomDB).roomName;
                         let devices = []
                         for (const i in (rooms[c] as RoomDB).owners) {
-                            let r = { checked: false, deveui: (rooms[c] as RoomDB).owners[i].deveui, expanded: false }
+                            let r = { 
+                                checked: false,
+                                deveui: (rooms[c] as RoomDB).owners[i].deveui,
+                                desc: (rooms[c] as RoomDB).owners[i].desc,
+                                expanded: false }
                             devices.push(r)
                         }
                         if (devices.length > 0) {
@@ -227,6 +242,11 @@ export class RealmService {
             return roomName;
         }
         
+        /**
+         * @name removeDevice
+         * @param deveui
+         * @description removes the device with pk deveui
+         */
         async removeDevice(deveui: string) {
             this.OpenedRealm.then(realm => {
                 try {
@@ -243,7 +263,7 @@ export class RealmService {
             });
         }
         
-        /********************************sensor_data**********************************/
+/********************************sensor_data**********************************/
         
         /**
         * @name storeSensorData
@@ -313,6 +333,10 @@ export class RealmService {
             });
         }
         
+        /**
+         * @name removeWatcher
+         * @description removes the watcher on the database when the websockets are disconnected
+         */
         removeWatcher() {
             this.OpenedRealm.then(realm => {
                 try {
@@ -458,8 +482,12 @@ export class RealmService {
             return data;
         }
         
-        /***********************************konva*************************************/
+/***********************************konva*************************************/
         
+        /**
+         * @name loadKonva
+         * @returns the konva canvas object from the database
+         */
         async loadKonva() {
             let konva = null;
             await this.OpenedRealm.then(realm => {
@@ -478,6 +506,11 @@ export class RealmService {
             return konva;
         }
         
+        /**
+         * @name saveKonva
+         * @param data
+         * @description saves the konva object to the database
+         */
         async saveKonva(data: JSON) {
             await this.OpenedRealm.then(realm => {
                 try {
@@ -496,11 +529,21 @@ export class RealmService {
             });
         }
         
-        ab2JSON(buf) {
+        /**
+         * @name ab2JSON
+         * @param buf
+         * @returns a buffer transformed to JSON
+         */
+        ab2JSON(buf): JSON {
             return JSON.parse(String.fromCharCode.apply(null, new Uint16Array(buf)));
         }
         
-        JSON2ab(data) {
+        /**
+         * @name JSON2ab
+         * @param data
+         * @returns an ArrayBuffer from a JSON object
+         */
+        JSON2ab(data): ArrayBuffer {
             const str = JSON.stringify(data);
             const buf = new ArrayBuffer(str.length * 2); // 2 bytes for each char
             const bufView = new Uint16Array(buf);
@@ -510,8 +553,14 @@ export class RealmService {
             return buf;
         }
         
-        /***********************************meteo*************************************/
+/***********************************meteo*************************************/
         
+        /**
+         * @name saveLocation
+         * @param locationName
+         * @description saves a location in the database
+         * as a device and as a locations list item in setting with pk 0
+         */
         async saveLocation(locationName: string) {
             // Meteo object
             const res = await this.createDevice(
@@ -541,7 +590,7 @@ export class RealmService {
                                 const setting = realm.objectForPrimaryKey('Setting', 0);
                                 if (setting && setting !== undefined) {
                                     (setting as any).locations.push(locationName);
-                                    (setting as any).apikey = '7c319323c40f24a61f4fe2ec0fafbe0f';
+                                    (setting as any).apikey = config.OWMApiKey;
                                 }
                             });
                         } catch (error) {
@@ -555,6 +604,10 @@ export class RealmService {
             });
         }
         
+        /**
+         * @name getLocations
+         * @returns a list of locations stored in the setting element in the database
+         */
         async getLocations() {
             let locations = null;
             await this.OpenedRealm.then(realm => {
