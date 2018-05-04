@@ -33,14 +33,6 @@ tooltips: {
 
 
 export const Colors = [
-  // { // grey
-  //   backgroundColor: 'rgba(2,150,213,0.2)',
-  //   borderColor: 'rgba(2,150,213,1)',
-  //   pointBackgroundColor: 'rgba(2,150,213,1)',
-  //   pointBorderColor: '#fff',
-  //   pointHoverBackgroundColor: '#fff',
-  //   pointHoverBorderColor: 'rgba(2,150,213,0.8)'
-  // },
   {
     backgroundColor: 'rgba(255,132,21,0.2)',
     borderColor: 'rgba(255,132,21,1)',
