@@ -1,6 +1,6 @@
 # LoRa-net-manager
 
-## LoRaWAN manager on top of Gotthardps LoRaWAN server (Version 0.0.0)
+## LoRaWAN manager on top of Gotthardps LoRaWAN server
 
 This project helps to manage a LoRaWAN network. In the dashboard page it is possible to monitor sensor data.\
 It runs on top of the amazing work of [Petr Gotthard](https://github.com/gotthardp/lorawan-server).
