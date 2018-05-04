@@ -1,0 +1,14 @@
+{
+    "secret": "admin",
+    "gotthardpws": "ws://localhost:8080/ws/uplinks/LoRaHandler",
+    "gotthardpevtws": "ws://localhost:8080/ws/events",
+    "loRaServerOptions": {
+        "uri": "http://localhost:8080/",
+        "auth": {
+            "user": "admin",
+            "pass": "admin",
+            "sendImmediately": false
+        },
+        "accept": "*/*"
+    }
+}
