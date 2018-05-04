@@ -1,0 +1,12 @@
+<mat-sidenav-container class="example-container" *ngIf="true">
+  <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+    <app-sidebar></app-sidebar>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="page-container">
+    <router-outlet></router-outlet>
+    <div id="button-div" (click)="sidenav.toggle(); this.iconName = (this.iconName === 'keyboard_arrow_right') ? 'keyboard_arrow_left' : 'keyboard_arrow_right';">
+      <mat-icon id="toggleMenu" aria-label="open menu">{{iconName}}</mat-icon>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

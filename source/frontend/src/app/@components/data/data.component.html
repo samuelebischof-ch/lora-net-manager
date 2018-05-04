@@ -1,0 +1,77 @@
+<mat-card>
+  <mat-card-title>DEVICES</mat-card-title>
+  <mat-card-content>
+    <split [direction]="direction">
+
+      <!-- left part -->
+
+      <split-area size="40">
+        <mat-accordion>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Choose date range
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-form-field class="dateField">
+              <input matInput [matDatepicker]="pickerStart" [formControl]="startDate" placeholder="Choose start date">
+              <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+              <mat-datepicker #pickerStart></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="dateField">
+              <input matInput [matDatepicker]="pickerEnd" [formControl]="endDate" placeholder="Choose end date">
+              <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+              <mat-datepicker #pickerEnd></mat-datepicker>
+            </mat-form-field>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+        <app-map [roomList]="roomList" (roomClicked)="roomClicked($event)"></app-map>
+
+        <mat-accordion>
+          <mat-expansion-panel *ngFor="let d of devicesByRoom" [expanded]="d.expanded">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{d.roomName}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <span style="height: 80px;"></span>
+            <mat-list role="list">
+              <mat-divider></mat-divider>
+              <mat-list-item *ngFor="let r of d.devices">
+                <mat-checkbox (change)="reloadData(); toggleLiveView(undefined);" [(ngModel)]="r.checked">{{r.deveui}}</mat-checkbox>
+                <span style="width: 20px"></span>
+                <button mat-button color="primary" (click)="toggleLiveView(r.deveui)" *ngIf="deveui.length === 0 || (r.deveui !== '' && deveui !== r.deveui)">Live visualisation</button>
+                <button mat-button color="primary" (click)="toggleLiveView(r.deveui)" *ngIf="r.deveui !== '' && deveui === r.deveui">
+                  Close live visualisation</button>
+              </mat-list-item>
+            </mat-list>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </split-area>
+
+      <!-- right part -->
+
+      <split-area size="60">
+        <mat-progress-bar [mode]="barMode"></mat-progress-bar>
+
+        <!-- space -->
+
+        <app-card [deveui]="deveui" [startDate]="startDate.value" *ngIf="deveui.length > 0; else static_view"></app-card>
+        <ng-template #static_view>
+          <mat-tab-group *ngIf="lineChartLabels.length > 0;">
+            <ng-container *ngFor="let d of dataArray;">
+              <mat-tab *ngIf="hasValues(d.avg)" label="{{d.label}}">
+                <app-graph-simple [min]="d.min" [max]="d.max" [avg]="d.avg" [specialColor]="false" [lineChartData]="d.lineChartData" [lineChartLabels]="lineChartLabels"
+                  [unit]="d.unit" [label]="d.label">
+                </app-graph-simple>
+              </mat-tab>
+            </ng-container>
+          </mat-tab-group>
+          <span *ngIf="lineChartLabels.length === 0 && barMode === 'indeterminate'" style="padding: 20px; display: inline-block">Loading data from server...</span>
+          <span *ngIf="lineChartLabels.length === 0 && barMode === 'determinate'" style="padding: 20px; display: inline-block">Select at least a device to display data in this area</span>
+        </ng-template>
+      </split-area>
+    </split>
+  </mat-card-content>
+</mat-card>

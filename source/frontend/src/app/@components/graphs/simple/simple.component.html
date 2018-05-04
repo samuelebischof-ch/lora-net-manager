@@ -1,0 +1,18 @@
+<canvas baseChart
+[datasets]="lineChartData"
+[labels]="lineChartLabels"
+[options]="lineChartOptions"
+[colors]="lineChartColors"
+[legend]="lineChartLegend"
+[chartType]="lineChartType"
+(chartHover)="chartHovered($event)"
+(chartClick)="chartClicked($event)">
+</canvas>
+<div *ngIf="!specialColor">
+  <br>
+  <span>Minimum: {{min}} {{unit}}</span>
+  <br>
+  <span>Maximum: {{max}} {{unit}}</span>
+  <br>
+  <span>Average: {{average}} {{unit}}</span>
+</div>

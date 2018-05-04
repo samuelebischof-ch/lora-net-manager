@@ -1,0 +1,13 @@
+<mat-divider></mat-divider>
+<mat-list-item>
+  <button mat-button color="primary" (click)="removeDevice()">
+    <mat-icon mat-list-icon>delete_forever</mat-icon>
+  </button>
+  <h4 mat-line>Device:</h4>
+  <p mat-line class="gray_line"> DevEUI: {{device.deveui}} </p>
+  <p mat-line class="gray_line"> AppEUI: {{device.appeui}} </p>
+  <p mat-line class="gray_line"> AppKey: {{device.appkey}} </p>
+  <p mat-line class="gray_line"> Room: {{device.room}} </p>
+  <p mat-line class="gray_line"> Description: {{device.desc}} </p>
+  <p mat-line class="gray_line"> Last joined: {{device.last_join | date}} </p>
+</mat-list-item>

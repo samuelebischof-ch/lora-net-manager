@@ -1,0 +1,21 @@
+<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+
+  <mat-expansion-panel-header>
+
+    <mat-panel-title>
+      GATEWAYS
+    </mat-panel-title>
+
+  </mat-expansion-panel-header>
+
+  <span style="height: 80px;"></span>
+  <mat-form-field>
+    <input matInput placeholder="MAC address" (keyup.enter)="createGateway()" type="string" [ngModel]="mac" (ngModelChange)="mac = $event">
+  </mat-form-field>
+  <button mat-button color="primary" (click)="createGateway()" style="width: 100%;">Add gateway</button>
+
+  <mat-list role="list">
+    <app-gateway *ngFor="let g of gateways" [gateway]="g" (valuesChanged)='getGateways()'></app-gateway>
+  </mat-list>
+
+</mat-expansion-panel>

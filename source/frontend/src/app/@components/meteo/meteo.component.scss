@@ -1,0 +1,36 @@
+#meteo {
+  position: absolute;
+  z-index:100;
+  width: 300px;
+  top: 0;
+  right: 0;
+}
+
+#header {
+  height: 60px;
+  // background: red;
+  font-size: 1.5em;
+  display: flex;
+  align-self: center;
+}
+
+span {
+  display: block;
+}
+
+#body {
+  display: none;
+  text-align: right;
+  background: white;
+  color: black;
+  vertical-align: middle;
+}
+
+#header:hover {
+  cursor: pointer;
+}
+
+#header:hover + #body {
+  display: block;
+  position: relative;
+}

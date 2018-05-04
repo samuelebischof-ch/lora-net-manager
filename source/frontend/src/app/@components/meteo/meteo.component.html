@@ -1,0 +1,14 @@
+<div id="meteo" *ngIf="meteo">
+  <div id="header">
+    <div>
+      <!-- <span>{{meteo.main.temp}}˚C Lugano</span> -->
+    </div>
+  </div>
+  <div id="body">
+    {{meteo.main.temp}}˚C
+    <br>
+    {{meteo.main.pressure}} hPa
+    <br>
+    {{meteo.main.humidity}} %
+  </div>
+</div>

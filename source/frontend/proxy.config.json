@@ -1,0 +1,29 @@
+{
+    "/api/*": {
+       "target":  {
+         "host": "localhost",
+         "protocol": "https:",
+         "port": 3000
+       },
+       "secure": false,
+       "changeOrigin": true,
+       "logLevel": "debug"
+     },
+     "/auth/*": {
+      "target":  {
+        "host": "localhost",
+        "protocol": "https:",
+        "port": 3000
+      },
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    },
+     "/ws/*": {
+      "target": "https://localhost:3000/socket.io/",
+      "changeOrigin": true,
+      "secure": false,
+      "ws": true,
+      "logLevel": "debug"
+    }
+   }

@@ -1,0 +1,51 @@
+<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+
+  <mat-expansion-panel-header>
+
+    <mat-panel-title>
+      DEVICES
+    </mat-panel-title>
+
+  </mat-expansion-panel-header>
+
+  <span style="height: 80px;"></span>
+  <div class="line">
+    <mat-form-field>
+      <input matInput placeholder="Device EUI" type="string" [ngModel]="deveui" (ngModelChange)="deveui = $event">
+      <mat-icon style="cursor: pointer;" matSuffix (click)="genDEVEUI()">shuffle</mat-icon>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Device ADDRESS" type="string" [ngModel]="devaddr" (ngModelChange)="devaddr = $event">
+      <mat-icon style="cursor: pointer;" matSuffix (click)="genDEVADDR()">shuffle</mat-icon>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Room" type="string" [ngModel]="room" (ngModelChange)="room = $event">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Description" type="string" [ngModel]="desc" (ngModelChange)="desc = $event">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Model" type="string" [ngModel]="model" (ngModelChange)="model = $event">
+    </mat-form-field>
+  </div>
+  <div class="line">
+    <mat-checkbox [(ngModel)]="has_temperature">Temperature sensor</mat-checkbox>
+    <mat-checkbox [(ngModel)]="has_pressure">Pressure sensor</mat-checkbox>
+    <mat-checkbox [(ngModel)]="has_humidity">Humidity sensor</mat-checkbox>
+    <mat-checkbox [(ngModel)]="has_moisture">Moisture sensor</mat-checkbox>
+    <mat-checkbox [(ngModel)]="has_movement">Movement sensor</mat-checkbox>
+    <mat-checkbox [(ngModel)]="has_door_sensor">Door sensor</mat-checkbox>
+    <mat-checkbox [(ngModel)]="has_light_sensor">Light sensor</mat-checkbox>
+  </div>
+  <!-- <mat-form-field>
+          <input matInput placeholder="DEVADDR" (keyup.enter)="createDevice()" type="string" [ngModel]="deveui" (ngModelChange)="deveui = $event">
+        </mat-form-field> -->
+  <button mat-button color="primary" (click)="addDevice()" style="width: 100%;">Add device</button>
+
+  <!-- <hr> -->
+
+  <mat-list role="list">
+    <app-device *ngFor="let n of devices" [device]="n" (valuesChanged)='getDevices()'></app-device>
+  </mat-list>
+
+</mat-expansion-panel>

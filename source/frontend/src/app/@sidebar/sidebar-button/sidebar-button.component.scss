@@ -1,0 +1,57 @@
+@import '~sass/variables';
+
+:host {
+    display: block;
+    width: $sidebarWidth;
+    height: $sidebarWidth;
+    background: sidebarBtnColor;
+    position: relative;
+    color: white;
+    cursor: pointer;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+:host:focus {
+    outline: 0;
+  }
+
+:host:hover {
+    background: $sidebarBtnColorHover;
+}
+
+:host:hover > span {
+    display: inline-block;
+}
+
+mat-icon {
+    display: inline-block;
+    width: $sidebarWidth;
+    height: $sidebarBtnIconSize;
+    padding-top: calc((#{$sidebarWidth} - #{$sidebarBtnIconSize})/2);
+    text-align: center;
+    font-size: $sidebarBtnIconSize;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+span {
+    display: none;
+    text-align: center;
+    width: $sidebarWidth;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    color: rgb(250, 250, 250);
+    letter-spacing: 1px;
+    font-size: 0.7em;
+    text-transform: uppercase;
+}

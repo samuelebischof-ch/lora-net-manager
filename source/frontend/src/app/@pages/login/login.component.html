@@ -1,0 +1,17 @@
+<mat-card>
+  <mat-card-title>LOGIN {{loginText}}</mat-card-title>
+  <mat-card-content>
+    <!-- <div id="login"> -->
+      <mat-form-field>
+        <input matInput placeholder="Username" type="string" [ngModel]="username" (ngModelChange)="username = $event">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Enter your password" [type]="hide ? 'password' : 'text'" [ngModel]="secret" (ngModelChange)="secret = $event"
+          (keyup.enter)="clickLogin()">
+        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+      </mat-form-field>
+      <div style="height: 60px;"></div>
+      <button mat-button color="primary" (click)="clickLogin()" style="width: 100%;">Login</button>
+    <!-- </div> -->
+  </mat-card-content>
+</mat-card>

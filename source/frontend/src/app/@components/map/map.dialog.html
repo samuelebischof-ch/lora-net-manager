@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Select room</h1>
+<div mat-dialog-content>
+  <p>Which room did you click on?</p>
+  <mat-form-field>
+      <mat-select [(value)]="selected">
+        <mat-option *ngFor="let room of data.roomList" value="{{room}}">{{room}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <p>You selected: {{selected}}</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Close</button>
+  <button mat-button [mat-dialog-close]="selected" cdkFocusInitial>Ok</button>
+</div>

@@ -1,0 +1,47 @@
+mat-card {
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+}
+
+mat-card-title {
+  padding: 20px;
+  margin: 0;
+  background-color: rgb(2, 150, 213);
+  width: calc(100% - 40px);
+  height: calc(20px);
+  left: 0;
+  top: 0;
+  position: absolute;
+  color: white;
+  font-size: 1.2em;
+}
+
+mat-card-content {
+  display: block;
+  width: 100%;
+  margin: 50px 0;
+  height: calc(100% - 60px);
+  margin: 0px;
+  overflow: scroll;
+  overflow-x: hidden;
+  -ms-overflow-style: none;
+  margin-top: 60px;
+}
+
+mat-card-content::-webkit-scrollbar { 
+  display: none;  // Safari and Chrome
+}
+
+mat-tab-group {
+  padding: 20px;
+  position: relative;
+}
+
+mat-form-field {
+  display: block
+}
+
+.dateField {
+  margin: 20px;
+}
