@@ -66,3 +66,7 @@ typings/
 source/backend/docker/data
 
 **/.DS_Store
+private-key.pem
+public-certificate.pem
+source/backend/default.realm.management/
+source/backend/package-lock.json
