@@ -63,7 +63,8 @@ typings/
 # Realm DB files
 **/*.realm
 **/*.lock
-source/backend/default.realm.management/
+**/db.realm.management/*
+**/db.realm.note
 
 # Docker data folder
 source/backend/docker/data
@@ -72,5 +73,5 @@ source/backend/docker/data
 **/.DS_Store
 
 # OpenSSL certificates
-private-key.pem
-public-certificate.pem
+**/private-key.pem
+**/public-certificate.pem
