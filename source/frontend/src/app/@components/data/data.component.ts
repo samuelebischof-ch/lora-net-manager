@@ -216,7 +216,7 @@ export class DataComponent implements OnInit, OnChanges {
           this.dataArray[i].unit = this.apiDataArray[c].data[i].unit; // TODO check loop to much overhead
           this.dataArray[i].lineChartData.push({
             data: this.apiDataArray[c].data[i].data,
-            label: this.apiDataArray[c].data[i].deveui,
+            label: this.apiDataArray[c].data[i].desc,
             spanGaps: true,
           });
           this.makeStatistics(this.apiDataArray[c].data[i].data, this.dataArray[i]);
@@ -269,6 +269,7 @@ interface ApiDataEl {
   unit: string;
   data: Array<number>;
   deveui: string;
+  desc: string;
 }
 
 interface DataArrayEl {

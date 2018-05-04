@@ -355,22 +355,25 @@ export class RealmService {
         async getSensorData(body) {
             
             let label = '';
+            let devDescription = '';
             
             let DBreadings;
             
             await this.OpenedRealm.then(realm => {
                 try { // different range cases
+                    const device = realm.objectForPrimaryKey('Device', body.deveui)
+                    devDescription = (device as DeviceDB).desc;
                     if (body.start !== undefined && body.end === undefined) {
-                        DBreadings = (realm.objectForPrimaryKey('Device', body.deveui) as DeviceDB).sensor_readings.filtered('read >= $0', new Date(Number(body.start)));
+                        DBreadings = (device as DeviceDB).sensor_readings.filtered('read >= $0', new Date(Number(body.start)));
                         console.log('getSensorData 1')
                     } else if (body.start === undefined && body.end !== undefined) {
-                        DBreadings = (realm.objectForPrimaryKey('Device', body.deveui) as DeviceDB).sensor_readings.filtered('read <= $0', new Date(Number(body.end)));
+                        DBreadings = (device as DeviceDB).sensor_readings.filtered('read <= $0', new Date(Number(body.end)));
                         console.log('getSensorData 2')
                     } else if (body.start !== undefined && body.end !== undefined) {
-                        DBreadings = (realm.objectForPrimaryKey('Device', body.deveui) as DeviceDB).sensor_readings.filtered('read >= $0 AND read <= $1', new Date(Number(body.start)), new Date(Number(body.end)));
+                        DBreadings = (device as DeviceDB).sensor_readings.filtered('read >= $0 AND read <= $1', new Date(Number(body.start)), new Date(Number(body.end)));
                         console.log('getSensorData 3')
                     } else if (body.start === undefined && body.end === undefined) {
-                        DBreadings = (realm.objectForPrimaryKey('Device', body.deveui) as DeviceDB).sensor_readings;
+                        DBreadings = (device as DeviceDB).sensor_readings;
                         console.log('getSensorData 4')
                     }
                 } catch (error) {
@@ -387,7 +390,6 @@ export class RealmService {
                 return undefined;
             }
             
-            
             let returnDate = []
             
             let temperature = [];
@@ -402,9 +404,6 @@ export class RealmService {
             let unitPressure;
             let unitHumidity;
             let unitMoisture;
-            // let unitMovement;
-            // let unitDoor;
-            // let unitLight;
             
             if (DBreadings[0]) {
                 unitTemperature = (DBreadings[0] as SensorDB).unit_temperature;
@@ -428,14 +427,14 @@ export class RealmService {
             }
             
             let returnData = [
-                { label: 'Temperature', unit: unitTemperature, data: temperature, deveui: body.deveui },
-                { label: 'Pressure', unit: unitPressure, data: pressure, deveui: body.deveui },
-                { label: 'Humidity', unit: unitHumidity, data: humidity, deveui: body.deveui },
-                { label: 'Moisture', unit: unitMoisture, data: moisture, deveui: body.deveui },
+                { label: 'Temperature', unit: unitTemperature, data: temperature, deveui: body.deveui, desc: devDescription },
+                { label: 'Pressure', unit: unitPressure, data: pressure, deveui: body.deveui, desc: devDescription },
+                { label: 'Humidity', unit: unitHumidity, data: humidity, deveui: body.deveui, desc: devDescription },
+                { label: 'Moisture', unit: unitMoisture, data: moisture, deveui: body.deveui, desc: devDescription },
                 // TODO: check behaviour
-                { label: 'Movement', unit: '', data: movement, deveui: body.deveui },
-                { label: 'Door', unit: '', data: door, deveui: body.deveui },
-                { label: 'Light', unit: '', data: light, deveui: body.deveui },
+                { label: 'Movement', unit: '', data: movement, deveui: body.deveui, desc: devDescription },
+                { label: 'Door', unit: '', data: door, deveui: body.deveui, desc: devDescription },
+                { label: 'Light', unit: '', data: light, deveui: body.deveui, desc: devDescription },
             ];
             
             return {date: returnDate, data: returnData};

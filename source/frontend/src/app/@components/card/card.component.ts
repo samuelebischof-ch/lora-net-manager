@@ -13,15 +13,8 @@ export class CardComponent implements OnInit, OnChanges, OnDestroy {
   private sub: Subscription;
   private data;
 
-  // private connect = true;
-  // private min = Date.now();
-  // private max = Date.now();
-  // private range = [this.min, this.max];
-
   constructor(private _api: ApiService,
     private _ws: WsService) { }
-
-
 
     @Input() deveui: string;
     @Input() startDate: number;
@@ -40,7 +33,6 @@ export class CardComponent implements OnInit, OnChanges, OnDestroy {
         this.sub.unsubscribe();
         this._ws.disconnect();
       }
-      // this.connectWs(this.min, this.max);
     }
 
     ngOnDestroy() {
@@ -59,13 +51,10 @@ export class CardComponent implements OnInit, OnChanges, OnDestroy {
           const _data = JSON.parse(JSON.stringify(this.data));
           for (let i = 0; i < _data.data.length; i++) {
             _data.data[i].data = [];
-            _data.data[i].data.push({data: this.data.data[i].data, label: this.deveui});
+            _data.data[i].data.push({data: this.data.data[i].data, label: this.data.data[i].desc});
           }
           this.data = _data;
-          // console.log(this.data);
         } else if (res.newData !== undefined) {
-          // console.log('New data');
-          // console.log(res);
           const _data = JSON.parse(JSON.stringify(this.data));
           for (let i = 0; i < res.newData.length; i++) {
             _data.data[i].data[0].data.push(res.newData[i].data);
