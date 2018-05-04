@@ -566,7 +566,7 @@ export class RealmService {
                 {
                     deveui: locationName,
                     devaddr: 'meteo',
-                    desc: 'Weather',
+                    desc: locationName,
                     room: { roomName: 'Meteo' },
                     battery: 0,
                     rssi: 0,
