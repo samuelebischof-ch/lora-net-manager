@@ -36,7 +36,7 @@ Data can be visualised as a graph, also in realtime.
 
 **Frontend** `cd source/frontend/ && npm install`
 
-> Note: on Windows [Gotthardps LoRaWAN server](https://github.com/gotthardp/lorawan-server) has to be installed manually
+> Note: in Windows [Gotthardps LoRaWAN server](https://github.com/gotthardp/lorawan-server) has to be installed manually
 
 ## How to use
 
@@ -45,6 +45,30 @@ When running the backend for the first time, it will guide you through the insta
 **Backend** `cd source/backend/ && npm run start`
 
 **Frontend** `cd source/frontend/ && npm start`
+
+## Payload format
+
+Format of data received in the backend when an uplink is received
+
+```
+interface DataWS {
+  deveui: string;   // DevEUI of device
+  devaddr: string;  // DevAddr of device
+  battery: number;  // value from 0-255
+  data: string;     // payload in hex
+  datetime: string; // time of arrival
+  rssi: number;     // RSSI noise
+  field1: number;   // temperature sensor
+  field2: number;   // pressure sensor
+  field3: number;   // humidity sensor
+  field4: number;   // moisture sensor
+  field5: boolean;  // CO2 sensor
+  field6: boolean;  // magnetic sensor
+  field7: boolean;  // pir sensor
+}
+```
+
+> Make sure to assign sensor readings to the LPP object with the correct field number
 
 ## Tested with
 
