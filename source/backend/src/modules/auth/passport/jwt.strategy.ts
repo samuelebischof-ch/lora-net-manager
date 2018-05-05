@@ -14,7 +14,7 @@ export class JwtStrategy extends Strategy {
       {
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         passReqToCallback: true,
-        secretOrKey: (config as any).secret,
+        secretOrKey: config.jwt.secret,
       },
       async (req, payload, next) => await this.verify(req, payload, next),
     );

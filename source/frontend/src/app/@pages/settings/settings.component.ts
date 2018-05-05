@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../@services/api.service/api.service';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../../@services/authentication.service/authentication.service';
 
 @Component({
   selector: 'app-settings',
@@ -9,11 +9,11 @@ import { Router } from '@angular/router';
 })
 export class SettingsComponent implements OnInit {
 
-  constructor(private _api: ApiService,
+  constructor(private _authentication: AuthenticationService,
               private router: Router) { }
 
     ngOnInit() {
-      if (!this._api.checkIsAuthenticated()) {
+      if (!this._authentication.isAuthenticated()) {
         this.router.navigate([`login`]);
       }
     }

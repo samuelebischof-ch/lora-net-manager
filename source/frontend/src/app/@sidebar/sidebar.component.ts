@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { toggleFullScreen } from '../@helpers/fullscreen';
+import { AuthenticationService } from '../@services/authentication.service/authentication.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,7 +11,7 @@ export class SidebarComponent implements OnInit {
 
   private screenIcon = 'fullscreen';
 
-  constructor() { }
+  constructor(private _authentication: AuthenticationService) { }
 
   ngOnInit() {
   }
@@ -18,6 +19,10 @@ export class SidebarComponent implements OnInit {
   toggleFullScreen() {
     toggleFullScreen();
     this.screenIcon = (this.screenIcon === 'fullscreen') ? 'fullscreen_exit' : 'fullscreen';
+  }
+
+  logout() {
+    this._authentication.logout();
   }
 
 }

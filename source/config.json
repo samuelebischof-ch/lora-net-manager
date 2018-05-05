@@ -1,5 +1,9 @@
 {
-    "secret": "admin",
+    "jwt": {
+        "user": "admin",
+        "secret": "admin",
+        "expiration": 3600
+    },
     "gotthardpws": "ws://localhost:8080/ws/uplinks/LoRaHandler",
     "gotthardpevtws": "ws://localhost:8080/ws/events",
     "loRaServerOptions": {

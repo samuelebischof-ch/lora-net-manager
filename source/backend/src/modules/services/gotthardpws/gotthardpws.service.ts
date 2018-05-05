@@ -74,9 +74,7 @@ export class GotthardpwsService {
         function onMessage(evt) {
             console.log('SUCCESS: LORASERVER uplinks WS message');
             const msg: DataWS = JSON.parse(evt.data);
-            console.log(msg);
             self._realm.storeSensorData(msg);
-            // console.log(msg);
         }
         
         /**
@@ -144,7 +142,6 @@ export class GotthardpwsService {
             const msg: EventsWS = JSON.parse(evt.data);
             self._realm.updateDeviceStatus(msg);
             self.events$.next(msg);
-            console.log(msg);
         }
         
         /**

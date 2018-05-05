@@ -1,5 +1,9 @@
 export interface Config {
-  secret: string;
+  jwt: {
+    user: string;
+    secret: string;
+    expiration: number;
+  }
   gotthardpws: string;
   gotthardpevtws: string;
   loRaServerOptions: {

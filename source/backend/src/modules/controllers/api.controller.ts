@@ -42,7 +42,6 @@ export class APIController {
          */
         @Post('gateway')
         async addGateway(@Body() req) {
-            console.log(req)
             await this._gotthardp.addGateway(req);
         }
 
@@ -98,7 +97,6 @@ export class APIController {
          */
         @Post('device')
         async addDevice(@Body() req) {
-            console.log(req)
             // TODO check in DB if non existent
             await this._realm.createDevice(req);
             await this._gotthardp.addDevice(req);
@@ -118,7 +116,6 @@ export class APIController {
 
         @Get('data/:query?')
         async getData(@Query() params) {
-            console.log(params);
             return await this._realm.getSensorData(params);
         }
 

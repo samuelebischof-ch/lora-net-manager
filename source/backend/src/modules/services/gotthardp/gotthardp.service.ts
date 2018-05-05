@@ -179,8 +179,6 @@ export class GotthardpService {
         options.json = Object.assign({}, deviceOptions);
         
         this._realm.getKeys().then(res => {
-            console.log(body);
-            console.log(res)
             options.json.appeui = (body.appeui === undefined) ? res.appeui : body.appeui;
             options.json.appkey = (body.appkey === undefined) ? res.appkey : body.appkey;
             options.json.desc = body.desc;

@@ -8,15 +8,23 @@ const config: Config = configJSON as any;
 @Component()
 export class AuthService {
   async createToken(username: string, secret: string) {
-    const correctSecret = config.secret;
-    const expiresIn = 60 * 60;
-    const user = { email: username };
-    const token = jwt.sign(user, secret, { expiresIn });
-    return {
-      expires_in: expiresIn,
-      access_token: token,
-      authenticated: (correctSecret == secret),
-    };
+    const correctUser = config.jwt.user;
+    const correctSecret = config.jwt.secret;
+    if (correctUser === username && correctSecret === secret) {
+      // expiresIn 1 hour
+      const expiresIn = config.jwt.expiration;
+      const user = { email: username };
+      const token = jwt.sign(user, secret, { expiresIn });
+      return {
+        expires_in: expiresIn,
+        access_token: token,
+        authenticated: true,
+      };
+    } else {
+      return {
+        authenticated: false,
+      }
+    }
   }
 
   async validateUser(signedUser): Promise<boolean> {

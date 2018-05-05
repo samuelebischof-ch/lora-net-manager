@@ -7,6 +7,7 @@ import { LoginComponent } from './@pages/login/login.component';
 import { SetupComponent } from './@pages/setup/setup.component';
 
 const routes: Routes = [
+  { path: '', component: DashboardComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'login', component: LoginComponent },
