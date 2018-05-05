@@ -36,6 +36,8 @@ Data can be visualised as a graph, also in realtime.
 
 **Frontend** `cd source/frontend/ && npm install`
 
+> Note: on Windows [Gotthardps LoRaWAN server](https://github.com/gotthardp/lorawan-server) has to be installed manually
+
 ## How to use
 
 When running the backend for the first time, it will guide you through the installation of Docker (on UNIX based operating systems).
@@ -43,6 +45,11 @@ When running the backend for the first time, it will guide you through the insta
 **Backend** `cd source/backend/ && npm run start`
 
 **Frontend** `cd source/frontend/ && npm start`
+
+## Tested with
+
+- Node.js v8.10.0
+- npm v5.6.0
 
 ## License
 
