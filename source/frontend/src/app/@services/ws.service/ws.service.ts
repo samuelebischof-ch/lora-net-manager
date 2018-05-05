@@ -4,9 +4,14 @@ import { Observer } from 'rxjs/Observer';
 import { map, catchError } from 'rxjs/operators';
 import * as socketIo from 'socket.io-client';
 import { Socket } from '../../@interfaces/socket.interface';
+import { AuthenticationService } from '../authentication.service/authentication.service';
 
 @Injectable()
 export class WsService {
+
+  constructor(private _authentication: AuthenticationService) {
+
+  }
 
   dataSocket: Socket;
   eventsSocket: Socket;
@@ -17,7 +22,8 @@ export class WsService {
 
     this.dataSocket = socketIo({ 'path': '/ws' });
 
-    this.dataSocket.emit('requestData', { deveui, start: min, end: max });
+    const jwt = this._authentication.getToken();
+    this.dataSocket.emit('requestData', {jwt, data: { deveui, start: min, end: max }});
 
     this.dataSocket.on('responsetData', (res) => {
       this.dataObserver.next(res);
@@ -32,7 +38,8 @@ export class WsService {
 
     this.eventsSocket = socketIo({ 'path': '/ws' });
 
-    this.eventsSocket.emit('requestEvents', {});
+    const jwt = this._authentication.getToken();
+    this.eventsSocket.emit('requestEvents', {jwt});
 
     this.eventsSocket.on('responseEvents', (res) => {
       this.eventsObserver.next(res);

@@ -82,5 +82,6 @@ export const SettingSchema = {
         konva: 'data?',
         locations: 'string[]',
         apikey: 'string?',
+        jwt: 'string?',
     }
-}
+};

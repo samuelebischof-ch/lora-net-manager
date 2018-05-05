@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { RealmService } from './services/realm/realm.service';
 import { MeteoService } from './services/meteo/meteo.service';
 import { GotthardpService } from './services/gotthardp/gotthardp.service';
 import { GotthardpwsService } from './services/gotthardpws/gotthardpws.service';
@@ -16,7 +15,6 @@ import { LoraGateway } from './gateways/lora.gateway';
   components: [
     LoraGateway,
     SetupService,
-    RealmService,
     MeteoService,
     GotthardpService,
     GotthardpwsService,

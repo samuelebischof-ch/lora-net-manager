@@ -128,8 +128,6 @@ export class DataComponent implements OnInit, OnChanges {
     // (1) iterate over all different datasets and extract data
     let counter = 0;
     dataApiArray.forEach(apiDataEl => {
-      console.log('outer loop');
-
       // iterate in every dataset and push data to temp
       let dPointer = 0;
       let tPointer = 0;
@@ -180,9 +178,6 @@ export class DataComponent implements OnInit, OnChanges {
       counter++;
     });
 
-    // (2) merge
-    console.log(temp);
-
     // (2) write data back to dataApiArray
     for (let i = 0; i < dataApiArray.length; i++) { // loop on different datasets
       for (let j = 0; j < dataApiArray[i].data.length; j++) { // loop on different sensors
@@ -192,8 +187,6 @@ export class DataComponent implements OnInit, OnChanges {
         });
       }
     }
-
-    console.log(dataApiArray);
 
     // (3) extract data to timeline
     temp.forEach(element => {
@@ -211,7 +204,6 @@ export class DataComponent implements OnInit, OnChanges {
       // this.organizeLabels(c);
       if (this.apiDataArray.length > 0) {
         for (let i = 0; i < this.apiDataArray[0].data.length; i++) {
-          console.log(this.apiDataArray[c].data[i].unit);
           this.dataArray[i].label = this.apiDataArray[c].data[i].label;
           this.dataArray[i].unit = this.apiDataArray[c].data[i].unit; // TODO check loop to much overhead
           this.dataArray[i].lineChartData.push({

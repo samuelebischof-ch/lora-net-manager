@@ -5,9 +5,9 @@ import {
   MiddlewaresConsumer,
   RequestMethod,
 } from '@nestjs/common';
-import { JwtStrategy } from './passport/jwt.strategy';
-import { AuthController } from './controller/auth.controller';
-import { AuthService } from './service/auth/auth.service';
+import { JwtStrategy } from './auth/passport/jwt.strategy';
+import { AuthController } from './auth/controller/auth.controller';
+import { AuthService } from './auth/service/auth/auth.service';
 
 @Module({
   components: [AuthService, JwtStrategy],

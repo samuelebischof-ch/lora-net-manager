@@ -48,7 +48,6 @@ export class AuthenticationService {
 
     getToken() {
       const token = localStorage.getItem('access_token');
-      console.log(token);
       return token;
     }
 

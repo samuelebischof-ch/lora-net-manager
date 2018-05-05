@@ -49,8 +49,7 @@ export class MapComponent implements OnInit {
       const self = this;
       this.loadKonva();
       this._api.loadKonva().subscribe(res => {
-        if (res !== null) {
-          console.log(res);
+        if (res !== null && res !== undefined) {
           self.backgroundImg = (res as StoreData).backgroundImg;
           self.roomsArray = (res as StoreData).roomsArray;
         }
@@ -102,12 +101,14 @@ export class MapComponent implements OnInit {
 
       // save background
       const bg = this.bgLayer.findOne('#background');
-      this.backgroundImg.x = bg.attrs.x;
-      this.backgroundImg.y = bg.attrs.y;
-      this.backgroundImg.width = ((!bg.attrs.scaleX) ? bg.attrs.width : (bg.attrs.width * bg.attrs.scaleX));
-      this.backgroundImg.height = ((!bg.attrs.scaleY) ? bg.attrs.height : (bg.attrs.height * bg.attrs.scaleY));
-      this.backgroundImg.rotation = bg.attrs.rotation;
-      this.backgroundImg.draggable = false;
+      if (bg !== null && bg !== undefined) {
+        this.backgroundImg.x = bg.attrs.x;
+        this.backgroundImg.y = bg.attrs.y;
+        this.backgroundImg.width = ((!bg.attrs.scaleX) ? bg.attrs.width : (bg.attrs.width * bg.attrs.scaleX));
+        this.backgroundImg.height = ((!bg.attrs.scaleY) ? bg.attrs.height : (bg.attrs.height * bg.attrs.scaleY));
+        this.backgroundImg.rotation = bg.attrs.rotation;
+        this.backgroundImg.draggable = false;
+      }
 
       // send to server
       this._api.saveKonva({

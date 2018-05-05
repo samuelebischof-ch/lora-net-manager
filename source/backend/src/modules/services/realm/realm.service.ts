@@ -1,5 +1,6 @@
 import * as Realm from 'realm';
 import * as crypto from 'crypto';
+import * as bcrypt from 'bcrypt';
 import { Component } from '@nestjs/common';
 import { DataWS } from '../../interfaces/dataWS.interface';
 import { DeviceDB } from '../../interfaces/deviceDB.interface';
@@ -552,6 +553,55 @@ export class RealmService {
             return buf;
         }
         
+
+/***********************************meteo*************************************/
+
+saveJWTToken(JWT: string) {
+    console.log('here')
+    console.log(JWT);
+    bcrypt.hash(JWT, 10, (err, hash) => {
+        console.log('Hash')
+        console.log(hash)
+        this.OpenedRealm.then(realm => {
+            try {
+                realm.write(() => {
+                    const setting = realm.objectForPrimaryKey('Setting', 0);
+                    if (setting && setting !== undefined) {
+                        (setting as any).jwt = hash;
+                    }
+                });
+            } catch (error) {
+                console.error('ERROR at saveJWTToken(): ' + error);
+            }
+        })
+        .catch(error => {
+            console.error('ERROR at saveJWTToken(): ' + error);
+        });
+    });
+}
+
+async checkJWTToken(jwt: string): Promise<boolean> {
+    let equalJWT = false;
+    await this.OpenedRealm.then(async realm => {
+       try {
+            const setting = realm.objectForPrimaryKey('Setting', 0);
+            if (setting && setting !== undefined) {
+                await bcrypt.compare(jwt, (setting as any).jwt).then(res => {
+                    equalJWT = res;
+                }).catch(err => {
+                    console.log(err);
+                });
+            }
+        } catch (error) {
+            console.error('ERROR at saveJWTToken(): ' + error);
+        }
+    })
+    .catch(error => {
+        console.error('ERROR at saveJWTToken(): ' + error);
+    });
+    return await equalJWT;
+}
+
 /***********************************meteo*************************************/
         
         /**
