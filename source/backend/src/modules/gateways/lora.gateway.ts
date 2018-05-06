@@ -12,6 +12,7 @@ import { Observer } from 'rxjs/Observer';
 import { Subscription } from 'rxjs/Subscription';
 import { RealmService } from '../services/realm/realm.service';
 import { GotthardpwsService } from '../services/gotthardpws/gotthardpws.service';
+import { LoggerService } from '../services/logger/logger.service';
 
 @WebSocketGateway()
 export class LoraGateway implements OnGatewayInit {
@@ -20,7 +21,8 @@ export class LoraGateway implements OnGatewayInit {
     private observable: Observable<string>;
     
     constructor(private readonly _realm: RealmService,
-        private readonly _gotthardpws: GotthardpwsService
+                private readonly _gotthardpws: GotthardpwsService,
+                private readonly _logger: LoggerService
     ) {}
     
     /**
@@ -58,7 +60,7 @@ export class LoraGateway implements OnGatewayInit {
     async onEventEvent(client, request) {
         if(await this._realm.checkJWTToken(request.jwt)) { // if authenticated
 
-            console.log('SUCCESS: frontend connected to ws gateway')
+            this._logger.success('frontend connected to ws gateway')
             
             this._gotthardpws.events$.subscribe(msg => {
                 client.emit('responseEvents', msg);
@@ -69,19 +71,19 @@ export class LoraGateway implements OnGatewayInit {
     }
     
     handleConnection() {
-        console.log('SUCCESS: frontend requested data');
+        this._logger.success('frontend requested data');
     }
     
     handleDisconnect() {
-        console.log('handleDisconnect()');
+        this._logger.success('handleDisconnect()');
         this.subscriptions.forEach((subscription: Subscription) => {
             subscription.unsubscribe();
         });
         this._realm.removeWatcher()
-        console.log('SUCCESS: socket closed');
+        this._logger.success('socket closed');
     }
     
     afterInit() {
-        console.log('SUCCESS: sockets gateway started')
+        this._logger.success('sockets gateway started')
     }
 }

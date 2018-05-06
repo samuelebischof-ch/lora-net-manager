@@ -8,6 +8,7 @@ import { DataWS } from '../../interfaces/dataWS.interface';
 import { EventsWS } from '../../interfaces/eventsWS.interface';
 import { MeteoService } from '../meteo/meteo.service';
 import { Config } from '../../interfaces/config.interface';
+import { LoggerService } from '../logger/logger.service';
 
 const config: Config = configJSON as any;
 const gotthardpws = config.gotthardpws;
@@ -16,7 +17,8 @@ const gotthardpevtws = config.gotthardpevtws;
 @Component()
 export class GotthardpwsService {
     constructor(private readonly _realm: RealmService,
-                private readonly _meteo: MeteoService) {}
+                private readonly _meteo: MeteoService,
+                private readonly _logger: LoggerService) {}
     
     private uplinkWS;
     private eventsWS;
@@ -53,7 +55,7 @@ export class GotthardpwsService {
         * @description when the websocket connects
         */
         function onOpen(evt) {
-            console.log('SUCCESS: LoRaServer uplinks WS opened');
+            self._logger.success('LoRaServer uplinks WS opened');
         }
         
         /**
@@ -62,7 +64,7 @@ export class GotthardpwsService {
         * @description when the websocket closes the connection
         */
         function onClose(evt) {
-            console.log('SUCCESS: LoRaServer uplinks WS closed');
+            self._logger.success('LoRaServer uplinks WS closed');
             setup(); // tries to rejoin socket
         }
         
@@ -72,7 +74,7 @@ export class GotthardpwsService {
         * @description when the websocket receives a message
         */
         function onMessage(evt) {
-            console.log('SUCCESS: LoRaServer uplinks WS message');
+            self._logger.success('LoRaServer uplinks WS message');
             const msg: DataWS = JSON.parse(evt.data);
             msg.datetime = new Date(msg.datetime);
             self._realm.storeSensorData(msg);
@@ -84,8 +86,7 @@ export class GotthardpwsService {
         * @description when there is an error in the ws connection
         */
         function onError(evt) {
-            console.log('ERROR: LoRaServer uplinks WS error');
-            console.error('ERROR: LoRaServer uplinks WS error: ' + evt.data);
+            self._logger.error('LoRaServer uplinks WS error: ' + evt.data);
         }
         
     }
@@ -120,7 +121,7 @@ export class GotthardpwsService {
         * @description when the websocket connects
         */
         function onOpen(evt) {
-            console.log('SUCCESS: LoRaServer events WS opened');
+            self._logger.success('LoRaServer events WS opened');
         }
         
         /**
@@ -129,7 +130,7 @@ export class GotthardpwsService {
         * @description when the websocket closes the connection
         */
         function onClose(evt) {
-            console.log('SUCCESS: LoRaServer events WS closed');
+            self._logger.success('LoRaServer events WS closed');
             setup(); // tries to rejoin socket
         }
         
@@ -139,7 +140,7 @@ export class GotthardpwsService {
         * @description when the websocket receives a message
         */
         function onMessage(evt) {
-            console.log('SUCCESS: LoRaServer events WS message');
+            self._logger.success('LoRaServer events WS message');
             const msg: EventsWS = JSON.parse(evt.data);
             self._realm.updateDeviceStatus(msg);
             self.events$.next(msg);
@@ -151,8 +152,7 @@ export class GotthardpwsService {
         * @description when there is an error in the ws connection
         */
         function onError(evt) {
-            console.log('ERROR: LoRaServer events WS error');
-            console.error('ERROR: LoRaServer events WS error: ' + evt.data);
+            self._logger.error('LoRaServer events WS error: ' + evt.data);
         }
         
     }

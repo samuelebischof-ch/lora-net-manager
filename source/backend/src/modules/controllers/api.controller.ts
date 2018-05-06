@@ -5,12 +5,14 @@ import { MeteoService } from '../services/meteo/meteo.service';
 import { Gateway } from '../interfaces/gateway.interface';
 import { Device } from '../interfaces/device.interface';
 import * as crypto from 'crypto';
+import { LoggerService } from '../services/logger/logger.service';
 
 @Controller('api')
 export class APIController {
     constructor(private readonly _realm: RealmService,
                 private readonly _gotthardp: GotthardpService,
-                private readonly _meteo: MeteoService) {}
+                private readonly _meteo: MeteoService,
+                private readonly _logger: LoggerService) {}
         
 /********************************** gateways *********************************/
         
@@ -53,7 +55,7 @@ export class APIController {
         @Delete('gateway/:mac')
         async removeGateway(@Param() param) {
             await this._gotthardp.removeGateway(param.mac);
-            console.log('SUCCESS: gateway ' + param.mac + ' removed');
+            this._logger.success('gateway ' + param.mac + ' removed');
         }
         
 /********************************** device ***********************************/
@@ -111,7 +113,7 @@ export class APIController {
         async removeDevice(@Param() param) {
             await this._gotthardp.removeDevice(param.deveui);
             await this._realm.removeDevice(param.deveui);
-            console.log('SUCCESS: device ' + param.deveui + ' removed');
+            this._logger.success('device ' + param.deveui + ' removed');
         }
 
         @Get('data/:query?')

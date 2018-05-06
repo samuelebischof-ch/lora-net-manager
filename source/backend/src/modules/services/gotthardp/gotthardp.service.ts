@@ -7,6 +7,7 @@ import * as rp from 'request-promise-native';
 import * as configJSON from '../../../../../config.json';
 import * as gotthardpConfigJSON from '../../../../gotthardp.config.json';
 import { Config } from '../../interfaces/config.interface';
+import { LoggerService } from '../logger/logger.service';
 
 const config: Config = configJSON as any;
 const gotthardpConfig: any = gotthardpConfigJSON as any;
@@ -22,7 +23,9 @@ const downlinkOptions = gotthardpConfig.downlink;
 @Component()
 export class GotthardpService {
 
-    constructor(private readonly _realm: RealmService) {}
+    constructor(private readonly _realm: RealmService,
+                private readonly _logger: LoggerService
+    ) {}
 
 /********************************** gateways *********************************/
 
@@ -39,7 +42,7 @@ export class GotthardpService {
             const gateways = await rp(options);
             return JSON.parse(gateways);
         } catch (err) {
-            console.error('ERROR at getGateways(): ' + err);
+            this._logger.error('at getGateways(): ' + err);
             return err;
         }
     }
@@ -56,9 +59,9 @@ export class GotthardpService {
         options.json.mac = body.mac;
         try {
             await rp(options);
-            console.log('SUCCESS: at addGateway()');
+            this._logger.success('addGateway(): gateway added');
         } catch (err) {
-            console.error('ERROR at addGateway(): ' + err);
+            this._logger.error('at addGateway(): ' + err);
             return err;
         }
     }
@@ -74,9 +77,9 @@ export class GotthardpService {
         options.method = 'DELETE';
         try {
             await rp(options);
-            console.log('SUCCESS: at removeGateway()')
+            this._logger.success('removeGateway(): gateway removed')
         } catch (err) {
-            console.error('ERROR at removeGateway(): ' + err);
+            this._logger.error('at removeGateway(): ' + err);
             return err;
         }
     }
@@ -93,7 +96,7 @@ export class GotthardpService {
         options.method = 'POST';
         options.json = Object.assign({}, networkOptions);
         request(options, (error, response, body) => {
-            if (error) console.log(error);
+            if (error) this._logger.error(error);
         });
     }
 
@@ -109,7 +112,7 @@ export class GotthardpService {
         options.method = 'POST';
         options.json = Object.assign({}, profileOptions);
         request(options, (error, response, body) => {
-            if (error) console.log(error);
+            if (error) this._logger.error(error);
         });
     }
 
@@ -125,7 +128,7 @@ export class GotthardpService {
         options.method = 'POST';
         options.json = Object.assign({}, handlerOptions);
         request(options, (error, response, body) => {
-            if (error) console.log(error);
+            if (error) this._logger.error(error);
         });
     }
 
@@ -143,7 +146,7 @@ export class GotthardpService {
         for (const c in connectorOptions) {
             options.json = Object.assign({}, connectorOptions[c]);
             request(options, (error, response, body) => {
-                if (error) console.log(error);
+                if (error) this._logger.error(error);
             });
         }
     }
@@ -163,7 +166,7 @@ export class GotthardpService {
             const devices = await rp(options);
             return JSON.parse(devices);
         } catch (err) {
-            console.error('ERROR at getDevices(): ' + err);
+            this._logger.error('at getDevices(): ' + err);
             return err;
         }
     }
@@ -187,7 +190,7 @@ export class GotthardpService {
             options.json.node = body.devaddr;
 
             request(options, (error, response, body) => {
-                if (error) console.log(error);
+                if (error) this._logger.error(error);
             });
         });
     }
@@ -203,9 +206,9 @@ export class GotthardpService {
         options.method = 'DELETE';
         try {
             await rp(options);
-            console.log('SUCCESS: at removeDevice()')
+            this._logger.success('removeDevice(): device removed')
         } catch (err) {
-            console.error('ERROR at removeDevice(): ' + err);
+            this._logger.error('at removeDevice(): ' + err);
             return err;
         }
     }
@@ -224,7 +227,7 @@ export class GotthardpService {
           },
         options.json = Object.assign({}, downlinkOptions);
         request(options, (error, response, body) => {
-            if (error) console.log(error);
+            if (error) this._logger.error(error);
         });
     }
 

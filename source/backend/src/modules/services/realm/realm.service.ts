@@ -22,13 +22,14 @@ import { RoomDB } from '../../interfaces/roomDB.interface';
 import { subscribeOn } from 'rxjs/operator/subscribeOn';
 import * as configJSON from '../../../../../config.json';
 import { Config } from '../../interfaces/config.interface';
+import { LoggerService } from '../logger/logger.service';
 
 const config: Config = configJSON as any;
 
 @Component()
 export class RealmService {
     
-    constructor() {}
+    constructor(private readonly _logger: LoggerService) {}
     
     /**
     * @name OpenedRealm
@@ -70,11 +71,11 @@ export class RealmService {
                         }
                     });
                 } catch (error) {
-                    console.error('ERROR at generateKeys(): ' + error);
+                    this._logger.error('at generateKeys(): ' + error);
                 }
             })
             .catch(error => {
-                console.error('ERROR at generateKeys(): ' + error);
+                this._logger.error('at generateKeys(): ' + error);
             });
         }
         
@@ -90,11 +91,11 @@ export class RealmService {
                         }
                     });
                 } catch (error) {
-                    console.error('ERROR at getKeys(): ' + error);
+                    this._logger.error('at getKeys(): ' + error);
                 }
             })
             .catch(error => {
-                console.error('ERROR at getKeys(): ' + error);
+                this._logger.error('at getKeys(): ' + error);
             });
             return keys;
         }
@@ -152,13 +153,13 @@ export class RealmService {
     
                         });
                     } catch (error) {
-                        console.error('ERROR at createDevice(): ' + error);
+                        this._logger.error('at createDevice(): ' + error);
                         created = false;
                     }
                 }
             })
             .catch(error => {
-                console.error('ERROR at createDevice(): ' + error);
+                this._logger.error('at createDevice(): ' + error);
                 created = false;
             });
             return created;
@@ -182,11 +183,11 @@ export class RealmService {
                         }
                     });
                 } catch (error) {
-                    console.error('ERROR at updateDeviceStatus(): ' + error);
+                    this._logger.error('at updateDeviceStatus(): ' + error);
                 }
             })
             .catch(error => {
-                console.error('ERROR at updateDeviceStatus(): ' + error);
+                this._logger.error('at updateDeviceStatus(): ' + error);
             });
         }
         
@@ -216,11 +217,11 @@ export class RealmService {
                         }
                     }
                 } catch (error) {
-                    console.error('ERROR at getDevice(): ' + error);
+                    this._logger.error('at getDevice(): ' + error);
                 }
             })
             .catch(error => {
-                console.error('ERROR at getDevice(): ' + error);
+                this._logger.error('at getDevice(): ' + error);
             });
             return devicesByRoom;
         }
@@ -237,11 +238,11 @@ export class RealmService {
                     const device: DeviceDB = realm.objectForPrimaryKey('Device', deveui) as DeviceDB
                     if (device.room !== undefined) { roomName = device.room.roomName; }
                 } catch (error) {
-                    console.error('ERROR at getDeviceRoom(): ' + error);
+                    this._logger.error('at getDeviceRoom(): ' + error);
                 }
             })
             .catch(error => {
-                console.error('ERROR at getDeviceRoom(): ' + error);
+                this._logger.error('at getDeviceRoom(): ' + error);
             });
             return roomName;
         }
@@ -271,11 +272,11 @@ export class RealmService {
                         realm.delete(realm.objectForPrimaryKey('Device', deveui));
                     });
                 } catch (error) {
-                    console.error('ERROR at removeDevice(): ' + error);
+                    this._logger.error('at removeDevice(): ' + error);
                 }
             })
             .catch(error => {
-                console.error('ERROR at removeDevice(): ' + error);
+                this._logger.error('at removeDevice(): ' + error);
             });
         }
         
@@ -313,13 +314,13 @@ export class RealmService {
                             value_light,
                         });
                     });
-                    console.log('SUCCESS: new data stored to db')
+                    this._logger.success('new data stored to db')
                 } catch (error) {
-                    console.error('ERROR 1 at storeSensorData(): ' + error);
+                    this._logger.error('1 at storeSensorData(): ' + error);
                 }
             })
             .catch(error => {
-                console.error('ERROR 2 at storeSensorData(): ' + error);
+                this._logger.error('2 at storeSensorData(): ' + error);
             });
         }
         
@@ -342,7 +343,7 @@ export class RealmService {
                         });
                     });
                 } catch (error) {
-                    console.error('ERROR at addWatcher(): ' + error);
+                    this._logger.error('at addWatcher(): ' + error);
                 }
             });
             return new Observable(observe => {
@@ -359,7 +360,7 @@ export class RealmService {
                 try {
                     realm.removeAllListeners();
                 } catch (error) {
-                    console.error('ERROR at addWatcher(): ' + error);
+                    this._logger.error('at addWatcher(): ' + error);
                 }
             });
         }
@@ -384,24 +385,24 @@ export class RealmService {
                     devDescription = (device as DeviceDB).desc;
                     if (body.start !== undefined && body.end === undefined) {
                         DBreadings = (device as DeviceDB).sensor_readings.filtered('read >= $0', new Date(Number(body.start)));
-                        console.log('getSensorData 1')
+                        this._logger.success('getSensorData 1')
                     } else if (body.start === undefined && body.end !== undefined) {
                         DBreadings = (device as DeviceDB).sensor_readings.filtered('read <= $0', new Date(Number(body.end)));
-                        console.log('getSensorData 2')
+                        this._logger.success('getSensorData 2')
                     } else if (body.start !== undefined && body.end !== undefined) {
                         DBreadings = (device as DeviceDB).sensor_readings.filtered('read >= $0 AND read <= $1', new Date(Number(body.start)), new Date(Number(body.end)));
-                        console.log('getSensorData 3')
+                        this._logger.success('getSensorData 3')
                     } else if (body.start === undefined && body.end === undefined) {
                         DBreadings = (device as DeviceDB).sensor_readings;
-                        console.log('getSensorData 4')
+                        this._logger.success('getSensorData 4')
                     }
                 } catch (error) {
-                    console.error('ERROR at getSensorData() 1: ' + error);
+                    this._logger.error('at getSensorData() 1: ' + error);
                     return [];
                 }
             })
             .catch(error => {
-                console.error('ERROR at getSensorData() 2: ' + error);
+                this._logger.error('at getSensorData() 2: ' + error);
                 return [];
             });
             
@@ -490,11 +491,11 @@ export class RealmService {
                         ],
                     };
                 } catch (error) {
-                    console.error('ERROR at getSensorDataLast(): ' + error);
+                    this._logger.error('at getSensorDataLast(): ' + error);
                     return error;
                 }
             }).catch(error => {
-                console.error('ERROR at getSensorDataLast(): ' + error);
+                this._logger.error('at getSensorDataLast(): ' + error);
                 return error;
             });
             return data;
@@ -515,11 +516,11 @@ export class RealmService {
                         konva = this.ab2JSON((setting as any).konva);
                     }
                 } catch (error) {
-                    console.error('ERROR at getKonva(): ' + error);
+                    this._logger.error('at getKonva(): ' + error);
                 }
             })
             .catch(error => {
-                console.error('ERROR at getKonva(): ' + error);
+                this._logger.error('at getKonva(): ' + error);
             });
             return konva;
         }
@@ -539,11 +540,11 @@ export class RealmService {
                         }
                     });
                 } catch (error) {
-                    console.error('ERROR at getKonva(): ' + error);
+                    this._logger.error('at getKonva(): ' + error);
                 }
             })
             .catch(error => {
-                console.error('ERROR at getKonva(): ' + error);
+                this._logger.error('at getKonva(): ' + error);
             });
         }
         
@@ -585,11 +586,11 @@ saveJWTToken(JWT: string) {
                     }
                 });
             } catch (error) {
-                console.error('ERROR at saveJWTToken(): ' + error);
+                this._logger.error('at saveJWTToken(): ' + error);
             }
         })
         .catch(error => {
-            console.error('ERROR at saveJWTToken(): ' + error);
+            this._logger.error('at saveJWTToken(): ' + error);
         });
     });
 }
@@ -603,15 +604,15 @@ async checkJWTToken(jwt: string): Promise<boolean> {
                 await bcrypt.compare(jwt, (setting as any).jwt).then(res => {
                     equalJWT = res;
                 }).catch(err => {
-                    console.log(err);
+                    this._logger.error(err);
                 });
             }
         } catch (error) {
-            console.error('ERROR at saveJWTToken(): ' + error);
+            this._logger.error('at saveJWTToken(): ' + error);
         }
     })
     .catch(error => {
-        console.error('ERROR at saveJWTToken(): ' + error);
+        this._logger.error('at saveJWTToken(): ' + error);
     });
     return await equalJWT;
 }
@@ -655,11 +656,11 @@ async checkJWTToken(jwt: string): Promise<boolean> {
                                 }
                             });
                         } catch (error) {
-                            console.error('ERROR at saveLocation(): ' + error);
+                            this._logger.error('at saveLocation(): ' + error);
                         }
                     })
                     .catch(error => {
-                        console.error('ERROR at saveLocation(): ' + error);
+                        this._logger.error('at saveLocation(): ' + error);
                     });
                 }
             });
@@ -677,11 +678,11 @@ async checkJWTToken(jwt: string): Promise<boolean> {
                     const locationData = (realm.objectForPrimaryKey('Setting', 0) as any);
                     locations = { locations: locationData.locations, apikey: locationData.apikey }
                 } catch (error) {
-                    console.error('ERROR at getLocations(): ' + error);
+                    this._logger.error('at getLocations(): ' + error);
                 }
             })
             .catch(error => {
-                console.error('ERROR at getLocations(): ' + error);
+                this._logger.error('at getLocations(): ' + error);
             });
             return locations;
         }
