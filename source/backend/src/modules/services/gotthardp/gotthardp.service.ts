@@ -1,5 +1,5 @@
 import { RealmService } from '../realm/realm.service';
-import { Component } from '@nestjs/common';
+import { Component, Inject, forwardRef } from '@nestjs/common';
 import { Gateway } from '../../interfaces/gateway.interface';
 import { Device } from '../../interfaces/device.interface';
 import * as request from 'request';
@@ -23,7 +23,8 @@ const downlinkOptions = gotthardpConfig.downlink;
 @Component()
 export class GotthardpService {
 
-    constructor(private readonly _realm: RealmService,
+    constructor(@Inject(forwardRef(() => RealmService))
+                private readonly _realm: RealmService,
                 private readonly _logger: LoggerService
     ) {}
 
@@ -197,8 +198,8 @@ export class GotthardpService {
 
     /**
      * @name removeDevice
-     * @param mac
-     * @description removes the gateway from the gotthardp server
+     * @param deveui
+     * @description removes the device from the gotthardp server
      */
     async removeDevice(deveui: string) {
         const options = Object.assign({}, loRaServerOptions);
@@ -209,6 +210,23 @@ export class GotthardpService {
             this._logger.success('removeDevice(): device removed')
         } catch (err) {
             this._logger.error('at removeDevice(): ' + err);
+            return err;
+        }
+    }
+
+    /**
+     * @name removeNode
+     * @param mac
+     * @description removes the node (active device) from the gotthardp server
+     */
+    async removeNode(devaddr: string) {
+        const options = Object.assign({}, loRaServerOptions);
+        options.uri += 'api/nodes/' + devaddr;
+        options.method = 'DELETE';
+        try {
+            await rp(options);
+            this._logger.success('removeNode(): device removed')
+        } catch (err) {
             return err;
         }
     }

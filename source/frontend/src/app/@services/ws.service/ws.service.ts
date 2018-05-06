@@ -20,10 +20,19 @@ export class WsService {
 
   getData(deveui: string, min, max): Observable<any> {
 
-    this.dataSocket = socketIo({ 'path': '/ws' });
+    this.dataSocket = socketIo({
+      path: '/wss',
+      reconnection: true,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax : 5000,
+      reconnectionAttempts: Infinity
+    });
 
     const jwt = this._authentication.getToken();
-    this.dataSocket.emit('requestData', {jwt, data: { deveui, start: min, end: max }});
+
+    this.dataSocket.on('connect', () => {
+      this.dataSocket.emit('requestData', {jwt, data: { deveui, start: min, end: max }});
+    });
 
     this.dataSocket.on('responsetData', (res) => {
       this.dataObserver.next(res);
@@ -36,10 +45,19 @@ export class WsService {
 
   getEvents(): Observable<any> {
 
-    this.eventsSocket = socketIo({ 'path': '/ws' });
+    this.eventsSocket = socketIo({
+      path: '/wss',
+      reconnection: true,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax : 5000,
+      reconnectionAttempts: Infinity
+    });
 
     const jwt = this._authentication.getToken();
-    this.eventsSocket.emit('requestEvents', {jwt});
+
+    this.eventsSocket.on('connect', () => {
+      this.eventsSocket.emit('requestEvents', {jwt});
+    });
 
     this.eventsSocket.on('responseEvents', (res) => {
       this.eventsObserver.next(res);
@@ -48,15 +66,6 @@ export class WsService {
     return new Observable(observer => {
       this.eventsObserver = observer;
     });
-  }
-
-  private handleError(error) {
-    console.error('server error:', error);
-    if (error.error instanceof Error) {
-        const errMessage = error.error.message;
-        return Observable.throw(errMessage);
-    }
-    return Observable.throw(error || 'Socket.io server error');
   }
 
   disconnect() {

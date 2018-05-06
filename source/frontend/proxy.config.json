@@ -19,7 +19,7 @@
       "changeOrigin": true,
       "logLevel": "debug"
     },
-     "/ws/*": {
+     "/wss/*": {
       "target": "https://localhost:3000/socket.io/",
       "changeOrigin": true,
       "secure": false,

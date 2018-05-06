@@ -46,6 +46,7 @@ export class CardComponent implements OnInit, OnChanges, OnDestroy {
     connectWs(min, max) {
       this.sub = this._ws.getData(this.deveui, min, max)
       .subscribe(res => {
+        console.log(res)
         if (res.date !== undefined && res.data !== undefined) {
           this.data = res;
           const _data = JSON.parse(JSON.stringify(this.data));

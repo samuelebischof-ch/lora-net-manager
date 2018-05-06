@@ -24,6 +24,7 @@ import * as configJSON from '../../../../../config.json';
 import { Config } from '../../interfaces/config.interface';
 import { LoggerService } from '../logger/logger.service';
 import { EventService } from '../events/events.service';
+import { GotthardpService } from '../gotthardp/gotthardp.service';
 
 const config: Config = configJSON as any;
 
@@ -32,6 +33,8 @@ export class RealmService {
     
     constructor(@Inject(forwardRef(() => EventService))
                 private readonly _events: EventService,
+                @Inject(forwardRef(() => GotthardpService))
+                private readonly _gotthardp: GotthardpService,
                 private readonly _logger: LoggerService) {}
     
     /**
@@ -258,21 +261,19 @@ export class RealmService {
         async removeDevice(deveui: string) {
             this.OpenedRealm.then(realm => {
                 try {
+                    let device: DeviceDB = realm.objectForPrimaryKey('Device', deveui)
+                    if (device.devaddr !== null && device.devaddr !== undefined) this._gotthardp.removeNode(device.devaddr);
                     realm.write(() => {
-
-                        realm.delete((realm.objectForPrimaryKey('Device', deveui) as DeviceDB).data_sheet.sensor_temperature);
-                        realm.delete((realm.objectForPrimaryKey('Device', deveui) as DeviceDB).data_sheet.sensor_pressure);
-                        realm.delete((realm.objectForPrimaryKey('Device', deveui) as DeviceDB).data_sheet.sensor_humidity);
-                        realm.delete((realm.objectForPrimaryKey('Device', deveui) as DeviceDB).data_sheet.sensor_moisture);
-                        realm.delete((realm.objectForPrimaryKey('Device', deveui) as DeviceDB).data_sheet.sensor_door);
-                        realm.delete((realm.objectForPrimaryKey('Device', deveui) as DeviceDB).data_sheet.sensor_movement);
-                        realm.delete((realm.objectForPrimaryKey('Device', deveui) as DeviceDB).data_sheet.sensor_light);
-
-                        realm.delete((realm.objectForPrimaryKey('Device', deveui) as DeviceDB).data_sheet);
-
-                        realm.delete((realm.objectForPrimaryKey('Device', deveui) as DeviceDB).sensor_readings);
-
-                        realm.delete(realm.objectForPrimaryKey('Device', deveui));
+                        const dataSheet = (realm.objectForPrimaryKey('Device', deveui) as DeviceDB).data_sheet;
+                        for (const key in dataSheet) {
+                            if (dataSheet.hasOwnProperty(key)) {
+                                const element = dataSheet[key];
+                                realm.delete(element);
+                            }
+                        }
+                        realm.delete(device.data_sheet);
+                        realm.delete(device.sensor_readings);
+                        realm.delete(device);
                     });
                 } catch (error) {
                     this._logger.error('at removeDevice(): ' + error);
