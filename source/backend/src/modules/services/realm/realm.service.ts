@@ -12,6 +12,7 @@ import {
     LogSchema,
     SensorSchema,
     DataSheetSchema,
+    SensorDataSheetSchema,
     RoomSchema,
     SettingSchema,
 } from '../../schemas/nodes/nodes.schema';
@@ -40,8 +41,9 @@ export class RealmService {
                 DeviceSchema,
                 LogSchema,
                 SensorSchema,
-                RoomSchema,
                 DataSheetSchema,
+                SensorDataSheetSchema,
+                RoomSchema,
                 SettingSchema,
             ], 
             schemaVersion: 0,
@@ -115,44 +117,44 @@ export class RealmService {
         * @description creates the node in the LoRaServer
         */
         async createDevice( dev: DeviceDB ): Promise<boolean> {
-            let created = true;
+            let created = false;
             await this.OpenedRealm.then(realm => {
-                try {
-                    realm.write(() => {
-                        let room = realm.objectForPrimaryKey('Room', dev.deveui);
-                        if (!room) {
-                            room = {
-                                roomName: dev.room.roomName,
+                const device = realm.objectForPrimaryKey('Device', dev.deveui);
+                if (device === undefined) {
+                    created = true;
+                    try {
+                        realm.write(() => {
+                            let room = realm.objectForPrimaryKey('Room', dev.deveui);
+                            if (!room) {
+                                room = {
+                                    roomName: dev.room.roomName,
+                                }
                             }
-                        }
-                        
-                        const node = realm.create('Device', {
-                            deveui: dev.deveui,
-                            devaddr: dev.devaddr,
-                            model: dev.model,
-                            desc: dev.desc,
-                            battery: (dev.battery === undefined) ? 0 : dev.battery,
-                            last_seen: new Date(Date.now()),
-                            has_temperature: dev.has_temperature,
-                            has_pressure: dev.has_pressure,
-                            has_humidity: dev.has_humidity,
-                            has_moisture: dev.has_moisture,
-                            has_movement: dev.has_movement,
-                            has_door_sensor: dev.has_door_sensor,
-                            has_light_sensor: dev.has_light_sensor,
-                            sensor_readings: [],
+                            
+                            const node = realm.create('Device', {
+                                deveui: dev.deveui,
+                                devaddr: dev.devaddr,
+                                model: dev.model,
+                                desc: dev.desc,
+                                battery: (dev.battery === undefined) ? 0 : dev.battery,
+                                last_seen: new Date(Date.now()),
+                                data_sheet: dev.data_sheet,
+                            });
+    
+                            // TODO: check
+                            if (room) {
+                                (node as any).room = room;
+                            } else {
+                                (node as any).room = {
+                                    roomName: dev.room.roomName,
+                                }
+                            }
+    
                         });
-                        if (room) {
-                            node.room = room;
-                        } else {
-                            node.room = {
-                                roomName: dev.room.roomName,
-                            }
-                        }
-                    });
-                } catch (error) {
-                    console.error('ERROR at createDevice(): ' + error);
-                    created = false;
+                    } catch (error) {
+                        console.error('ERROR at createDevice(): ' + error);
+                        created = false;
+                    }
                 }
             })
             .catch(error => {
@@ -229,10 +231,11 @@ export class RealmService {
         * @returns the room of a given device
         */
         async getDeviceRoom(deveui: string) {
-            let roomName;
+            let roomName = '';
             await this.OpenedRealm.then(realm => {
                 try {
-                    roomName = (realm.objectForPrimaryKey('Device', deveui) as DeviceDB).room.roomName
+                    const device: DeviceDB = realm.objectForPrimaryKey('Device', deveui) as DeviceDB
+                    if (device.room !== undefined) { roomName = device.room.roomName; }
                 } catch (error) {
                     console.error('ERROR at getDeviceRoom(): ' + error);
                 }
@@ -252,7 +255,19 @@ export class RealmService {
             this.OpenedRealm.then(realm => {
                 try {
                     realm.write(() => {
+
+                        realm.delete((realm.objectForPrimaryKey('Device', deveui) as DeviceDB).data_sheet.sensor_temperature);
+                        realm.delete((realm.objectForPrimaryKey('Device', deveui) as DeviceDB).data_sheet.sensor_pressure);
+                        realm.delete((realm.objectForPrimaryKey('Device', deveui) as DeviceDB).data_sheet.sensor_humidity);
+                        realm.delete((realm.objectForPrimaryKey('Device', deveui) as DeviceDB).data_sheet.sensor_moisture);
+                        realm.delete((realm.objectForPrimaryKey('Device', deveui) as DeviceDB).data_sheet.sensor_door);
+                        realm.delete((realm.objectForPrimaryKey('Device', deveui) as DeviceDB).data_sheet.sensor_movement);
+                        realm.delete((realm.objectForPrimaryKey('Device', deveui) as DeviceDB).data_sheet.sensor_light);
+
+                        realm.delete((realm.objectForPrimaryKey('Device', deveui) as DeviceDB).data_sheet);
+
                         realm.delete((realm.objectForPrimaryKey('Device', deveui) as DeviceDB).sensor_readings);
+
                         realm.delete(realm.objectForPrimaryKey('Device', deveui));
                     });
                 } catch (error) {
@@ -276,18 +291,19 @@ export class RealmService {
                 try {
                     const node: DeviceDB = realm.objectForPrimaryKey('Device', data.deveui);
                     realm.write(() => {
-                        node.last_seen = new Date(Date.now());
-                        // node.battery = data.battery;
+                        node.last_seen = data.datetime;
+                        if (data.battery !== undefined) { node.battery = data.battery; }
                         // TODO complete list
-                        const value_temperature = node.has_temperature ? Number(data.field1.toFixed(1)) : null;
-                        const value_pressure = node.has_pressure ? Number(data.field2.toFixed(1)) : null;
-                        const value_humidity = node.has_humidity ? Number(data.field3.toFixed(0)) : null;
-                        const value_moisture = node.has_moisture ? Number(data.field4.toFixed(0)) : null;
-                        const value_movement = node.has_movement ? data.field5 : null;
-                        const value_door = node.has_door_sensor ? data.field6 : null;
-                        const value_light = node.has_light_sensor ? data.field7 : null;
+                        const value_temperature = node.data_sheet.sensor_temperature.has_sensor ? Number(data.field1.toFixed(1)) : null;
+                        const value_pressure = node.data_sheet.sensor_pressure.has_sensor ? Number(data.field2.toFixed(1)) : null;
+                        const value_humidity = node.data_sheet.sensor_humidity.has_sensor ? Number(data.field3.toFixed(0)) : null;
+                        const value_moisture = node.data_sheet.sensor_moisture.has_sensor ? Number(data.field4.toFixed(0)) : null;
+                        const value_movement = node.data_sheet.sensor_movement.has_sensor ? data.field5 : null;
+                        const value_door = node.data_sheet.sensor_door.has_sensor ? data.field6 : null;
+                        const value_light = node.data_sheet.sensor_light.has_sensor ? data.field7 : null;
+                        
                         node.sensor_readings.push({
-                            read: new Date(Date.now()),
+                            read: data.datetime,
                             value_temperature,
                             value_pressure,
                             value_humidity,
@@ -321,7 +337,7 @@ export class RealmService {
                     .addListener((last_seen, changes) => {
                         // Update UI in response to modified objects
                         changes.modifications.forEach((index) => {
-                            let deveui = realm.objects('Device')[index].deveui;
+                            let deveui = (realm.objects('Device') as any)[index].deveui;
                             observer.next(deveui);
                         });
                     });
@@ -359,10 +375,12 @@ export class RealmService {
             let devDescription = '';
             
             let DBreadings;
+            let DataSheet: DeviceDB["data_sheet"];
             
             await this.OpenedRealm.then(realm => {
                 try { // different range cases
                     const device = realm.objectForPrimaryKey('Device', body.deveui)
+                    DataSheet = (device as DeviceDB).data_sheet;
                     devDescription = (device as DeviceDB).desc;
                     if (body.start !== undefined && body.end === undefined) {
                         DBreadings = (device as DeviceDB).sensor_readings.filtered('read >= $0', new Date(Number(body.start)));
@@ -406,11 +424,11 @@ export class RealmService {
             let unitHumidity;
             let unitMoisture;
             
-            if (DBreadings[0]) {
-                unitTemperature = (DBreadings[0] as SensorDB).unit_temperature;
-                unitPressure = (DBreadings[0] as SensorDB).unit_pressure;
-                unitHumidity = (DBreadings[0] as SensorDB).unit_humidity;
-                unitMoisture = (DBreadings[0] as SensorDB).unit_moisture;;
+            if (DataSheet !== undefined) {
+                unitTemperature = DataSheet.sensor_temperature.unit;
+                unitPressure = DataSheet.sensor_pressure.unit;
+                unitHumidity = DataSheet.sensor_humidity.unit;
+                unitMoisture = DataSheet.sensor_moisture.unit;
             }
             
             for (let i in DBreadings) {
@@ -452,13 +470,13 @@ export class RealmService {
                     let node: DeviceDB = realm.objectForPrimaryKey('Device', deveui);
                     let lastReading = node.sensor_readings.filtered('read = $0', (node as DeviceDB).last_seen)[0] as SensorDB;
                     // TODO: finish list
-                    let temperature = node.has_temperature ? lastReading.value_temperature : null;
-                    let pressure = node.has_pressure ? lastReading.value_pressure : null;
-                    let humidity = node.has_humidity ? lastReading.value_humidity : null;
-                    let moisture = node.has_moisture ? lastReading.value_moisture : null;
-                    let movement = node.has_movement ? lastReading.value_movement : null;
-                    let door = node.has_door_sensor ? lastReading.value_door : null;
-                    let light = node.has_light_sensor ? lastReading.value_light : null;
+                    let temperature = node.data_sheet.sensor_temperature.has_sensor ? lastReading.value_temperature : null;
+                    let pressure = node.data_sheet.sensor_pressure.has_sensor ? lastReading.value_pressure : null;
+                    let humidity = node.data_sheet.sensor_humidity.has_sensor ? lastReading.value_humidity : null;
+                    let moisture = node.data_sheet.sensor_moisture.has_sensor ? lastReading.value_moisture : null;
+                    let movement = node.data_sheet.sensor_movement.has_sensor ? lastReading.value_movement : null;
+                    let door = node.data_sheet.sensor_door.has_sensor ? lastReading.value_door : null;
+                    let light = node.data_sheet.sensor_light.has_sensor ? lastReading.value_light : null;
                     return {
                         newDate: (node).last_seen,
                         newData: [
@@ -557,11 +575,7 @@ export class RealmService {
 /***********************************meteo*************************************/
 
 saveJWTToken(JWT: string) {
-    console.log('here')
-    console.log(JWT);
     bcrypt.hash(JWT, 10, (err, hash) => {
-        console.log('Hash')
-        console.log(hash)
         this.OpenedRealm.then(realm => {
             try {
                 realm.write(() => {
@@ -585,7 +599,7 @@ async checkJWTToken(jwt: string): Promise<boolean> {
     await this.OpenedRealm.then(async realm => {
        try {
             const setting = realm.objectForPrimaryKey('Setting', 0);
-            if (setting && setting !== undefined) {
+            if (setting && setting !== undefined && (setting as any).jwt !== undefined ) {
                 await bcrypt.compare(jwt, (setting as any).jwt).then(res => {
                     equalJWT = res;
                 }).catch(err => {
@@ -622,14 +636,12 @@ async checkJWTToken(jwt: string): Promise<boolean> {
                     rssi: 0,
                     last_seen: new Date(Date.now()),
                     model: '',
-                    has_temperature: true,
-                    has_pressure: true,
-                    has_humidity: true,
-                    has_moisture: false,
-                    has_movement: false,
-                    has_door_sensor: false,
-                    has_light_sensor: false
-                } as any
+                    data_sheet: {
+                        sensor_temperature: { has_sensor: true },
+                        sensor_pressure: { has_sensor: true },
+                        sensor_humidity: { has_sensor: true },
+                    }
+                } as DeviceDB
             ).then(async response => {
                 if (response) {
                     // Settings object

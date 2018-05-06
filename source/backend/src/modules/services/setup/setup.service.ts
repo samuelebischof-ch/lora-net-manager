@@ -59,7 +59,7 @@ export class SetupService {
                 try {
                     // checks if LoRaServer is installed
                     const { stdout, stderr } = await exec('docker start lorawan');
-                    console.log('SUCCESS: DOCKER running');
+                    console.log('SUCCESS: Docker running');
                 } catch (error) {
                     const dockerInstalled = await this.checkDockerInstalled();
                     if (dockerInstalled) {
@@ -67,8 +67,8 @@ export class SetupService {
                         console.error('WAIT: LoRaWAN server not installed, installing...');
                         await this.installGotthardp()
                     } else {
-                        // installs DOCKER
-                        console.error('WAIT: DOCKER not running, installing...');
+                        // installs Docker
+                        console.error('WAIT: Docker not running, installing...');
                         await this.installDocker();
                         // tries again if everything works
                         await this.startLoRaServer();
@@ -102,7 +102,7 @@ export class SetupService {
                 case 'darwin':
                 try {
                     const { stdout, stderr } = await exec('cd ./docker && ./install_docker_mac.sh');
-                    if (stdout) { console.log('SUCCESS: DOCKER ready in /Application folder'); }
+                    if (stdout) { console.log('SUCCESS: Docker ready in /Application folder'); }
                     await this.promptIfDockerInstalled();
                 } catch (error) {
                     console.log('ERROR: ' + error);
@@ -112,7 +112,7 @@ export class SetupService {
                 case 'linux':
                 try {
                     const { stdout, stderr } = await exec('cd ./docker && ./install_docker_linux.sh');
-                    if (stdout) { console.log('SUCCESS: DOCKER installed'); }
+                    if (stdout) { console.log('SUCCESS: Docker installed'); }
                 } catch (error) {
                     console.log('ERROR: ' + error);
                 }
@@ -145,7 +145,7 @@ export class SetupService {
             const exec = util.promisify(execIn.exec);
             try {
                 const { stdout, stderr } = await exec('cd ./docker && ./install_gotthardp.sh');
-                console.log('SUCCESS: DOCKER installed');
+                console.log('SUCCESS: Docker installed');
                 return true;
             } catch (error) {
                 console.log('ERROR: ' + error);
@@ -161,10 +161,10 @@ export class SetupService {
         async pingLoRaServer() {
             const pingResponse = await this._gotthardp.pingGotthardp();
             if (pingResponse) { 
-                console.log('SUCCESS: LORASERVER started'); 
+                console.log('SUCCESS: LoRaServer started'); 
                 return true;
             } else {
-                console.error('ERROR: LORASERVER not started');
+                console.error('ERROR: LoRaServer not started');
                 return false;
             }
         }

@@ -34,13 +34,15 @@ export class DevicesComponent implements OnInit {
             model: this.model,
             deveui: this.deveui,
             devaddr: this.devaddr,
-            has_temperature: this.has_temperature,
-            has_pressure: this.has_pressure,
-            has_humidity: this.has_humidity,
-            has_moisture: this.has_moisture,
-            has_movement: this.has_movement,
-            has_door_sensor: this.has_door_sensor,
-            has_light_sensor: this.has_light_sensor
+            data_sheet: {
+              sensor_temperature: { has_sensor: this.has_temperature },
+              sensor_pressure: { has_sensor: this.has_pressure },
+              sensor_humidity: { has_sensor: this.has_humidity },
+              sensor_moisture: { has_sensor: this.has_moisture },
+              sensor_movement: { has_sensor: this.has_movement },
+              sensor_door_sensor: { has_sensor: this.has_door_sensor },
+              sensor_light_sensor: { has_sensor: this.has_light_sensor },
+            },
           };
           this._api.addDevice(options).subscribe(res => this.getDevices());
           this.snackBar.open('Device ' + this.deveui + ' added', 'Close', {

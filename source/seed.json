@@ -14,13 +14,11 @@
       "battery": 23,
       "rssi": 23,
       "model": "esp32",
-      "has_temperature": true,
-      "has_pressure": true,
-      "has_humidity": true,
-      "has_moisture": false,
-      "has_movement": false,
-      "has_door_sensor": false,
-      "has_light_sensor": false
+      "data_sheet": {
+        "sensor_temperature": { "has_sensor": true, "unit": "˚C" },
+        "sensor_pressure": { "has_sensor": true, "unit": "hPa" },
+        "sensor_humidity": { "has_sensor": true, "unit": "%" }
+      }
     },
     {
       "deveui": "007C411FF7223001",
@@ -34,13 +32,11 @@
       "battery": 23,
       "rssi": 23,
       "model": "esp32",
-      "has_temperature": true,
-      "has_pressure": true,
-      "has_humidity": true,
-      "has_moisture": false,
-      "has_movement": false,
-      "has_door_sensor": false,
-      "has_light_sensor": false
+      "data_sheet": {
+        "sensor_temperature": { "has_sensor": true, "unit": "˚C" },
+        "sensor_pressure": { "has_sensor": true, "unit": "hPa" },
+        "sensor_humidity": { "has_sensor": true, "unit": "%" }
+      }
     },
     {
       "deveui": "007C411FF7223002",
@@ -54,13 +50,11 @@
       "battery": 23,
       "rssi": 23,
       "model": "esp32",
-      "has_temperature": true,
-      "has_pressure": true,
-      "has_humidity": true,
-      "has_moisture": false,
-      "has_movement": false,
-      "has_door_sensor": false,
-      "has_light_sensor": false
+      "data_sheet": {
+        "sensor_temperature": { "has_sensor": true, "unit": "˚C" },
+        "sensor_pressure": { "has_sensor": true, "unit": "hPa" },
+        "sensor_humidity": { "has_sensor": true, "unit": "%" }
+      }
     },
     {
       "deveui": "007C411FF7223003",
@@ -74,13 +68,9 @@
       "battery": 23,
       "rssi": 23,
       "model": "esp32",
-      "has_temperature": false,
-      "has_pressure": false,
-      "has_humidity": false,
-      "has_moisture": true,
-      "has_movement": false,
-      "has_door_sensor": false,
-      "has_light_sensor": false
+      "data_sheet": {
+        "sensor_moisture": { "has_sensor": true, "unit": "%" }
+      }
     }
   ],
   "locations": [

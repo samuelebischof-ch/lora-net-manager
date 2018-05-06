@@ -42,7 +42,7 @@ export class MeteoService {
         const meteo = await this.getMeteo();
         meteo.forEach(element => {
             const msg = {} as DataWS;
-            msg.battery = 0;
+            msg.datetime = new Date(Date.now());
             msg.deveui = element.name;
             msg.field1 = element.main.temp;
             msg.field2 = element.main.pressure;

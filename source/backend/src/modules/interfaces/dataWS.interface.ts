@@ -1,11 +1,11 @@
-// TODO create list for fields
+// TODO: create list for fields
 
 /**
  * deveui:      device eui as string
  * devaddr:     device address as string
  * battery:     device battery status (0-255)
  * data:        data as Base64
- * datetime:    date
+ * datetime:    Date
  * rssi:        received signal strength indication
  * fields:      CayenneLPP decoded on gottharpd server
  * - field1:    temperature     ˚C
@@ -19,7 +19,7 @@ export interface DataWS {
     devaddr: string;
     battery: number;
     data: string;
-    datetime: string;
+    datetime: Date;
     rssi: number;
     field1: number;
     field2: number;

@@ -68,8 +68,6 @@ export class LoraGateway implements OnGatewayInit {
         }
     }
     
-    
-    
     handleConnection() {
         console.log('SUCCESS: frontend requested data');
     }

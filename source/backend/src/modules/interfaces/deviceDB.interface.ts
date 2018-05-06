@@ -11,12 +11,26 @@ export interface DeviceDB {
     rssi: any;
     last_seen: Date;
     log: Array<any>;
-    has_temperature: boolean;
-    has_pressure: boolean;
-    has_humidity: boolean;
-    has_moisture: boolean;
-    has_movement: boolean;
-    has_door_sensor: boolean;
-    has_light_sensor: boolean;
+    data_sheet: DataSheet;
     sensor_readings: any;
+}
+
+interface DataSheet {
+    sensor_temperature: SensorDataSheet;
+    sensor_pressure: SensorDataSheet;
+    sensor_humidity: SensorDataSheet;
+    sensor_moisture: SensorDataSheet;
+    sensor_movement: SensorDataSheet;
+    sensor_door: SensorDataSheet;
+    sensor_light: SensorDataSheet;
+}
+
+interface SensorDataSheet {
+    has_sensor: boolean,
+    permitted_min: number,
+    permitted_max: number,
+    unit: string,
+    resolution: number,
+    sensitivity: number,
+    description: string,
 }
