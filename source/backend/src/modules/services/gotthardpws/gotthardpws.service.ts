@@ -9,6 +9,7 @@ import { EventsWS } from '../../interfaces/eventsWS.interface';
 import { MeteoService } from '../meteo/meteo.service';
 import { Config } from '../../interfaces/config.interface';
 import { LoggerService } from '../logger/logger.service';
+import { EventService } from '../events/events.service';
 
 const config: Config = configJSON as any;
 const gotthardpws = config.gotthardpws;
@@ -18,12 +19,11 @@ const gotthardpevtws = config.gotthardpevtws;
 export class GotthardpwsService {
     constructor(private readonly _realm: RealmService,
                 private readonly _meteo: MeteoService,
+                private readonly _events: EventService,
                 private readonly _logger: LoggerService) {}
     
     private uplinkWS;
     private eventsWS;
-    
-    public events$: Subject<EventsWS> = new Subject();
     
     /**
     * @name connect
@@ -142,8 +142,8 @@ export class GotthardpwsService {
         function onMessage(evt) {
             self._logger.success('LoRaServer events WS message');
             const msg: EventsWS = JSON.parse(evt.data);
-            self._realm.updateDeviceStatus(msg);
-            self.events$.next(msg);
+            msg.datetime = new Date(msg.datetime);
+            self._events.pushEvent(msg);
         }
         
         /**

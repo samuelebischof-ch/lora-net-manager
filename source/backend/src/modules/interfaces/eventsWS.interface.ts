@@ -1,6 +1,6 @@
 export interface EventsWS {
   app: string;
-  datetime: string;
+  datetime: Date;
   devaddr: string;
   deveui: string;
   event: string;

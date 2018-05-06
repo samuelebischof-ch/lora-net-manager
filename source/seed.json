@@ -15,7 +15,7 @@
       "rssi": 23,
       "model": "esp32",
       "data_sheet": {
-        "sensor_temperature": { "has_sensor": true, "unit": "˚C" },
+        "sensor_temperature": { "has_sensor": true, "unit": "˚C", "permitted_min": 50 },
         "sensor_pressure": { "has_sensor": true, "unit": "hPa" },
         "sensor_humidity": { "has_sensor": true, "unit": "%" }
       }

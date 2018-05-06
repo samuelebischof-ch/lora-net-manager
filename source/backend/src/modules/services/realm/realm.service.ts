@@ -1,9 +1,9 @@
 import * as Realm from 'realm';
 import * as crypto from 'crypto';
 import * as bcrypt from 'bcrypt';
-import { Component } from '@nestjs/common';
+import { Component, Inject, forwardRef } from '@nestjs/common';
 import { DataWS } from '../../interfaces/dataWS.interface';
-import { DeviceDB } from '../../interfaces/deviceDB.interface';
+import { DeviceDB, DataSheet, SensorDataSheet } from '../../interfaces/deviceDB.interface';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { SensorDB } from '../../interfaces/sensorDB.interface';
@@ -23,13 +23,16 @@ import { subscribeOn } from 'rxjs/operator/subscribeOn';
 import * as configJSON from '../../../../../config.json';
 import { Config } from '../../interfaces/config.interface';
 import { LoggerService } from '../logger/logger.service';
+import { EventService } from '../events/events.service';
 
 const config: Config = configJSON as any;
 
 @Component()
 export class RealmService {
     
-    constructor(private readonly _logger: LoggerService) {}
+    constructor(@Inject(forwardRef(() => EventService))
+                private readonly _events: EventService,
+                private readonly _logger: LoggerService) {}
     
     /**
     * @name OpenedRealm
@@ -236,7 +239,7 @@ export class RealmService {
             await this.OpenedRealm.then(realm => {
                 try {
                     const device: DeviceDB = realm.objectForPrimaryKey('Device', deveui) as DeviceDB
-                    if (device.room !== undefined) { roomName = device.room.roomName; }
+                    if (device !== undefined && device.room !== undefined) { roomName = device.room.roomName; }
                 } catch (error) {
                     this._logger.error('at getDeviceRoom(): ' + error);
                 }
@@ -288,6 +291,7 @@ export class RealmService {
         * @description stores the sensor data received from LoRaServer
         */
         async storeSensorData(data: DataWS) {
+            this.checkSensorData(data);
             this.OpenedRealm.then(realm => {
                 try {
                     const node: DeviceDB = realm.objectForPrimaryKey('Device', data.deveui);
@@ -321,6 +325,41 @@ export class RealmService {
             })
             .catch(error => {
                 this._logger.error('2 at storeSensorData(): ' + error);
+            });
+        }
+
+        /**
+         * @name checkSensorData
+         * @param data
+         * @description checks if some readings are out of bounds,
+         * sends a notification to the frontend and logs to the DB
+         */
+        async checkSensorData(data: DataWS) {
+            this.OpenedRealm.then(realm => {
+                let counter = 1;
+                const dataSheet: DataSheet = (realm.objectForPrimaryKey('Device', data.deveui) as any).data_sheet;
+                for (const key in dataSheet) {
+                    if (dataSheet.hasOwnProperty(key)) {
+                        const sensorSheet: SensorDataSheet = dataSheet[key];
+                        const field = data['field' + counter];
+                        if (field !== undefined) {
+                            if (field < sensorSheet.permitted_min || field > sensorSheet.permitted_max) {
+                                const msg: EventsWS = {
+                                    app: data.app,
+                                    datetime: new Date(data.datetime),
+                                    devaddr: data.devaddr,
+                                    deveui: data.deveui,
+                                    event: (field < sensorSheet.permitted_min) ? 'WARNING: ' + key + ' exceeded minimum permitted value' : 'WARNING: ' + key + ' exceeded maximum permitted value',
+                                }
+                                this._events.pushEvent(msg);
+                            }
+                        }
+                        counter++;
+                    }
+                }
+            })
+            .catch(error => {
+                this._logger.error('at checkSensorData(): ' + error);
             });
         }
         
@@ -451,7 +490,6 @@ export class RealmService {
                 { label: 'Pressure', unit: unitPressure, data: pressure, deveui: body.deveui, desc: devDescription },
                 { label: 'Humidity', unit: unitHumidity, data: humidity, deveui: body.deveui, desc: devDescription },
                 { label: 'Moisture', unit: unitMoisture, data: moisture, deveui: body.deveui, desc: devDescription },
-                // TODO: check behaviour
                 { label: 'Movement', unit: '', data: movement, deveui: body.deveui, desc: devDescription },
                 { label: 'Door', unit: '', data: door, deveui: body.deveui, desc: devDescription },
                 { label: 'Light', unit: '', data: light, deveui: body.deveui, desc: devDescription },
@@ -471,15 +509,15 @@ export class RealmService {
                     let node: DeviceDB = realm.objectForPrimaryKey('Device', deveui);
                     let lastReading = node.sensor_readings.filtered('read = $0', (node as DeviceDB).last_seen)[0] as SensorDB;
                     // TODO: finish list
-                    let temperature = node.data_sheet.sensor_temperature.has_sensor ? lastReading.value_temperature : null;
-                    let pressure = node.data_sheet.sensor_pressure.has_sensor ? lastReading.value_pressure : null;
-                    let humidity = node.data_sheet.sensor_humidity.has_sensor ? lastReading.value_humidity : null;
-                    let moisture = node.data_sheet.sensor_moisture.has_sensor ? lastReading.value_moisture : null;
-                    let movement = node.data_sheet.sensor_movement.has_sensor ? lastReading.value_movement : null;
-                    let door = node.data_sheet.sensor_door.has_sensor ? lastReading.value_door : null;
-                    let light = node.data_sheet.sensor_light.has_sensor ? lastReading.value_light : null;
+                    let temperature = (lastReading !== undefined && node.data_sheet.sensor_temperature.has_sensor) ? lastReading.value_temperature : null;
+                    let pressure = (lastReading !== undefined && node.data_sheet.sensor_pressure.has_sensor) ? lastReading.value_pressure : null;
+                    let humidity = (lastReading !== undefined && node.data_sheet.sensor_humidity.has_sensor) ? lastReading.value_humidity : null;
+                    let moisture = (lastReading !== undefined && node.data_sheet.sensor_moisture.has_sensor) ? lastReading.value_moisture : null;
+                    let movement = (lastReading !== undefined && node.data_sheet.sensor_movement.has_sensor) ? lastReading.value_movement : null;
+                    let door = (lastReading !== undefined && node.data_sheet.sensor_door.has_sensor) ? lastReading.value_door : null;
+                    let light = (lastReading !== undefined && node.data_sheet.sensor_light.has_sensor) ? lastReading.value_light : null;
                     return {
-                        newDate: (node).last_seen,
+                        newDate: node.last_seen,
                         newData: [
                             {label: 'Temperature', data: temperature},
                             {label: 'Pressure', data: pressure},

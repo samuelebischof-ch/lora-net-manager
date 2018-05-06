@@ -8,11 +8,10 @@ import {
     WsException,
 } from '@nestjs/websockets';
 import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
 import { Subscription } from 'rxjs/Subscription';
 import { RealmService } from '../services/realm/realm.service';
-import { GotthardpwsService } from '../services/gotthardpws/gotthardpws.service';
 import { LoggerService } from '../services/logger/logger.service';
+import { EventService } from '../services/events/events.service';
 
 @WebSocketGateway()
 export class LoraGateway implements OnGatewayInit {
@@ -21,7 +20,7 @@ export class LoraGateway implements OnGatewayInit {
     private observable: Observable<string>;
     
     constructor(private readonly _realm: RealmService,
-                private readonly _gotthardpws: GotthardpwsService,
+                private readonly _events: EventService,
                 private readonly _logger: LoggerService
     ) {}
     
@@ -62,8 +61,8 @@ export class LoraGateway implements OnGatewayInit {
 
             this._logger.success('frontend connected to ws gateway')
             
-            this._gotthardpws.events$.subscribe(msg => {
-                client.emit('responseEvents', msg);
+            this._events.getEvents().subscribe(event => {
+                client.emit('responseEvents', event);
             })
         } else { // if authenticatio fails
             client.emit('responseEvents', 'WS: Unauthorized');

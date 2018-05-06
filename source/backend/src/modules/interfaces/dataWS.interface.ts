@@ -1,6 +1,7 @@
 // TODO: create list for fields
 
 /**
+ * app:         application name
  * deveui:      device eui as string
  * devaddr:     device address as string
  * battery:     device battery status (0-255)
@@ -15,6 +16,7 @@
  */
 
 export interface DataWS {
+    app: string;
     deveui: string;
     devaddr: string;
     battery: number;

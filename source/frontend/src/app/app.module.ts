@@ -46,6 +46,7 @@ import { SetupComponent } from './@pages/setup/setup.component';
 import { MeteoComponent } from './@components/meteo/meteo.component';
 
 import { AuthenticationService } from './@services/authentication.service/authentication.service';
+import { NotificationsService } from './@services/notifications.service/notifications.service';
 import { ApiService } from './@services/api.service/api.service';
 import { WsService } from './@services/ws.service/ws.service';
 
@@ -111,6 +112,7 @@ import { HourPipe } from './@pipes/hour/hour.pipe';
   ],
   providers: [
     AuthenticationService,
+    NotificationsService,
     ApiService,
     WsService,
     DatePipe,

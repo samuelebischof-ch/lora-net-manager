@@ -15,7 +15,7 @@ export interface DeviceDB {
     sensor_readings: any;
 }
 
-interface DataSheet {
+export interface DataSheet {
     sensor_temperature: SensorDataSheet;
     sensor_pressure: SensorDataSheet;
     sensor_humidity: SensorDataSheet;
@@ -25,7 +25,7 @@ interface DataSheet {
     sensor_light: SensorDataSheet;
 }
 
-interface SensorDataSheet {
+export interface SensorDataSheet {
     has_sensor: boolean,
     permitted_min: number,
     permitted_max: number,
