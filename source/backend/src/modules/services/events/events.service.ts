@@ -1,5 +1,5 @@
 import { Component, Inject, forwardRef } from '@nestjs/common';
-import { Subject } from "rxjs/Rx"
+import { Subject } from 'rxjs/Subject'
 import { LoggerService } from '../logger/logger.service';
 import { RealmService } from '../realm/realm.service';
 

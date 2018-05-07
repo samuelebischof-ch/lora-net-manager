@@ -10,13 +10,14 @@ import { ApiService } from '../../@services/api.service/api.service';
 export class LoginComponent {
 
   constructor(private _api: ApiService,
-              private _authentication: AuthenticationService) { }
+    private _authentication: AuthenticationService
+  ) { }
 
-  private username = '';
-  private secret = '';
-  private loginText = this._authentication.isAuthenticated() ? '(Logged in)' : '';
+  public username = '';
+  public secret = '';
+  public loginText = this._authentication.isAuthenticated() ? '(Logged in)' : '';
 
-  private hide = true;
+  public hide = true;
 
   async clickLogin() {
     await this._api.login(this.username, this.secret);

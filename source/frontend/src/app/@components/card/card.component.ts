@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs/Subscription';
 export class CardComponent implements OnInit, OnChanges, OnDestroy {
 
   private sub: Subscription;
-  private data;
+  public data;
 
   constructor(private _api: ApiService,
     private _ws: WsService) { }

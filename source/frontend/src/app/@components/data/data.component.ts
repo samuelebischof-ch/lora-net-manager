@@ -12,21 +12,22 @@ import { FormControl } from '@angular/forms';
 })
 export class DataComponent implements OnInit, OnChanges {
 
-  private devicesByRoom;
+  public devicesByRoom;
   private apiDataArray: Array<ApiData> = [];
   // Input of child element graph
   private dataArray: Array<DataArrayEl> = [];
   private lineChartLabels: Array<string> = [];
-  private roomList = []; // TODO: remove
 
-  private deveui = '';
+  public roomList = [];
 
-  private barMode = 'determinate';
+  public deveui = '';
 
-  private direction = 'horizontal';
+  public barMode = 'determinate';
 
-  private startDate = new FormControl(new Date(new Date(Date.now()).setUTCHours(0, 0, 0, 0)));
-  private endDate = new FormControl(new Date(new Date(Date.now()).setUTCHours(24, 0, 0, 0)));
+  public direction = 'horizontal';
+
+  public startDate = new FormControl(new Date(new Date(Date.now()).setUTCHours(0, 0, 0, 0)));
+  public endDate = new FormControl(new Date(new Date(Date.now()).setUTCHours(24, 0, 0, 0)));
 
   constructor(private _api: ApiService) { }
 

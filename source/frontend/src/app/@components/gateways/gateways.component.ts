@@ -10,8 +10,9 @@ import { MatSnackBar } from '@angular/material';
 })
 export class GatewaysComponent implements OnInit {
 
-  private gateways: any;
-  private mac = '';
+  public gateways: any;
+  public mac = '';
+  public panelOpenState: boolean;
 
   constructor(private _api: ApiService,
               public snackBar: MatSnackBar) { }

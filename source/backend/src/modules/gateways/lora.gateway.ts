@@ -41,7 +41,7 @@ export class LoraGateway implements OnGatewayInit {
                 this.observable.subscribe(async res => {
                     client.emit('responsetData', await this._realm.getSensorDataLast(request.data.deveui));
                 }, error => {
-                    console.error('ERROR at lora.gateway.ts: ' + error); // TODO remove line
+                    console.error('ERROR at lora.gateway.ts: ' + error);
                 })
             );
         } else { // if authenticatio fails

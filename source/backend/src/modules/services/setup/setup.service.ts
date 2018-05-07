@@ -4,7 +4,7 @@ import * as execIn from 'child_process';
 import * as nodeAsk from 'node-ask';
 import * as os from 'os';
 import * as opn from 'opn';
-import * as seedJSON from '../../../../../seed.json';
+import * as seedJSON from '../../../../seed.json';
 import { error } from 'util';
 import { Component } from '@nestjs/common';
 import { RealmService } from '../realm/realm.service';

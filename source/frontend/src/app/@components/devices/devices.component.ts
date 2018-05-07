@@ -9,19 +9,21 @@ import { MatSnackBar } from '@angular/material';
 })
 export class DevicesComponent implements OnInit {
 
-    private devices: any;
-    private deveui = '';
-    private devaddr = '';
-    private room = '';
-    private desc = '';
-    private model = '';
-    private has_temperature = false;
-    private has_pressure = false;
-    private has_humidity = false;
-    private has_moisture = false;
-    private has_movement = false;
-    private has_door_sensor = false;
-    private has_light_sensor = false;
+    public devices: any;
+    public deveui = '';
+    public devaddr = '';
+    public room = '';
+    public desc = '';
+    public model = '';
+    public has_temperature = false;
+    public has_pressure = false;
+    public has_humidity = false;
+    public has_moisture = false;
+    public has_movement = false;
+    public has_door_sensor = false;
+    public has_light_sensor = false;
+
+    public panelOpenState: boolean;
 
     constructor(private _api: ApiService,
                 public snackBar: MatSnackBar) { }

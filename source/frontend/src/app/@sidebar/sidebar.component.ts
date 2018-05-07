@@ -9,7 +9,7 @@ import { AuthenticationService } from '../@services/authentication.service/authe
 })
 export class SidebarComponent implements OnInit {
 
-  private screenIcon = 'fullscreen';
+  public screenIcon = 'fullscreen';
 
   constructor(private _authentication: AuthenticationService) { }
 

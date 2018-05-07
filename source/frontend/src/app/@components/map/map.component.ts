@@ -19,7 +19,7 @@ export class MapComponent implements OnInit {
   private stage;
   private layer;
   private bgLayer;
-  private modus = 'click'; // click | draw
+  public modus = 'click'; // click | draw
   private backgroundImg = {
     src: '/assets/images/plan.png',
     x: 0,

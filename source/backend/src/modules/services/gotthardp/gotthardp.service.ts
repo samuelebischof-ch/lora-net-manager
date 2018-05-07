@@ -4,7 +4,7 @@ import { Gateway } from '../../interfaces/gateway.interface';
 import { Device } from '../../interfaces/device.interface';
 import * as request from 'request';
 import * as rp from 'request-promise-native';
-import * as configJSON from '../../../../../config.json';
+import * as configJSON from '../../../../config.json';
 import * as gotthardpConfigJSON from '../../../../gotthardp.config.json';
 import { Config } from '../../interfaces/config.interface';
 import { LoggerService } from '../logger/logger.service';

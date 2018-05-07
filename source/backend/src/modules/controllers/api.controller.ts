@@ -99,7 +99,6 @@ export class APIController {
          */
         @Post('device')
         async addDevice(@Body() req) {
-            // TODO check in DB if non existent
             await this._realm.createDevice(req);
             await this._gotthardp.addDevice(req);
         }

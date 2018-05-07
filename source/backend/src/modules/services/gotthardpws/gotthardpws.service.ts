@@ -1,8 +1,8 @@
 import { Component } from '@nestjs/common';
-import { Subject } from "rxjs/Rx"
+import { Subject } from 'rxjs/Subject'
 import { RealmService } from '../realm/realm.service';
 import * as WebSocket from 'ws';
-import * as configJSON from '../../../../../config.json';
+import * as configJSON from '../../../../config.json';
 import * as rnd from 'random-js';
 import { DataWS } from '../../interfaces/dataWS.interface';
 import { EventsWS } from '../../interfaces/eventsWS.interface';

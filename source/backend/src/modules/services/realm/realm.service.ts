@@ -20,7 +20,7 @@ import { EventsWS } from '../../interfaces/eventsWS.interface';
 import { Node } from '../../interfaces/node.interface';
 import { RoomDB } from '../../interfaces/roomDB.interface';
 import { subscribeOn } from 'rxjs/operator/subscribeOn';
-import * as configJSON from '../../../../../config.json';
+import * as configJSON from '../../../../config.json';
 import { Config } from '../../interfaces/config.interface';
 import { LoggerService } from '../logger/logger.service';
 import { EventService } from '../events/events.service';
@@ -148,7 +148,6 @@ export class RealmService {
                                 data_sheet: dev.data_sheet,
                             });
     
-                            // TODO: check
                             if (room) {
                                 (node as any).room = room;
                             } else {
@@ -509,7 +508,7 @@ export class RealmService {
                 try {
                     let node: DeviceDB = realm.objectForPrimaryKey('Device', deveui);
                     let lastReading = node.sensor_readings.filtered('read = $0', (node as DeviceDB).last_seen)[0] as SensorDB;
-                    // TODO: finish list
+                    // TODO: complete list
                     let temperature = (lastReading !== undefined && node.data_sheet.sensor_temperature.has_sensor) ? lastReading.value_temperature : null;
                     let pressure = (lastReading !== undefined && node.data_sheet.sensor_pressure.has_sensor) ? lastReading.value_pressure : null;
                     let humidity = (lastReading !== undefined && node.data_sheet.sensor_humidity.has_sensor) ? lastReading.value_humidity : null;

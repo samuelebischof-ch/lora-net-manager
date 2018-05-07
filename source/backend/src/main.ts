@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { ApplicationModule } from './app.module';
 import { ModulesModule } from './modules/modules.module';
 import { SetupService } from './modules/services/setup/setup.service';
+import * as express from 'express';
+import * as path from 'path';
 import * as util from 'util';
 import * as execIn from 'child_process';
 import * as fs from 'fs';
@@ -30,6 +32,8 @@ async function bootstrap() {
 	const app = await NestFactory.create(ApplicationModule, {
 		httpsOptions,
 	});
+
+	app.use(express.static(path.join(__dirname, 'public')));
 	
 	// run setup function
 	const setup = app.select(ModulesModule).get(SetupService);

@@ -21,7 +21,7 @@ export class WsService {
   getData(deveui: string, min, max): Observable<any> {
 
     this.dataSocket = socketIo({
-      path: '/wss',
+      path: '/socket.io',
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionDelayMax : 5000,
@@ -46,7 +46,7 @@ export class WsService {
   getEvents(): Observable<any> {
 
     this.eventsSocket = socketIo({
-      path: '/wss',
+      path: '/socket.io',
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionDelayMax : 5000,

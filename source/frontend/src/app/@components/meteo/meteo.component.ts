@@ -8,7 +8,7 @@ import { ApiService } from '../../@services/api.service/api.service';
 })
 export class MeteoComponent implements OnInit {
 
-  private meteo;
+  public meteo;
 
   constructor(private _api: ApiService) { }
 

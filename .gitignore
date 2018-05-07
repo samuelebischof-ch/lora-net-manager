@@ -75,3 +75,7 @@ source/backend/docker/data
 # OpenSSL certificates
 **/private-key.pem
 **/public-certificate.pem
+
+# Dist folder
+**/dist
+source/backend/src/public
