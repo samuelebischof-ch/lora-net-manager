@@ -26,7 +26,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { NouisliderModule } from 'ng2-nouislider';
 
 import { SimpleComponent } from './@components/graphs/simple/simple.component';
 import { AppComponent } from './app.component';
@@ -52,6 +51,8 @@ import { WsService } from './@services/ws.service/ws.service';
 
 import { DatePipe } from './@pipes/date/date.pipe';
 import { HourPipe } from './@pipes/hour/hour.pipe';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,6 @@ import { HourPipe } from './@pipes/hour/hour.pipe';
     FormsModule,
     ReactiveFormsModule,
     MatSelectModule,
-    NouisliderModule,
     AngularSplitModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -106,6 +106,7 @@ import { HourPipe } from './@pipes/hour/hour.pipe';
     MatGridListModule,
     MatSidenavModule,
     AppRoutingModule,
+    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
   ],
   entryComponents: [
     MapDialogComponent,

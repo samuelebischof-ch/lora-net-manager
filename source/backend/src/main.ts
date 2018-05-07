@@ -28,10 +28,13 @@ async function bootstrap() {
 		cert: fs.readFileSync('./secrets/public-certificate.pem')
 	};
 	
-	// create server
+	// HTTPS
 	const app = await NestFactory.create(ApplicationModule, {
 		httpsOptions,
 	});
+
+	// HTTP
+	// const app = await NestFactory.create(ApplicationModule);
 
 	app.use(express.static(path.join(__dirname, 'public')));
 	

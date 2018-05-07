@@ -12,11 +12,12 @@ It runs on top of the amazing work of [Petr Gotthard](https://github.com/gotthar
 - [Docker](https://www.docker.com)
 - [Gotthardps LoRaWAN server](https://github.com/gotthardp/lorawan-server)
 - [Konva.js](https://konvajs.github.io)
+- [Service workers](https://developers.google.com/web/fundamentals/primers/service-workers/)
 
 ## Built with
 
-- [Nest](https://nestjs.com) backend
-- [Angular](https://angular.io) frontend
+- [Nest v4](https://nestjs.com) backend
+- [Angular v6](https://angular.io) frontend
 
 ## Features
 
@@ -69,6 +70,8 @@ interface DataWS {
 ```
 
 > Make sure to assign sensor readings to the LPP object with the correct field number
+
+
 
 ## Tested with
 

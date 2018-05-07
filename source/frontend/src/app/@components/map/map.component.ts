@@ -333,7 +333,6 @@ export class MapComponent implements OnInit {
     }
 
     addTooltip(event) {
-      console.log(event);
             // show tooltip
             const _layer = new Konva.Layer();
             _layer.addName('label');
@@ -402,7 +401,6 @@ export class MapComponent implements OnInit {
 
     removeRoom(event) {
       // remove element from roomsArray
-      console.log(event);
       for (let i = 0; i < this.roomsArray.length; i++) {
         if (this.roomsArray[i].id === event.target.attrs.id) {
           this.roomsArray.splice(i, 1);
