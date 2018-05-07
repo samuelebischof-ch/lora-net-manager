@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import 'rxjs/add/operator/map';
+
 import { SensorData } from '../../@interfaces/sensor-data';
 import { AuthenticationService } from '../authentication.service/authentication.service';
 import { Auth } from '../../@interfaces/auth.interface';

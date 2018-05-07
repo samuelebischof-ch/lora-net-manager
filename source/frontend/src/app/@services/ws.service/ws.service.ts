@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
-import { map, catchError } from 'rxjs/operators';
+import { Observable, Observer } from 'rxjs';
 import * as socketIo from 'socket.io-client';
 import { Socket } from '../../@interfaces/socket.interface';
 import { AuthenticationService } from '../authentication.service/authentication.service';

@@ -4,9 +4,10 @@
 // @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 // @import "~@angular/material/prebuilt-themes/pink-bluegrey.css";
 // @import "~@angular/material/prebuilt-themes/purple-green.css";
-@import "assets/style/material-style.css";
-@import './sass/variables';
+// @import "assets/style/material-style.css";
+@import './sass/material-style.scss';
 @import './sass/mixins';
+@import './sass/variables';
 @import "~nouislider/distribute/nouislider.min.css";
 hr {
   display: block;
