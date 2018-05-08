@@ -74,10 +74,10 @@ export class DataComponent implements OnInit, OnChanges {
   ngOnChanges() {
   }
 
-  roomClicked(roomName) {
-    console.log(roomName);
+  roomClicked(name) {
+    console.log(name);
     this.devicesByRoom.forEach(room => {
-      if (room.roomName === roomName) {
+      if (room.name === name) {
         room.expanded = true;
         room.devices.forEach(device => {
           device.checked = true;
@@ -96,7 +96,7 @@ export class DataComponent implements OnInit, OnChanges {
     this._api.getDevicesByRoom().subscribe(res => {
       this.devicesByRoom = res;
       this.devicesByRoom.forEach(room => {
-        this.roomList.push(room.roomName);
+        this.roomList.push(room.name);
       });
       // console.log(res);
     });

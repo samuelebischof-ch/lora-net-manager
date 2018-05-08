@@ -57,7 +57,6 @@ export class ApiService {
   }
 
   addDevice(options) {
-    console.log(options)
     if (this._authentication.isAuthenticated()) {
       return this._http.post('/api/device/', options, {
         headers: new HttpHeaders().set('Authorization', 'bearer ' + this._authentication.getToken())

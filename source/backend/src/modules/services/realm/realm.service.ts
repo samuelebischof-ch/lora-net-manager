@@ -115,6 +115,7 @@ export class RealmService {
         * @param devaddr
         * @param model
         * @param battery
+        * @param data_sheet
         * @description creates the node in the LoRaServer
         */
         async createDevice( dev: DeviceDB ): Promise<boolean> {
@@ -140,8 +141,8 @@ export class RealmService {
                                 if (dev.data_sheet.hasOwnProperty(key)) {
                                     const min = dev.data_sheet[key].permitted_min;
                                     const max = dev.data_sheet[key].permitted_max;
-                                    dev.data_sheet[key].permitted_min = (min === null) ? Number.NEGATIVE_INFINITY : min;
-                                    dev.data_sheet[key].permitted_max = (max === null) ? Number.POSITIVE_INFINITY : max;
+                                    dev.data_sheet[key].permitted_min = (min === null || min === undefined) ? Number.NEGATIVE_INFINITY : min;
+                                    dev.data_sheet[key].permitted_max = (max === null || max === undefined) ? Number.POSITIVE_INFINITY : max;
                                 }
                             }
                             
