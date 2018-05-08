@@ -25,7 +25,7 @@ interface Device {
 }
 
 interface Room {
-  roomName: string;
+  name: string;
 }
 
 interface Gateway {

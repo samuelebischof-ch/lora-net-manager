@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Observer } from 'rxjs';
 import * as socketIo from 'socket.io-client';
-import { Socket } from '../../@interfaces/socket.interface';
+import { Socket } from '../../../../../shared/interfaces/socket.interface';
 import { AuthenticationService } from '../authentication.service/authentication.service';
 
 @Injectable()

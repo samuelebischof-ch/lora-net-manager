@@ -43,9 +43,9 @@ export const SensorSchema = {
 
 export const RoomSchema = {
     name: 'Room',
-    primaryKey: 'roomName',
+    primaryKey: 'name',
     properties: {
-        roomName: 'string',
+        name: 'string',
         owners: {type: 'linkingObjects', objectType: 'Device', property: 'room'},
         description: {type: 'string', optional: true},
     },

@@ -1,12 +1,12 @@
 import { RealmService } from '../realm/realm.service';
 import { Component, Inject, forwardRef } from '@nestjs/common';
-import { Gateway } from '../../interfaces/gateway.interface';
-import { Device } from '../../interfaces/device.interface';
+import { Gateway } from '../../../../../shared/interfaces/gateway.interface';
+import { Device } from '../../../../../shared/interfaces/device.interface';
 import * as request from 'request';
 import * as rp from 'request-promise-native';
 import * as configJSON from '../../../../config.json';
 import * as gotthardpConfigJSON from '../../../../gotthardp.config.json';
-import { Config } from '../../interfaces/config.interface';
+import { Config } from '../../../../../shared/interfaces/config.interface';
 import { LoggerService } from '../logger/logger.service';
 
 const config: Config = configJSON as any;

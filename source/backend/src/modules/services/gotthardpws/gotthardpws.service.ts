@@ -4,10 +4,10 @@ import { RealmService } from '../realm/realm.service';
 import * as WebSocket from 'ws';
 import * as configJSON from '../../../../config.json';
 import * as rnd from 'random-js';
-import { DataWS } from '../../interfaces/dataWS.interface';
-import { EventsWS } from '../../interfaces/eventsWS.interface';
+import { DataWS } from '../../../../../shared/interfaces//dataWS.interface';
+import { EventsWS } from '../../../../../shared/interfaces/eventsWS.interface';
 import { MeteoService } from '../meteo/meteo.service';
-import { Config } from '../../interfaces/config.interface';
+import { Config } from '../../../../../shared/interfaces/config.interface';
 import { LoggerService } from '../logger/logger.service';
 import { EventService } from '../events/events.service';
 

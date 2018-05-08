@@ -11,7 +11,7 @@ import { RealmService } from '../realm/realm.service';
 import { GotthardpService } from '../gotthardp/gotthardp.service';
 import { GotthardpwsService } from '../gotthardpws/gotthardpws.service';
 import { MeteoService } from '../meteo/meteo.service';
-import { Seed } from '../../interfaces/seed.interface';
+import { Seed } from '../../../../../shared/interfaces/seed.interface';
 import { LoggerService } from '../logger/logger.service';
 
 const seed: Seed = seedJSON as any;

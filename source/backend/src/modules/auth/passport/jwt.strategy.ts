@@ -3,7 +3,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Component, Inject } from '@nestjs/common';
 import { AuthService } from '../service/auth/auth.service';
 import * as configJSON from '../../../../config.json';
-import { Config } from '../../interfaces/config.interface';
+import { Config } from '../../../../../shared/interfaces/config.interface';
 
 const config: Config = configJSON as any;
 

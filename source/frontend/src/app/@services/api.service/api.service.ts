@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { SensorData } from '../../@interfaces/sensor-data';
+import { SensorData } from '../../../../../shared/interfaces/sensor-data';
 import { AuthenticationService } from '../authentication.service/authentication.service';
-import { Auth } from '../../@interfaces/auth.interface';
+import { Auth } from '../../../../../shared/interfaces/auth.interface';
 
 @Injectable()
 export class ApiService {
@@ -57,6 +57,7 @@ export class ApiService {
   }
 
   addDevice(options) {
+    console.log(options)
     if (this._authentication.isAuthenticated()) {
       return this._http.post('/api/device/', options, {
         headers: new HttpHeaders().set('Authorization', 'bearer ' + this._authentication.getToken())

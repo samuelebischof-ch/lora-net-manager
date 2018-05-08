@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken';
 import { Component, Inject } from '@nestjs/common';
 import * as configJSON from '../../../../../config.json';
-import { Config } from '../../../interfaces/config.interface';
+import { Config } from '../../../../../../shared/interfaces/config.interface';
 import { RealmService } from '../../../services/realm/realm.service';
 
 const config: Config = configJSON as any;

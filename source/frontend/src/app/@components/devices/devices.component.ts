@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../@services/api.service/api.service';
 import { MatSnackBar } from '@angular/material';
+import { DeviceDB, Room, DataSheet } from '../../../../../shared/interfaces/deviceDB.interface';
 
 @Component({
   selector: 'app-devices',
@@ -12,16 +13,10 @@ export class DevicesComponent implements OnInit {
     public devices: any;
     public deveui = '';
     public devaddr = '';
-    public room = '';
+    public room = new Room();
     public desc = '';
     public model = '';
-    public has_temperature = false;
-    public has_pressure = false;
-    public has_humidity = false;
-    public has_moisture = false;
-    public has_movement = false;
-    public has_door_sensor = false;
-    public has_light_sensor = false;
+    public dataSheet = new DataSheet();
 
     public panelOpenState: boolean;
 
@@ -30,23 +25,14 @@ export class DevicesComponent implements OnInit {
 
       addDevice() {
         if (this.isDEVEUI(this.deveui) && this.isDEVADDR(this.devaddr)) {
-          const options = {
-            room: {roomName: this.room},
-            desc: this.desc,
-            model: this.model,
-            deveui: this.deveui,
-            devaddr: this.devaddr,
-            data_sheet: {
-              sensor_temperature: { has_sensor: this.has_temperature },
-              sensor_pressure: { has_sensor: this.has_pressure },
-              sensor_humidity: { has_sensor: this.has_humidity },
-              sensor_moisture: { has_sensor: this.has_moisture },
-              sensor_movement: { has_sensor: this.has_movement },
-              sensor_door_sensor: { has_sensor: this.has_door_sensor },
-              sensor_light_sensor: { has_sensor: this.has_light_sensor },
-            },
-          };
-          this._api.addDevice(options).subscribe(res => this.getDevices());
+          const device = new DeviceDB();
+          device.room = this.room;
+          device.desc = this.desc;
+          device.model = this.model;
+          device.deveui = this.deveui;
+          device.devaddr = this.devaddr;
+          device.data_sheet = this.dataSheet;
+          this._api.addDevice(device).subscribe(res => this.getDevices());
           this.snackBar.open('Device ' + this.deveui + ' added', 'Close', {
             duration: 3000
           });

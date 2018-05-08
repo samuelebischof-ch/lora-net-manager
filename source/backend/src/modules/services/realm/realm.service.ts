@@ -2,11 +2,11 @@ import * as Realm from 'realm';
 import * as crypto from 'crypto';
 import * as bcrypt from 'bcrypt';
 import { Component, Inject, forwardRef } from '@nestjs/common';
-import { DataWS } from '../../interfaces/dataWS.interface';
-import { DeviceDB, DataSheet, SensorDataSheet } from '../../interfaces/deviceDB.interface';
+import { DataWS } from '../../../../../shared/interfaces/dataWS.interface';
+import { DeviceDB, DataSheet, SensorDataSheet } from '../../../../../shared/interfaces/deviceDB.interface';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
-import { SensorDB } from '../../interfaces/sensorDB.interface';
+import { SensorDB } from '../../../../../shared/interfaces/sensorDB.interface';
 import {
     DeviceSchema,
     LogSchema,
@@ -16,12 +16,12 @@ import {
     RoomSchema,
     SettingSchema,
 } from '../../schemas/nodes/nodes.schema';
-import { EventsWS } from '../../interfaces/eventsWS.interface';
-import { Node } from '../../interfaces/node.interface';
-import { RoomDB } from '../../interfaces/roomDB.interface';
+import { EventsWS } from '../../../../../shared/interfaces/eventsWS.interface';
+import { Node } from '../../../../../shared/interfaces/node.interface';
+import { RoomDB } from '../../../../../shared/interfaces/roomDB.interface';
 import { subscribeOn } from 'rxjs/operator/subscribeOn';
 import * as configJSON from '../../../../config.json';
-import { Config } from '../../interfaces/config.interface';
+import { Config } from '../../../../../shared/interfaces/config.interface';
 import { LoggerService } from '../logger/logger.service';
 import { EventService } from '../events/events.service';
 import { GotthardpService } from '../gotthardp/gotthardp.service';
@@ -108,19 +108,13 @@ export class RealmService {
         
 /***********************************devices***********************************/
         
+// TODO: fix documentation
         /**
         * @name createDevice
         * @param deveui
         * @param devaddr
         * @param model
         * @param battery
-        * @param has_temperature
-        * @param has_pressure
-        * @param has_humidity
-        * @param has_moisture
-        * @param has_movement
-        * @param has_door_sensor
-        * @param has_light_sensor
         * @description creates the node in the LoRaServer
         */
         async createDevice( dev: DeviceDB ): Promise<boolean> {
@@ -134,7 +128,20 @@ export class RealmService {
                             let room = realm.objectForPrimaryKey('Room', dev.deveui);
                             if (!room) {
                                 room = {
-                                    roomName: dev.room.roomName,
+                                    name: dev.room.name,
+                                }
+                            }
+
+                            /**
+                             * convert dev.data_sheet nulls to +infinity and -infinity which are
+                             * remove when converting to json
+                             */
+                            for (const key in dev.data_sheet) {
+                                if (dev.data_sheet.hasOwnProperty(key)) {
+                                    const min = dev.data_sheet[key].permitted_min;
+                                    const max = dev.data_sheet[key].permitted_max;
+                                    dev.data_sheet[key].permitted_min = (min === null) ? Number.NEGATIVE_INFINITY : min;
+                                    dev.data_sheet[key].permitted_max = (max === null) ? Number.POSITIVE_INFINITY : max;
                                 }
                             }
                             
@@ -143,7 +150,7 @@ export class RealmService {
                                 devaddr: dev.devaddr,
                                 model: dev.model,
                                 desc: dev.desc,
-                                battery: (dev.battery === undefined) ? 0 : dev.battery,
+                                battery: dev.battery,
                                 last_seen: new Date(Date.now()),
                                 data_sheet: dev.data_sheet,
                             });
@@ -152,7 +159,8 @@ export class RealmService {
                                 (node as any).room = room;
                             } else {
                                 (node as any).room = {
-                                    roomName: dev.room.roomName,
+                                    name: dev.room.name,
+                                    description: dev.room.description
                                 }
                             }
     
@@ -206,7 +214,7 @@ export class RealmService {
                 try {
                     let rooms = realm.objects('Room');
                     for (const c in rooms) {
-                        let roomName = (rooms[c] as RoomDB).roomName;
+                        let name = (rooms[c] as RoomDB).name;
                         let devices = []
                         for (const i in (rooms[c] as RoomDB).owners) {
                             let r = { 
@@ -217,7 +225,7 @@ export class RealmService {
                             devices.push(r)
                         }
                         if (devices.length > 0) {
-                            let room = { roomName, devices }
+                            let room = { name, devices }
                             devicesByRoom.push(room);
                         }
                     }
@@ -237,11 +245,11 @@ export class RealmService {
         * @returns the room of a given device
         */
         async getDeviceRoom(deveui: string) {
-            let roomName = '';
+            let name = '';
             await this.OpenedRealm.then(realm => {
                 try {
                     const device: DeviceDB = realm.objectForPrimaryKey('Device', deveui) as DeviceDB
-                    if (device !== undefined && device.room !== undefined) { roomName = device.room.roomName; }
+                    if (device !== undefined && device.room !== undefined) { name = device.room.name; }
                 } catch (error) {
                     this._logger.error('at getDeviceRoom(): ' + error);
                 }
@@ -249,7 +257,7 @@ export class RealmService {
             .catch(error => {
                 this._logger.error('at getDeviceRoom(): ' + error);
             });
-            return roomName;
+            return name;
         }
         
         /**
@@ -670,7 +678,7 @@ async checkJWTToken(jwt: string): Promise<boolean> {
                     deveui: locationName,
                     devaddr: 'meteo',
                     desc: locationName,
-                    room: { roomName: 'Meteo' },
+                    room: { name: 'Meteo' },
                     battery: 0,
                     rssi: 0,
                     last_seen: new Date(Date.now()),

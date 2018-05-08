@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth } from '../../@interfaces/auth.interface';
+import { Auth } from '../../../../../shared/interfaces/auth.interface';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import * as moment from 'moment';

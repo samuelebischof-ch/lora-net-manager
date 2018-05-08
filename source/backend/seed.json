@@ -9,7 +9,7 @@
       "devaddr": "AAAAAAAA",
       "desc": "Device #1",
       "room": {
-        "roomName": "Room 1"
+        "name": "Room 1"
       },
       "battery": 23,
       "rssi": 23,
@@ -27,7 +27,7 @@
       "devaddr": "BBBBBBBB",
       "desc": "Device #2",
       "room": {
-        "roomName": "Room 1"
+        "name": "Room 1"
       },
       "battery": 23,
       "rssi": 23,
@@ -45,7 +45,7 @@
       "devaddr": "CCCCCCCC",
       "desc": "Device #3",
       "room": {
-        "roomName": "Room 2"
+        "name": "Room 2"
       },
       "battery": 23,
       "rssi": 23,
@@ -63,7 +63,7 @@
       "devaddr": "DDDDDDDD",
       "desc": "Device #4",
       "room": {
-        "roomName": "Room 2"
+        "name": "Room 2"
       },
       "battery": 23,
       "rssi": 23,

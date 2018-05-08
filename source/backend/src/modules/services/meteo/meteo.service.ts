@@ -2,7 +2,7 @@ import { Component } from '@nestjs/common';
 import { RealmService } from '../realm/realm.service';
 import * as request from 'request';
 import * as rp from 'request-promise-native';
-import { DataWS } from '../../interfaces/dataWS.interface';
+import { DataWS } from '../../../../../shared/interfaces/dataWS.interface';
 
 @Component()
 export class MeteoService {

@@ -2,8 +2,8 @@ import { Controller, Get, Post, Delete, Param, Query, Body } from '@nestjs/commo
 import { RealmService } from '../services/realm/realm.service';
 import { GotthardpService } from '../services/gotthardp/gotthardp.service';
 import { MeteoService } from '../services/meteo/meteo.service';
-import { Gateway } from '../interfaces/gateway.interface';
-import { Device } from '../interfaces/device.interface';
+import { Gateway } from '../../../../shared/interfaces/gateway.interface';
+import { Device } from '../../../../shared/interfaces/device.interface';
 import * as crypto from 'crypto';
 import { LoggerService } from '../services/logger/logger.service';
 

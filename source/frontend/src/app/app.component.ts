@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
   private opened = true;
 
   ngOnInit() {
+    this._notifications.subscribeToNotifications();
     this._notifications.connectEvents();
   }
 

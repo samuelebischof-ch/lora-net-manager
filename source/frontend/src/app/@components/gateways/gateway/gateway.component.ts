@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ApiService } from '../../../@services/api.service/api.service';
 import { MatSnackBar } from '@angular/material';
-import { Gateway } from '../../../@interfaces/gateway.interface';
+import { Gateway } from '../../../../../../shared/interfaces/gateway.interface';
 
 @Component({
   selector: 'app-gateway',

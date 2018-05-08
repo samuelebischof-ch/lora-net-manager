@@ -6,7 +6,6 @@
     height: $sidebarWidth;
     background: sidebarBtnColor;
     position: relative;
-    color: white;
     cursor: pointer;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -30,6 +29,7 @@
 }
 
 mat-icon {
+    color: white;
     display: inline-block;
     width: $sidebarWidth;
     height: $sidebarBtnIconSize;

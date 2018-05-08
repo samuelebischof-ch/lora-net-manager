@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ApiService } from '../../../@services/api.service/api.service';
-import { Device } from '../../../@interfaces/device.interface';
+import { Device } from '../../../../../../shared/interfaces/device.interface';
 
 @Component({
   selector: 'app-device',
