@@ -5,6 +5,7 @@ import * as path from 'path';
 import * as readline from 'linebyline'
 import * as devicesJSON from '../../../../../device/devices.json'
 import { RealmService } from '../realm/realm.service';
+import { Writable, Readable, Stream } from 'stream';
 
 @Component()
 export class GeneratorService {
@@ -12,7 +13,7 @@ export class GeneratorService {
   constructor(private readonly _logger: LoggerService,
     private readonly _realm: RealmService) {}
     
-    private ino = path.join(__dirname, 'otaa.ino');
+    private ino = path.join(__dirname, 'temp/' + 'otaa.ino');
     private template = '../device/otaa.ino';
     
     async genFile(devuei: string): Promise<string> {
@@ -36,68 +37,101 @@ export class GeneratorService {
       let devicesKeysCounter = 0;
       let otaaKeysCounter = 0;
       
-      console.log('here');
-      await this.deleteFile();
+      await this.deleteFile(this.ino);
       const rl = readline(this.template);
-
-        console.log('here2');
-          // rl.on('line', (line) => {
-          //   // console.log(line);
-          //   if ((otaaKeysCounter < otaaKeys.length) && (line.includes(otaaKeys[otaaKeysCounter]))) {
-          //     const key = otaaKeys[otaaKeysCounter];
-          //     const mapping = otaa[key];
-          //     const newLine = line.replace(key, mapping)
-          //     self.appendLine(newLine);
-          //     otaaKeysCounter++;
-          //   } else if ((devicesKeysCounter < devicesKeys.length) && (line === devicesKeys[devicesKeysCounter])) {
-          //     const key = devicesKeys[devicesKeysCounter];
-          //     const mapping = esp32[key];
-          //     self.appendLine(mapping);
-          //     devicesKeysCounter++;
-          //   } else {
-          //     self.appendLine(line);
-          //   }
-          // });   
-
-          
-          const rdLinePromise = () => new Promise((resolve, reject) => {
-            rl.on('line', (line) => {
-              if (line === '<END>') {
-                resolve();
-              } else {
-                if ((otaaKeysCounter < otaaKeys.length) && (line.includes(otaaKeys[otaaKeysCounter]))) {
-                  const key = otaaKeys[otaaKeysCounter];
-                  const mapping = otaa[key];
-                  const newLine = line.replace(key, mapping)
-                  self.appendLine(newLine);
-                  otaaKeysCounter++;
-                } else if ((devicesKeysCounter < devicesKeys.length) && (line === devicesKeys[devicesKeysCounter])) {
-                  const key = devicesKeys[devicesKeysCounter];
-                  const mapping = esp32[key];
-                  self.appendLine(mapping);
-                  devicesKeysCounter++;
-                } else {
-                  self.appendLine(line);
-                }
-              }
-            }).on('error', reject);
-          });
-
-          try {
-            console.log('here 3')
-            await rdLinePromise()
-          } catch (error) {
-            console.log(error);
+      
+      const rdLinePromise = () => new Promise((resolve, reject) => {
+        rl.on('line', (line) => {
+          if (line === '<END>') {
+            resolve();
+          } else {
+            if ((otaaKeysCounter < otaaKeys.length) && (line.includes(otaaKeys[otaaKeysCounter]))) {
+              const key = otaaKeys[otaaKeysCounter];
+              const mapping = otaa[key];
+              const newLine = line.replace(key, mapping)
+              self.appendLine(this.ino, newLine);
+              otaaKeysCounter++;
+            } else if ((devicesKeysCounter < devicesKeys.length) && (line === devicesKeys[devicesKeysCounter])) {
+              const key = devicesKeys[devicesKeysCounter];
+              const mapping = esp32[key];
+              self.appendLine(this.ino, mapping);
+              devicesKeysCounter++;
+            } else {
+              self.appendLine(this.ino, line);
+            }
           }
-          
-
-      console.log('here 4')
+        }).on('error', reject);
+      });
+      
+      try {
+        await rdLinePromise()
+      } catch (error) {
+        this._logger.error(error);
+      }
       
       return this.ino;
     }
     
-    appendLine(newLine: string) {
-      fs.appendFileSync(this.ino, newLine + '\n');
+    async genCSV(deveui: string): Promise<string> {
+      const self = this,
+      csv = path.join(__dirname, 'temp/' + deveui + '.csv');
+      
+      await this.deleteFile(csv);
+      
+      let dataStream = await this._realm.getSensorDataStream(deveui);
+      
+      const outStream = new Writable({
+        write(chunk, encoding, callback) {
+          let obj = JSON.parse(chunk.toString())
+          let line = '';
+          let length = Object.keys(obj).length,
+              counter = 0;
+          for (const key in obj) {
+            if (obj.hasOwnProperty(key)) {
+              const element = obj[key];
+              line += '"';
+              line += element;
+              line += '"';
+              if (counter !== length - 1) {
+                line += ','
+              }
+            }
+            counter++;
+          }
+          self.appendLine(csv, line)
+          callback();
+        }
+      });
+      
+      const streamPromise = (stream) => {
+        return new Promise((resolve, reject) => {
+          stream.pipe(outStream);
+          stream.on('end', () => {
+            resolve('end');
+          });
+          stream.on('finish', () => {
+            resolve('finish');
+          });
+          stream.on('error', (error) => {
+            reject(error);
+          });
+        });
+      }
+      
+      await streamPromise(dataStream)
+      
+      return csv;
+    }
+    
+    async deleteFile(fileName) {
+      let exists = fs.existsSync(fileName);
+      if (exists) {
+        fs.unlinkSync(fileName);
+      }
+    } 
+    
+    appendLine(fileName, newLine: string) {
+      fs.appendFileSync(fileName, newLine + '\n');
     }
     
     keyToHex(key: string): string {
@@ -138,11 +172,5 @@ export class GeneratorService {
       return groups;
     }
     
-    async deleteFile() {
-      let exists = fs.existsSync(this.ino);
-      if (exists) {
-        fs.unlinkSync(this.ino);
-      }
-    } 
     
   }

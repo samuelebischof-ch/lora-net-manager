@@ -110,14 +110,11 @@ export class APIController {
         async getINO(@Param() param, @Res() res) {
             const self = this;
             let filePath = await this._generator.genFile(param.deveui);
-            console.log('ggg')
-            console.log(filePath);
             res.download(filePath, function(err){
                 if (err) {
                     self._logger.error(err);
                 }
             });
-            console.log('sent')
         }
         
         /**
@@ -135,6 +132,18 @@ export class APIController {
         @Get('data/:query?')
         async getData(@Query() params) {
             return await this._realm.getSensorData(params);
+        }
+
+        @Get('csv/:deveui')
+        async getCSV(@Param() param, @Res() res) {
+            const self = this;
+            let filePath = await this._generator.genCSV(param.deveui);
+            console.log(filePath);
+            res.download(filePath, function(err){
+                if (err) {
+                    self._logger.error(err);
+                }
+            });
         }
         
         @Get('gendeveui')

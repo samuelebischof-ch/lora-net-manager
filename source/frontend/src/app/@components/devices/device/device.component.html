@@ -6,6 +6,9 @@
   <button matTooltip="Download otaa.ino" mat-button color="primary" (click)="getINO()">
     <mat-icon mat-list-icon>cloud_download</mat-icon>
   </button>
+  <button matTooltip="Download data" mat-button color="primary" (click)="getCSV()">
+    <mat-icon mat-list-icon>cloud_download</mat-icon>
+  </button>
   <h4 mat-line>Device:</h4>
   <p mat-line class="gray_line"> DevEUI: {{device.deveui}} </p>
   <p mat-line class="gray_line"> AppEUI: {{device.appeui}} </p>

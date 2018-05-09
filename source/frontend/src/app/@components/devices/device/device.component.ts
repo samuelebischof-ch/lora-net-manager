@@ -31,6 +31,10 @@ export class DeviceComponent implements OnInit {
       this._api.getDeviceINO(this.device.deveui);
     }
 
+    getCSV() {
+      this._api.getDataCSV(this.device.deveui);
+    }
+
     ngOnInit() {
       // console.log(this.device);
     }

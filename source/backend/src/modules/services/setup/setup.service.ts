@@ -13,7 +13,6 @@ import { GotthardpwsService } from '../gotthardpws/gotthardpws.service';
 import { MeteoService } from '../meteo/meteo.service';
 import { Seed } from '../../../../../shared/interfaces/seed.interface';
 import { LoggerService } from '../logger/logger.service';
-import { GeneratorService } from '../generator/generator.service';
 
 const seed: Seed = seedJSON as any;
 const prompt = nodeAsk.prompt;
@@ -28,7 +27,6 @@ export class SetupService {
         private readonly _gotthardpws: GotthardpwsService,
         private readonly _meteo: MeteoService,
         private readonly _logger: LoggerService) {}
-        // TODO: remove last line
         
         /**
         * @name setupAll

@@ -95,6 +95,17 @@ export class ApiService {
     }
   }
 
+  async getDataCSV(deveui: string) {
+    if (this._authentication.isAuthenticated()) {
+    const file = await this._http.get<Blob>(
+      '/api/csv/' + deveui, {
+        headers: new HttpHeaders().set('Authorization', 'bearer ' + this._authentication.getToken()),
+        responseType: 'blob' as 'json'
+      }).toPromise();
+        saveAs(file, deveui + '.csv');
+      }
+  }
+
   getDEVEUI() {
     if (this._authentication.isAuthenticated()) {
       return this._http.get('/api/gendeveui/', {
