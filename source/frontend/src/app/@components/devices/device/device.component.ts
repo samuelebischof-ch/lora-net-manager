@@ -27,6 +27,10 @@ export class DeviceComponent implements OnInit {
       }
     }
 
+    getINO() {
+      this._api.getDeviceINO(this.device.deveui);
+    }
+
     ngOnInit() {
       // console.log(this.device);
     }

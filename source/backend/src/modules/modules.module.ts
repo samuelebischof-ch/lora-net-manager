@@ -3,6 +3,7 @@ import { MeteoService } from './services/meteo/meteo.service';
 import { GotthardpService } from './services/gotthardp/gotthardp.service';
 import { GotthardpwsService } from './services/gotthardpws/gotthardpws.service';
 import { SetupService } from './services/setup/setup.service';
+import { GeneratorService } from './services/generator/generator.service';
 import { APIController } from './controllers/api.controller';
 import { LoraGateway } from './gateways/lora.gateway';
 
@@ -18,6 +19,7 @@ import { LoraGateway } from './gateways/lora.gateway';
     MeteoService,
     GotthardpService,
     GotthardpwsService,
+    GeneratorService,
   ],
 })
 export class ModulesModule {}

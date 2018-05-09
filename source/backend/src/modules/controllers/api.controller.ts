@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Param, Query, Body } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, Query, Body, Res } from '@nestjs/common';
 import { RealmService } from '../services/realm/realm.service';
 import { GotthardpService } from '../services/gotthardp/gotthardp.service';
 import { MeteoService } from '../services/meteo/meteo.service';
@@ -6,15 +6,18 @@ import { Gateway } from '../../../../shared/interfaces/gateway.interface';
 import { Device } from '../../../../shared/interfaces/device.interface';
 import * as crypto from 'crypto';
 import { LoggerService } from '../services/logger/logger.service';
+import { GeneratorService } from '../services/generator/generator.service';
 
+// TODO: check async working
 @Controller('api')
 export class APIController {
     constructor(private readonly _realm: RealmService,
-                private readonly _gotthardp: GotthardpService,
-                private readonly _meteo: MeteoService,
-                private readonly _logger: LoggerService) {}
+        private readonly _gotthardp: GotthardpService,
+        private readonly _meteo: MeteoService,
+        private readonly _logger: LoggerService,
+        private readonly _generator: GeneratorService) {}
         
-/********************************** gateways *********************************/
+        /********************************** gateways *********************************/
         
         /**
         * @name getGateways
@@ -38,15 +41,15 @@ export class APIController {
         }
         
         /**
-         * @name addGateway
-         * @param req
-         * @description adds a gateway to the LoRaServer
-         */
+        * @name addGateway
+        * @param req
+        * @description adds a gateway to the LoRaServer
+        */
         @Post('gateway')
         async addGateway(@Body() req) {
             await this._gotthardp.addGateway(req);
         }
-
+        
         /**
         * @name removeGateway
         * @param param 
@@ -58,7 +61,7 @@ export class APIController {
             this._logger.success('gateway ' + param.mac + ' removed');
         }
         
-/********************************** device ***********************************/
+        /********************************** device ***********************************/
         
         /**
         * @name getDevices
@@ -82,27 +85,41 @@ export class APIController {
             }
             return outDevices;
         }
-
+        
         /**
         * @name getDevicesByRoom
         * @returns a list of devices grouped by room
         */
-       @Get('devicesbyroom')
-       async getDevicesByRoom() {
-           return await this._realm.getDevicesByRoom();
-       }
-
+        @Get('devicesbyroom')
+        async getDevicesByRoom() {
+            return await this._realm.getDevicesByRoom();
+        }
+        
         /**
-         * @name addDevice
-         * @param req
-         * @description adds a device to the LoRaServer
-         */
+        * @name addDevice
+        * @param req
+        * @description adds a device to the LoRaServer
+        */
         @Post('device')
         async addDevice(@Body() req) {
             await this._realm.createDevice(req);
             await this._gotthardp.addDevice(req);
         }
-
+        
+        @Get('ino/:deveui')
+        async getINO(@Param() param, @Res() res) {
+            const self = this;
+            let filePath = await this._generator.genFile(param.deveui);
+            console.log('ggg')
+            console.log(filePath);
+            res.download(filePath, function(err){
+                if (err) {
+                    self._logger.error(err);
+                }
+            });
+            console.log('sent')
+        }
+        
         /**
         * @name removeDevice
         * @param param 
@@ -114,35 +131,35 @@ export class APIController {
             await this._realm.removeDevice(param.deveui);
             this._logger.success('device ' + param.deveui + ' removed');
         }
-
+        
         @Get('data/:query?')
         async getData(@Query() params) {
             return await this._realm.getSensorData(params);
         }
-
+        
         @Get('gendeveui')
         async getDeveui() {
             return { deveui: crypto.randomBytes(8).toString('hex') };
         }
-
+        
         @Get('gendevaddr')
         async getDevaddr() {
             return { devaddr: crypto.randomBytes(4).toString('hex') };
         }
-
-/*********************************** konva ***********************************/
-
+        
+        /*********************************** konva ***********************************/
+        
         @Get('konva')
         async loadKonva() {
             return await this._realm.loadKonva();
         }
-
+        
         @Post('konva')
         async saveKonva(@Body() data) {
             await this._realm.saveKonva(data);
         }
         
-/*********************************** meteo ***********************************/
+        /*********************************** meteo ***********************************/
         
         @Get('meteo')
         async loadMeteo() {

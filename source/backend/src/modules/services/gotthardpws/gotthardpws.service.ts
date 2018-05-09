@@ -179,7 +179,7 @@ export class GotthardpwsService {
     * @param ms: time in milliseconds
     * @description returns a Promise of a timeout
     */
-    async delay(ms) {
+    delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 }

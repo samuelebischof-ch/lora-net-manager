@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { saveAs } from 'file-saver/FileSaver';
 
 import { SensorData } from '../../../../../shared/interfaces/sensor-data';
 import { AuthenticationService } from '../authentication.service/authentication.service';
@@ -63,6 +64,17 @@ export class ApiService {
         .append('Content-Type', 'application/json')
       });
     }
+  }
+
+  async getDeviceINO(deveui: string) {
+    if (this._authentication.isAuthenticated()) {
+    const file = await this._http.get<Blob>(
+      '/api/ino/' + deveui, {
+        headers: new HttpHeaders().set('Authorization', 'bearer ' + this._authentication.getToken()),
+        responseType: 'blob' as 'json'
+      }).toPromise();
+        saveAs(file, 'otaa.ino');
+      }
   }
 
   removeDevice(deveui: string) {

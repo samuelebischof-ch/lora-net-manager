@@ -1,0 +1,11 @@
+{
+  "devices": {
+    "esp32": {
+      "<BATTERY>": "#define BATT1500",
+      "<BATTERY1>": "efewfewfwefewef"
+    },
+    "featherM0": {
+      "description": "featherM0"
+    }
+  }
+}
