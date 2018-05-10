@@ -170,19 +170,29 @@ export class APIController {
             await this._realm.saveKonva(data);
         }
 
+        @Get('konva/image')
+        async getFile(@Param() param, @Res() res) {
+            const self = this;
+            let filePath = './src/blob/plan.png';
+            console.log(filePath);
+            res.download(filePath, function(err){
+                if (err) {
+                    self._logger.error(err);
+                }
+            });
+        }
+
         @Post('konva/image')
         @UseInterceptors(FileInterceptor('file', { dest: './' }))
         uploadFile(@UploadedFile() file) {
             const self = this;
             console.log(file);
             const oldpath = file.path;
-            const newpath = './src/public/assets/images/plan.png';
+            const newpath = './src/blob/plan.png';
             fs.rename(oldpath, newpath, function (err) {
                 if (err) {
                     console.log(err);
                 }
-                // res.write('File uploaded and moved!');
-                // res.end();
             });
         }
         

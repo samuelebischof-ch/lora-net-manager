@@ -2,6 +2,7 @@ import { Component, Inject, OnInit, ViewChild, ElementRef, Input, Output, EventE
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import * as Konva from 'konva';
 import { ApiService } from '../../@services/api.service/api.service';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-map',
@@ -20,8 +21,9 @@ export class MapComponent implements OnInit {
   private layer;
   private bgLayer;
   public modus = 'click'; // click | draw
+  public imageData: any;
   private backgroundImg = {
-    src: '/assets/images/plan.png',
+    src: '/api/konva/image/plan.png',
     x: 0,
     y: 0,
     width: 1000,
@@ -37,7 +39,8 @@ export class MapComponent implements OnInit {
   @Output() roomClicked: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private _api: ApiService,
-    public dialog: MatDialog) {}
+              private sanitizer: DomSanitizer,
+              public dialog: MatDialog) {}
 
     async ngOnInit() {
       // reload the canvas from server
@@ -50,6 +53,7 @@ export class MapComponent implements OnInit {
       const uploadData = new FormData();
       uploadData.append('file', file, file.name);
       this._api.uploadImage(uploadData).subscribe(res => {
+        this.backgroundImg.src = '/api/konva/image/plan.png';
         this.loadKonvaFromServer();
       });
     }
@@ -57,7 +61,6 @@ export class MapComponent implements OnInit {
     loadKonvaFromServer() {
       const self = this;
       this._api.loadKonva().subscribe(res => {
-        console.log(res);
         if (res !== null && res !== undefined) {
           self.backgroundImg = (res as StoreData).backgroundImg;
           self.roomsArray = (res as StoreData).roomsArray;
@@ -69,7 +72,7 @@ export class MapComponent implements OnInit {
     selectImage() {
       const width = 1000;
       const height = 400;
-      this.backgroundImg.src = '/assets/images/plan.png';
+      this.backgroundImg.src = '/api/konva/image/plan.png';
       this.backgroundImg.width = width;
       this.backgroundImg.height = height;
       this.container.nativeElement.style.width = width + 'px';
@@ -126,7 +129,7 @@ export class MapComponent implements OnInit {
     /**
     * @loadKonva
     */
-    loadKonva() {
+    async loadKonva() {
       const self = this;
 
       // create stage
@@ -139,7 +142,9 @@ export class MapComponent implements OnInit {
       // load image
       this.bgLayer = new Konva.Layer();
       const imageObj = new Image();
-      imageObj.src = self.backgroundImg.src;
+
+      // download image
+      imageObj.src = await this.loadImageFromServerPromise();
 
       // create bg layer
       imageObj.onload = async function() {
@@ -188,6 +193,19 @@ export class MapComponent implements OnInit {
         self.addKonvaListener();
       };
     }
+
+    loadImageFromServerPromise = (): Promise<string> => new Promise((resolve, reject) => {
+      let path = '';
+      this._api.downloadImage()
+        .subscribe((res: any) => {
+          const urlCreator = window.URL;
+          this.imageData = this.sanitizer.bypassSecurityTrustUrl(
+              urlCreator.createObjectURL(res)
+            );
+            path = this.imageData.changingThisBreaksApplicationSecurity;
+            resolve(path);
+        });
+    })
 
     addKonvaListener() {
       const self = this;

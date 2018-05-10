@@ -79,3 +79,5 @@ source/backend/docker/data
 # Dist folder
 **/dist
 source/backend/src/public
+source/backend/src/modules/services/generator/temp/*.csv
+source/backend/src/modules/services/generator/temp/*.ino

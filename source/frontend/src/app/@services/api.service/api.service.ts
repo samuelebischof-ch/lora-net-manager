@@ -151,6 +151,13 @@ export class ApiService {
     });
   }
 
+  downloadImage() {
+    return this._http.get('/api/konva/image', {
+      headers: new HttpHeaders().set('Authorization', 'bearer ' + this._authentication.getToken()),
+      responseType: 'blob',
+    });
+  }
+
   /********************************** meteo **********************************/
 
   getMeteo() {
