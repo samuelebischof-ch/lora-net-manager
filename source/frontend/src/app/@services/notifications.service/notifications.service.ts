@@ -28,7 +28,6 @@ export class NotificationsService {
   async connectEvents() {
     this.checkAndConnect();
     while (!this._authentication.isAuthenticated()) {
-      console.log('Not authenticated');
       await delay(1000);
       await this.checkAndConnect();
     }
@@ -38,7 +37,6 @@ export class NotificationsService {
   async checkAndConnect() {
     if (this._authentication.isAuthenticated()) {
       this.subscribeToNotifications();
-      console.log('Authenticated');
       this._ws.getEvents().subscribe(res => {
         console.log(res);
         this.snackBar.open(res.deveui + ' ' + res.event, 'Close');

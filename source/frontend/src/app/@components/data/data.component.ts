@@ -75,7 +75,6 @@ export class DataComponent implements OnInit, OnChanges {
   }
 
   roomClicked(name) {
-    console.log(name);
     this.devicesByRoom.forEach(room => {
       if (room.name === name) {
         room.expanded = true;
@@ -94,11 +93,12 @@ export class DataComponent implements OnInit, OnChanges {
 
   getDevicesByRoom() {
     this._api.getDevicesByRoom().subscribe(res => {
-      this.devicesByRoom = res;
-      this.devicesByRoom.forEach(room => {
-        this.roomList.push(room.name);
-      });
-      // console.log(res);
+      if (res !== undefined) {
+        this.devicesByRoom = res;
+        this.devicesByRoom.forEach(room => {
+          this.roomList.push(room.name);
+        });
+      }
     });
   }
 

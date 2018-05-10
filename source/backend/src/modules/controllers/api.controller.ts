@@ -1,12 +1,14 @@
-import { Controller, Get, Post, Delete, Param, Query, Body, Res } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, Query, Body, Res, Req, UseInterceptors, FileInterceptor, UploadedFile } from '@nestjs/common';
 import { RealmService } from '../services/realm/realm.service';
 import { GotthardpService } from '../services/gotthardp/gotthardp.service';
 import { MeteoService } from '../services/meteo/meteo.service';
 import { Gateway } from '../../../../shared/interfaces/gateway.interface';
 import { Device } from '../../../../shared/interfaces/device.interface';
-import * as crypto from 'crypto';
 import { LoggerService } from '../services/logger/logger.service';
 import { GeneratorService } from '../services/generator/generator.service';
+import * as crypto from 'crypto';
+import * as path from 'path';
+import * as fs from 'fs';
 
 // TODO: check async working
 @Controller('api')
@@ -166,6 +168,22 @@ export class APIController {
         @Post('konva')
         async saveKonva(@Body() data) {
             await this._realm.saveKonva(data);
+        }
+
+        @Post('konva/image')
+        @UseInterceptors(FileInterceptor('file', { dest: './' }))
+        uploadFile(@UploadedFile() file) {
+            const self = this;
+            console.log(file);
+            const oldpath = file.path;
+            const newpath = './src/public/assets/images/plan.png';
+            fs.rename(oldpath, newpath, function (err) {
+                if (err) {
+                    console.log(err);
+                }
+                // res.write('File uploaded and moved!');
+                // res.end();
+            });
         }
         
         /*********************************** meteo ***********************************/

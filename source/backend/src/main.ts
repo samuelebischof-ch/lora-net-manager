@@ -38,7 +38,7 @@ async function bootstrap() {
 
 	app.use(express.static(path.join(__dirname, 'public')));
 	app.set('views', __dirname + '/views');
-  app.set('view engine', 'html');
+	app.set('view engine', 'html');
 	
 	// run setup function
 	const setup = app.select(ModulesModule).get(SetupService);

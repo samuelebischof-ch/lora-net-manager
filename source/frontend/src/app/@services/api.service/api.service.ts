@@ -144,6 +144,13 @@ export class ApiService {
     }
   }
 
+  uploadImage(uploadData) {
+    console.log(uploadData);
+    return this._http.post('/api/konva/image', uploadData, {
+      headers: new HttpHeaders().set('Authorization', 'bearer ' + this._authentication.getToken())
+    });
+  }
+
   /********************************** meteo **********************************/
 
   getMeteo() {

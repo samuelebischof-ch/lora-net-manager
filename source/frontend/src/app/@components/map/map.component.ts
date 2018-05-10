@@ -31,34 +31,38 @@ export class MapComponent implements OnInit {
     id: 'background',
     name: 'background',
   };
+  private roomsArray = []; // list of room elements
+
   @Input() roomList = []; // list of rooms
   @Output() roomClicked: EventEmitter<string> = new EventEmitter<string>();
-  private roomsArray = [ ]; // list of room elements
 
   constructor(private _api: ApiService,
     public dialog: MatDialog) {}
 
-    ngOnInit() {
+    async ngOnInit() {
       // reload the canvas from server
-      this.loadKonvaFromServer();
-      // TODO: remove lines
       this.selectImage();
+      await this.loadKonvaFromServer();
+    }
+
+    fileChangeEvent(event) {
+      const file = event.target.files[0];
+      const uploadData = new FormData();
+      uploadData.append('file', file, file.name);
+      this._api.uploadImage(uploadData).subscribe(res => {
+        this.loadKonvaFromServer();
+      });
     }
 
     loadKonvaFromServer() {
       const self = this;
-      this.loadKonva();
       this._api.loadKonva().subscribe(res => {
+        console.log(res);
         if (res !== null && res !== undefined) {
           self.backgroundImg = (res as StoreData).backgroundImg;
           self.roomsArray = (res as StoreData).roomsArray;
         }
         this.loadKonva();
-        // TODO: check
-        setTimeout(() => {
-          this.loadKonva();
-          this.saveKonva();
-        }, 1000);
       });
     }
 
@@ -70,7 +74,6 @@ export class MapComponent implements OnInit {
       this.backgroundImg.height = height;
       this.container.nativeElement.style.width = width + 'px';
       this.container.nativeElement.style.height = height + 'px';
-      this.loadKonva();
     }
 
     // click on room
@@ -217,7 +220,8 @@ export class MapComponent implements OnInit {
         }
       });
 
-       // on tap TODO: fix to only one function
+       // on tap
+       // TODO: fix to only one function
        this.stage.on('tap', function (e) {
         if (self.modus === 'draw') {
           // if click on empty area - remove all transformers
