@@ -537,7 +537,6 @@ export class RealmService {
                                 value_door: 'Door',
                                 value_light: 'Light'
                             }
-                            console.log('push')
                             this.push(JSON.stringify(header));
                             if (length === 0) {
                                 this.push(null);
@@ -784,7 +783,14 @@ export class RealmService {
                     try {
                         let setting = realm.objectForPrimaryKey('Setting', 0);
                         const locationData = (realm.objectForPrimaryKey('Setting', 0) as any);
-                        locations = { locations: locationData.locations, apikey: locationData.apikey }
+                        let locationsArray = [];
+                        for (const key in locationData.locations) {
+                            if (locationData.locations.hasOwnProperty(key)) {
+                                const loc = locationData.locations[key];
+                                locationsArray.push(loc);
+                            }
+                        }
+                        locations = { locations: locationsArray, apikey: locationData.apikey }
                     } catch (error) {
                         this._logger.error('at getLocations(): ' + error);
                     }
@@ -793,6 +799,29 @@ export class RealmService {
                     this._logger.error('at getLocations(): ' + error);
                 });
                 return locations;
+            }
+
+            async removeLocation(location: string) {
+                await this.OpenedRealm.then(realm => {
+                    try {
+                        realm.write(() => {
+                            let setting = realm.objectForPrimaryKey('Setting', 0);
+                            if (setting && setting !== undefined) {
+                                let locations = (setting as any).locations;
+                                const index = locations.indexOf(location);
+                                if (index > -1) {
+                                    locations.splice(index, 1);
+                                }
+                                this.removeDevice(location);
+                            }
+                        });
+                    } catch (error) {
+                        this._logger.error('at removeLocation(): ' + error);
+                    }
+                })
+                .catch(error => {
+                    this._logger.error('at removeLocation(): ' + error);
+                });
             }
             
         }

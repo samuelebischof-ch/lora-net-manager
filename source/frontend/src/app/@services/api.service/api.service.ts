@@ -169,12 +169,29 @@ export class ApiService {
     }
   }
 
-  saveLocation(location) {
+  getLocations() {
+    if (this._authentication.isAuthenticated()) {
+      return this._http.get('/api/meteo/locations/', {
+        headers: new HttpHeaders().set('Authorization', 'bearer ' + this._authentication.getToken())
+        .append('Content-Type', 'application/json')
+      });
+    }
+  }
+
+  saveLocation(location: string) {
     if (this._authentication.isAuthenticated()) {
       return this._http.post('/api/meteo/', { location }, {
         headers: new HttpHeaders().set('Authorization', 'bearer ' + this._authentication.getToken())
         .append('Content-Type', 'application/json')
       });
+    }
+  }
+
+  removeLocation(location: string) {
+    if (this._authentication.isAuthenticated()) {
+      return this._http.delete('/api/meteo/' + location, {
+        headers: new HttpHeaders().set('Authorization', 'bearer ' + this._authentication.getToken())
+      }).subscribe();
     }
   }
 

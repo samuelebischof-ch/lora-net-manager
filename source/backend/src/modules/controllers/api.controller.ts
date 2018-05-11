@@ -140,7 +140,6 @@ export class APIController {
         async getCSV(@Param() param, @Res() res) {
             const self = this;
             let filePath = await this._generator.genCSV(param.deveui);
-            console.log(filePath);
             res.download(filePath, function(err){
                 if (err) {
                     self._logger.error(err);
@@ -174,7 +173,6 @@ export class APIController {
         async getFile(@Param() param, @Res() res) {
             const self = this;
             let filePath = './src/blob/plan.png';
-            console.log(filePath);
             res.download(filePath, function(err){
                 if (err) {
                     self._logger.error(err);
@@ -186,7 +184,6 @@ export class APIController {
         @UseInterceptors(FileInterceptor('file', { dest: './' }))
         uploadFile(@UploadedFile() file) {
             const self = this;
-            console.log(file);
             const oldpath = file.path;
             const newpath = './src/blob/plan.png';
             fs.rename(oldpath, newpath, function (err) {
@@ -202,10 +199,20 @@ export class APIController {
         async loadMeteo() {
             // return await this._meteo.getMeteo();
         }
+
+        @Get('meteo/locations')
+        async getLocations() {
+            return await this._realm.getLocations();
+        }
         
         @Post('meteo')
         async saveLocation(@Body() req) {
             await this._meteo.addLocation(req.location);
+        }
+
+        @Delete('meteo/:location')
+        async removeLocation(@Param() param) {
+            await this._realm.removeLocation(param.location);
         }
         
     }

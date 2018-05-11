@@ -1,14 +1,21 @@
-<div id="meteo" *ngIf="meteo">
-  <div id="header">
-    <div>
-      <!-- <span>{{meteo.main.temp}}˚C Lugano</span> -->
-    </div>
-  </div>
-  <div id="body">
-    {{meteo.main.temp}}˚C
-    <br>
-    {{meteo.main.pressure}} hPa
-    <br>
-    {{meteo.main.humidity}} %
-  </div>
-</div>
+<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+
+  <mat-expansion-panel-header>
+
+    <mat-panel-title>
+      METEO
+    </mat-panel-title>
+
+  </mat-expansion-panel-header>
+
+  <span style="height: 80px;"></span>
+  <mat-form-field>
+    <input matInput placeholder="Location" (keyup.enter)="addLocation()" type="string" [ngModel]="location" (ngModelChange)="location = $event">
+  </mat-form-field>
+  <button mat-button color="primary" (click)="addLocation()" style="width: 100%;">Add location</button>
+
+  <mat-list role="list">
+    <app-lmeteo *ngFor="let l of locations" [location]="l" (valuesChanged)='getLocations()'></app-lmeteo>
+  </mat-list>
+
+</mat-expansion-panel>

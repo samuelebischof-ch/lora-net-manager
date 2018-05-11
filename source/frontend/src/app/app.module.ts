@@ -44,6 +44,7 @@ import { MapComponent, MapDialogComponent } from './@components/map/map.componen
 import { DataComponent } from './@components/data/data.component';
 import { SetupComponent } from './@pages/setup/setup.component';
 import { MeteoComponent } from './@components/meteo/meteo.component';
+import { LmeteoComponent } from './@components/meteo/lmeteo/lmeteo.component';
 
 import { AuthenticationService } from './@services/authentication.service/authentication.service';
 import { NotificationsService } from './@services/notifications.service/notifications.service';
@@ -81,6 +82,7 @@ import { environment } from '../environments/environment';
     HourPipe,
     ObjectkeysPipe,
     SensornamePipe,
+    LmeteoComponent,
   ],
   imports: [
     BrowserAnimationsModule,

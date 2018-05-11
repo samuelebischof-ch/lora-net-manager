@@ -16,9 +16,7 @@ export class MeteoService {
         const locationData = await this._realm.getLocations();
         const apikey = locationData.apikey;
         const arrayMeteo = [];
-        if (locationData.locations.length > 0) {
-            for (let key in locationData.locations) {
-                const location = locationData.locations[key];
+        locationData.locations.forEach(async location => {
                 const urlOptions = {
                     url: 'http://api.openweathermap.org/data/2.5/weather?q=',
                     method: 'GET',
@@ -33,8 +31,7 @@ export class MeteoService {
                 } catch (err) {
                     console.error('ERROR at getGateways(): ' + err);
                 }
-            }
-        }
+        });
         return arrayMeteo;
     }
     
