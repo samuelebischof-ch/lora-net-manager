@@ -19,10 +19,11 @@ export class LmeteoComponent implements OnInit {
   removeLocation() {
     const r = confirm('Confirm deletion!');
     if (r === true) {
-      this._api.removeLocation(this.location);
-      this.valuesChanged.emit();
-      this.snackBar.open('Location removed', 'Close', {
-        duration: 3000
+      this._api.removeLocation(this.location).subscribe(res => {
+        this.valuesChanged.emit();
+        this.snackBar.open('Location removed', 'Close', {
+          duration: 3000
+        });
       });
     }
   }

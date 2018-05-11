@@ -19,10 +19,11 @@ export class DeviceComponent implements OnInit {
     removeDevice() {
       const r = confirm('Confirm deletion!');
       if (r === true) {
-        this._api.removeDevice(this.device.deveui);
-        this.valuesChanged.emit();
-        this.snackBar.open('Node removed', 'Close', {
-          duration: 3000
+        this._api.removeDevice(this.device.deveui).subscribe(res => {
+          this.valuesChanged.emit();
+          this.snackBar.open('Node removed', 'Close', {
+            duration: 3000
+          });
         });
       }
     }

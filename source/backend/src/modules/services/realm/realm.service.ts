@@ -267,29 +267,32 @@ export class RealmService {
             * @param deveui
             * @description removes the device with pk deveui
             */
-            async removeDevice(deveui: string) {
-                this.OpenedRealm.then(realm => {
-                    try {
-                        let device: DeviceDB = realm.objectForPrimaryKey('Device', deveui)
-                        if (device.devaddr !== null && device.devaddr !== undefined) this._gotthardp.removeNode(device.devaddr);
-                        realm.write(() => {
-                            const dataSheet = (realm.objectForPrimaryKey('Device', deveui) as DeviceDB).data_sheet;
-                            for (const key in dataSheet) {
-                                if (dataSheet.hasOwnProperty(key)) {
-                                    const element = dataSheet[key];
-                                    realm.delete(element);
+            removeDevice(deveui: string) {
+                new Promise((resolve, reject) => {
+                    this.OpenedRealm.then(realm => {
+                        try {
+                            let device: DeviceDB = realm.objectForPrimaryKey('Device', deveui)
+                            if (device.devaddr !== null && device.devaddr !== undefined) this._gotthardp.removeNode(device.devaddr);
+                            realm.write(() => {
+                                const dataSheet = (realm.objectForPrimaryKey('Device', deveui) as DeviceDB).data_sheet;
+                                for (const key in dataSheet) {
+                                    if (dataSheet.hasOwnProperty(key)) {
+                                        const element = dataSheet[key];
+                                        realm.delete(element);
+                                    }
                                 }
-                            }
-                            realm.delete(device.data_sheet);
-                            realm.delete(device.sensor_readings);
-                            realm.delete(device);
-                        });
-                    } catch (error) {
+                                realm.delete(device.data_sheet);
+                                realm.delete(device.sensor_readings);
+                                realm.delete(device);
+                                resolve();
+                            });
+                        } catch (error) {
+                            this._logger.error('at removeDevice(): ' + error);
+                        }
+                    })
+                    .catch(error => {
                         this._logger.error('at removeDevice(): ' + error);
-                    }
-                })
-                .catch(error => {
-                    this._logger.error('at removeDevice(): ' + error);
+                    });
                 });
             }
             
@@ -801,26 +804,29 @@ export class RealmService {
                 return locations;
             }
 
-            async removeLocation(location: string) {
-                await this.OpenedRealm.then(realm => {
-                    try {
-                        realm.write(() => {
-                            let setting = realm.objectForPrimaryKey('Setting', 0);
-                            if (setting && setting !== undefined) {
-                                let locations = (setting as any).locations;
-                                const index = locations.indexOf(location);
-                                if (index > -1) {
-                                    locations.splice(index, 1);
+            removeLocation(location: string) {
+                new Promise((resolve, reject) => {
+                    this.OpenedRealm.then(realm => {
+                        try {
+                            realm.write(async () => {
+                                let setting = realm.objectForPrimaryKey('Setting', 0);
+                                if (setting && setting !== undefined) {
+                                    let locations = (setting as any).locations;
+                                    const index = locations.indexOf(location);
+                                    if (index > -1) {
+                                        locations.splice(index, 1);
+                                    }
+                                    await this.removeDevice(location);
+                                    resolve('success');
                                 }
-                                this.removeDevice(location);
-                            }
-                        });
-                    } catch (error) {
+                            });
+                        } catch (error) {
+                            this._logger.error('at removeLocation(): ' + error);
+                        }
+                    })
+                    .catch(error => {
                         this._logger.error('at removeLocation(): ' + error);
-                    }
-                })
-                .catch(error => {
-                    this._logger.error('at removeLocation(): ' + error);
+                    });
                 });
             }
             

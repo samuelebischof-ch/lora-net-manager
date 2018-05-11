@@ -125,10 +125,15 @@ export class APIController {
         * @description removes the device from the gotthardp server and the realm DB
         */
         @Delete('device/:deveui')
-        async removeDevice(@Param() param) {
-            await this._gotthardp.removeDevice(param.deveui);
-            await this._realm.removeDevice(param.deveui);
-            this._logger.success('device ' + param.deveui + ' removed');
+        async removeDevice(@Param() param, @Res() res) {
+            try {
+                await this._gotthardp.removeDevice(param.deveui);
+                await this._realm.removeDevice(param.deveui);
+                this._logger.success('device ' + param.deveui + ' removed');
+                res.send({ status: 'OK' });
+              } catch (error) {
+                this._logger.error(error);
+              }
         }
         
         @Get('data/:query?')
@@ -211,8 +216,13 @@ export class APIController {
         }
 
         @Delete('meteo/:location')
-        async removeLocation(@Param() param) {
-            await this._realm.removeLocation(param.location);
+        async removeLocation(@Param() param, @Res() res) {
+            try {
+                await this._realm.removeLocation(param.location);
+                res.send({ status: 'OK' });
+              } catch (error) {
+                this._logger.error(error);
+              }
         }
         
     }

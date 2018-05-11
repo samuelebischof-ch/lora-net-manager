@@ -36,7 +36,7 @@ export class GotthardpService {
      * @description returns the list of gatewy registered to gotthardp
      */
     async getGateways(): Promise<Array<Gateway>> {
-        const options = Object.assign({}, loRaServerOptions);
+        const options: any = Object.assign({}, loRaServerOptions);
         options.uri += 'api/gateways';
         options.method = 'GET';
         try {
@@ -53,7 +53,7 @@ export class GotthardpService {
      * @description adds a gateway from the settings in gotthardp.config.json to the server
      */
     async addGateway(body) {
-        const options = Object.assign({}, loRaServerOptions);
+        const options: any = Object.assign({}, loRaServerOptions);
         options.uri += 'api/gateways';
         options.method = 'POST';
         options.json = Object.assign({}, gatewayOptions);
@@ -73,7 +73,7 @@ export class GotthardpService {
      * @description removes the gateway from the gotthardp server
      */
     async removeGateway(mac: string) {
-        const options = Object.assign({}, loRaServerOptions);
+        const options: any = Object.assign({}, loRaServerOptions);
         options.uri += 'api/gateways/' + mac;
         options.method = 'DELETE';
         try {
@@ -92,7 +92,7 @@ export class GotthardpService {
      * @description adds a network from the settings in gotthardp.config.json to the server
      */
     addNetwork() {
-        const options = Object.assign({}, loRaServerOptions);
+        const options: any = Object.assign({}, loRaServerOptions);
         options.uri += 'api/networks';
         options.method = 'POST';
         options.json = Object.assign({}, networkOptions);
@@ -108,7 +108,7 @@ export class GotthardpService {
      * @description adds a profile from the settings in gotthardp.config.json to the server
      */
     addProfile() {
-        const options = Object.assign({}, loRaServerOptions);
+        const options: any = Object.assign({}, loRaServerOptions);
         options.uri += 'api/profiles';
         options.method = 'POST';
         options.json = Object.assign({}, profileOptions);
@@ -124,7 +124,7 @@ export class GotthardpService {
      * @description adds a handler from the settings in gotthardp.config.json to the server
      */
     addHandler() {
-        const options = Object.assign({}, loRaServerOptions);
+        const options: any = Object.assign({}, loRaServerOptions);
         options.uri += 'api/handlers';
         options.method = 'POST';
         options.json = Object.assign({}, handlerOptions);
@@ -140,7 +140,7 @@ export class GotthardpService {
      * @description adds a connector from the settings in gotthardp.config.json to the server
      */
     addConnectors() {
-        const options = Object.assign({}, loRaServerOptions);
+        const options: any = Object.assign({}, loRaServerOptions);
         options.uri += 'api/connectors';
         options.method = 'POST';
         // tslint:disable-next-line:forin
@@ -160,7 +160,7 @@ export class GotthardpService {
      * @description returns the list of gatewy registered to gotthardp
      */
     async getDevices(): Promise<Array<Device>> {
-        const options = Object.assign({}, loRaServerOptions);
+        const options: any = Object.assign({}, loRaServerOptions);
         options.uri += 'api/devices';
         options.method = 'GET';
         try {
@@ -177,7 +177,7 @@ export class GotthardpService {
      * @description adds a device from the settings in gotthardp.config.json to the server
      */
     addDevice(body) {
-        const options = Object.assign({}, loRaServerOptions);
+        const options: any = Object.assign({}, loRaServerOptions);
         options.uri += 'api/devices';
         options.method = 'POST';
         options.json = Object.assign({}, deviceOptions);
@@ -202,7 +202,7 @@ export class GotthardpService {
      * @description removes the device from the gotthardp server
      */
     async removeDevice(deveui: string) {
-        const options = Object.assign({}, loRaServerOptions);
+        const options: any = Object.assign({}, loRaServerOptions);
         options.uri += 'api/devices/' + deveui;
         options.method = 'DELETE';
         try {
@@ -220,7 +220,7 @@ export class GotthardpService {
      * @description removes the node (active device) from the gotthardp server
      */
     async removeNode(devaddr: string) {
-        const options = Object.assign({}, loRaServerOptions);
+        const options: any = Object.assign({}, loRaServerOptions);
         options.uri += 'api/nodes/' + devaddr;
         options.method = 'DELETE';
         try {
@@ -236,7 +236,7 @@ export class GotthardpService {
      * @description sends a downlink to the device with id devaddr
      */
     downlinkTo(devaddr: string, frame) {
-        const options = Object.assign({}, loRaServerOptions);
+        const options: any = Object.assign({}, loRaServerOptions);
         options.uri += 'in/' + devaddr;
         options.method = 'POST';
         options.headers = {
@@ -256,7 +256,7 @@ export class GotthardpService {
      * @description checks if the LoRaServer is up and running
      */
     async pingGotthardp() {
-        const options = Object.assign({}, loRaServerOptions);
+        const options: any = Object.assign({}, loRaServerOptions);
         options.uri += 'api/servers';
         options.method = 'GET';
         try {

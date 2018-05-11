@@ -81,7 +81,7 @@ export class ApiService {
     if (this._authentication.isAuthenticated()) {
       return this._http.delete('/api/device/' + deveui, {
         headers: new HttpHeaders().set('Authorization', 'bearer ' + this._authentication.getToken())
-      }).subscribe();
+      });
     }
   }
 
@@ -191,7 +191,7 @@ export class ApiService {
     if (this._authentication.isAuthenticated()) {
       return this._http.delete('/api/meteo/' + location, {
         headers: new HttpHeaders().set('Authorization', 'bearer ' + this._authentication.getToken())
-      }).subscribe();
+      });
     }
   }
 
