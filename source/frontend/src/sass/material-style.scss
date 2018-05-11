@@ -276,6 +276,7 @@
 }
 
 .mat-expansion-panel-header {
+  background: rgba(2, 150, 213, 0.05); /* TODO check */
   font-family: Roboto, "Helvetica Neue", sans-serif;
   font-size: 15px;
   font-weight: 400
@@ -283,6 +284,10 @@
 
 .mat-expansion-panel-content {
   font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif
+}
+
+.mat-expansion-panel-content .mat-expansion-panel-body {
+  padding-top: 20px;
 }
 
 .mat-form-field {
@@ -1279,11 +1284,6 @@ input.mat-input-element {
 
 .mat-action-row {
   border-top-color: rgba(0, 0, 0, .12)
-}
-
-.mat-expansion-panel-header {
-  background: rgba(2, 150, 213, 0.05); /* TODO check */
-  /* font-size: 1.2em; */
 }
 
 .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:not([aria-disabled=true]).cdk-keyboard-focused,

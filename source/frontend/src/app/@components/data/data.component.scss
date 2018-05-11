@@ -9,7 +9,7 @@ mat-card-title {
   margin: 0;
   background-color: rgb(2, 150, 213);
   width: calc(100% - 40px);
-  height: calc(20px);
+  height: 20px;
   left: 0;
   top: 0;
   position: absolute;
@@ -44,4 +44,20 @@ mat-form-field {
 
 .dateField {
   margin: 20px;
+}
+
+#spacer {
+  height: 50px;
+  margin: 0;
+  background-color: rgba(2, 150, 213, 0.7);
+  height: 20px;
+  color: white;
+  font-size: 1.2em;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+#spacer span {
+  padding: 20px;
+  vertical-align: middle;
 }

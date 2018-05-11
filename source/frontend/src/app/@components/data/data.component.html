@@ -24,10 +24,22 @@
               <mat-datepicker #pickerEnd></mat-datepicker>
             </mat-form-field>
           </mat-expansion-panel>
+          
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Map
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-map [roomList]="roomList" (roomClicked)="roomClicked($event)"></app-map>
+          </mat-expansion-panel>
+          
         </mat-accordion>
 
-        <app-map [roomList]="roomList" (roomClicked)="roomClicked($event)"></app-map>
-
+        <div id="spacer">
+          <span>ROOMS</span>
+        </div>
+        
         <mat-accordion>
           <mat-expansion-panel *ngFor="let d of devicesByRoom" [expanded]="d.expanded">
             <mat-expansion-panel-header>
