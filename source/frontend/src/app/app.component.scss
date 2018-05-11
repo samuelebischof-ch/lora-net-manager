@@ -1,4 +1,5 @@
 @import '~sass/variables';
+
 .example-container {
   position: absolute;
   top: 0;
@@ -20,7 +21,7 @@
     bottom: 0;
     height: 50px;
     width: 30px;
-    background: rgb(2, 150, 213);
+    background: $primaryColor;
     cursor: pointer;
     position: absolute;
     z-index: 100;

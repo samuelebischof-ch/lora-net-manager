@@ -1,5 +1,19 @@
+$primaryColor: rgb(2, 150, 213);
+$primaryColorLight: lighten( $primaryColor, 20% );
+$primaryColor005: rgba($primaryColor, .05);
+$primaryColor01: rgba($primaryColor, .1);
+$primaryColor02: rgba($primaryColor, .2);
+$primaryColor03: rgba($primaryColor, .3);
+$primaryColor04: rgba($primaryColor, .4);
+$primaryColor05: rgba($primaryColor, .5);
+$primaryColor06: rgba($primaryColor, .6);
+$primaryColor07: rgba($primaryColor, .7);
+$primaryColor08: rgba($primaryColor, .8);
+$primaryColor09: rgba($primaryColor, .9);
+$primaryColorMSBg: lighten( $primaryColor, 50% );
+
 $sidebarWidth: 100px;
 $sidebarColor: rgb(30, 30, 30);
 $sidebarBtnColor: rgb(20, 20, 20);
-$sidebarBtnColorHover: rgba(2, 150, 213, 0.5);
+$sidebarBtnColorHover: $primaryColor05;
 $sidebarBtnIconSize: 50px;

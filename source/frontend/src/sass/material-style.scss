@@ -1,3 +1,5 @@
+@import '~sass/variables';
+
 .mat-elevation-z0 {
   box-shadow: 0 0 0 0 rgba(0, 0, 0, .2), 0 0 0 0 rgba(0, 0, 0, .14), 0 0 0 0 rgba(0, 0, 0, .12)
 }
@@ -276,7 +278,7 @@
 }
 
 .mat-expansion-panel-header {
-  background: rgba(2, 150, 213, 0.05); /* TODO check */
+  background: $primaryColor005;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   font-size: 15px;
   font-weight: 400
@@ -303,7 +305,7 @@
 
 .mat-form-field-prefix .mat-icon,
 .mat-form-field-suffix .mat-icon {
-  color: rgba(2, 150, 213, 1);
+  color: $primaryColor;
   font-size: 150%;
   line-height: 1.125
 }
@@ -810,7 +812,7 @@ input.mat-input-element {
 .mat-button.mat-primary .mat-button-focus-overlay,
 .mat-icon-button.mat-primary .mat-button-focus-overlay,
 .mat-stroked-button.mat-primary .mat-button-focus-overlay {
-  background-color: rgba(2, 150, 213, .12)
+  background-color: $primaryColor01;
 }
 
 .mat-button.mat-accent .mat-button-focus-overlay,
@@ -822,7 +824,7 @@ input.mat-input-element {
 .mat-button.mat-warn .mat-button-focus-overlay,
 .mat-icon-button.mat-warn .mat-button-focus-overlay,
 .mat-stroked-button.mat-warn .mat-button-focus-overlay {
-  background-color: rgba(2, 150, 213, .12)
+  background-color: $primaryColor01;
 }
 
 .mat-button[disabled] .mat-button-focus-overlay,
@@ -834,7 +836,7 @@ input.mat-input-element {
 .mat-button.mat-primary,
 .mat-icon-button.mat-primary,
 .mat-stroked-button.mat-primary {
-  color: rgb(2, 150, 213)
+  color: $primaryColor
 }
 
 .mat-button.mat-accent,
@@ -956,7 +958,7 @@ input.mat-input-element {
 }
 
 .mat-button.mat-primary .mat-ripple-element {
-  background-color: rgba(2, 150, 213, .1)
+  background-color: $primaryColor01;
 }
 
 .mat-button.mat-accent .mat-ripple-element {
@@ -1275,9 +1277,9 @@ input.mat-input-element {
 
 .mat-expansion-panel {
   background: rgb(255, 255, 255);
-  color: rgb(2, 150, 213);
+  color: $primaryColor;
   box-shadow: none!important;
-  border: rgba(2, 150, 213, 0.3);
+  border: $primaryColor03;
   border-width: 1px;
   border-style: solid;
 }
@@ -1289,7 +1291,7 @@ input.mat-input-element {
 .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:not([aria-disabled=true]).cdk-keyboard-focused,
 .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:not([aria-disabled=true]).cdk-program-focused,
 .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:not([aria-disabled=true]):hover {
-  background: rgba(2, 150, 213, 0.2)
+  background: $primaryColor02
 }
 
 .mat-expansion-panel-header-title {
@@ -1311,7 +1313,7 @@ input.mat-input-element {
 }
 
 .mat-form-field-label {
-  color: rgba(2, 150, 213, .6)
+  color: $primaryColor06
 }
 
 .mat-hint {
@@ -1319,7 +1321,7 @@ input.mat-input-element {
 }
 
 .mat-focused .mat-form-field-label {
-  color: rgb(2, 150, 213)
+  color: $primaryColor
 }
 
 .mat-focused .mat-form-field-label.mat-accent {
@@ -1335,7 +1337,7 @@ input.mat-input-element {
 }
 
 .mat-form-field-underline {
-  background-color: rgba(2, 150, 213, .9)
+  background-color: $primaryColor09
 }
 
 .mat-form-field-disabled .mat-form-field-underline {
@@ -1345,7 +1347,7 @@ input.mat-input-element {
 }
 
 .mat-form-field-ripple {
-  background-color: rgb(2, 150, 213)
+  background-color: $primaryColor
 }
 
 .mat-form-field-ripple.mat-accent {
@@ -1500,15 +1502,15 @@ input.mat-input-element {
 }
 
 .mat-progress-bar-background {
-  fill: #68cbe9
+  fill: $primaryColorLight
 }
 
 .mat-progress-bar-buffer {
-  background-color: #68cbe9
+  background-color: $primaryColorLight
 }
 
 .mat-progress-bar-fill::after {
-  background-color: rgb(2, 150, 213)
+  background-color: $primaryColor
 }
 
 .mat-progress-bar.mat-accent .mat-progress-bar-background {
@@ -1689,7 +1691,7 @@ input.mat-input-element {
 }
 
 .mat-slide-toggle.mat-primary.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
-  background-color: rgba(2, 150, 213, 0.5)
+  background-color: $primaryColor05
 }
 
 .mat-slide-toggle.mat-primary:not(.mat-checked) .mat-ripple-element {
@@ -1739,7 +1741,7 @@ input.mat-input-element {
 .mat-primary .mat-slider-thumb,
 .mat-primary .mat-slider-thumb-label,
 .mat-primary .mat-slider-track-fill {
-  background-color: rgb(2, 150, 213)
+  background-color: $primaryColor
 }
 
 .mat-primary .mat-slider-thumb-label-text {
@@ -1839,7 +1841,7 @@ input.mat-input-element {
 }
 
 .mat-step-header .mat-step-icon {
-  background-color: rgb(2, 150, 213);
+  background-color: $primaryColor;
   color: rgb(255, 255, 255)
 }
 
@@ -1904,12 +1906,12 @@ input.mat-input-element {
 .mat-tab-group.mat-primary .mat-tab-link:not(.mat-tab-disabled):focus,
 .mat-tab-nav-bar.mat-primary .mat-tab-label:not(.mat-tab-disabled):focus,
 .mat-tab-nav-bar.mat-primary .mat-tab-link:not(.mat-tab-disabled):focus {
-  background-color: rgba(2, 150, 213, 0.3)
+  background-color: $primaryColor03
 }
 
 .mat-tab-group.mat-primary .mat-ink-bar,
 .mat-tab-nav-bar.mat-primary .mat-ink-bar {
-  background-color: rgb(2, 150, 213)
+  background-color: $primaryColor
 }
 
 .mat-tab-group.mat-primary.mat-background-primary .mat-ink-bar,
@@ -1962,7 +1964,7 @@ input.mat-input-element {
 .mat-tab-group.mat-background-primary .mat-tab-links,
 .mat-tab-nav-bar.mat-background-primary .mat-tab-header,
 .mat-tab-nav-bar.mat-background-primary .mat-tab-links {
-  background-color: rgb(2, 150, 213)
+  background-color: $primaryColor
 }
 
 .mat-tab-group.mat-background-primary .mat-tab-label,
@@ -2106,12 +2108,12 @@ input.mat-input-element {
 }
 
 .mat-snack-bar-container {
-  background: rgb(216, 239, 249);
-  color: rgb(2, 150, 213);
+  background: $primaryColorMSBg;
+  color: $primaryColor;
   border-style: solid;
   border-bottom-style: hidden;
   border-width: 2px;
-  border-color: rgb(2, 150, 213);
+  border-color: $primaryColor;
 }
 
 .mat-simple-snackbar-action {
