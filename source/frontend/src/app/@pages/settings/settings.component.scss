@@ -1,7 +1,7 @@
 @import '~sass/variables';
 
 mat-card {
-  height: calc(100% - 48px);
+  height: 100%;
   overflow: hidden;
   padding: 0;
 }
@@ -27,7 +27,7 @@ mat-card-content {
   -ms-overflow-style: none;
 }
 
-mat-card-content::-webkit-scrollbar { 
+mat-card-content::-webkit-scrollbar {
   display: none;  // Safari and Chrome
 }
 

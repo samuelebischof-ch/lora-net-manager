@@ -4,12 +4,12 @@ import * as winstonRotator from 'winston-daily-rotate-file';
 
 const consoleConfig = [
   new winston.transports.Console({
-    'colorize': true
-  })
+    colorize: true,
+  }),
 ];
 
 const createLogger = new winston.Logger({
-  'transports': consoleConfig
+  transports: consoleConfig,
 });
 
 const successLogger = createLogger;
@@ -34,9 +34,10 @@ errorLogger.add(winstonRotator, {
 export class LoggerService {
 
   print(text: string) {
+    // tslint:disable-next-line:no-console
     console.log(text);
   }
-  
+
   success(event: string) {
     successLogger.info(event);
   }

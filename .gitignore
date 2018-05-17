@@ -81,3 +81,4 @@ source/backend/docker/data
 source/backend/src/public
 source/backend/src/modules/services/generator/temp/*.csv
 source/backend/src/modules/services/generator/temp/*.ino
+source/backend/src/blob/plan.png

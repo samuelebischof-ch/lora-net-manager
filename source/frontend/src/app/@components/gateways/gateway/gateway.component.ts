@@ -13,8 +13,10 @@ export class GatewayComponent implements OnInit {
   @Input() gateway: Gateway;
   @Output() valuesChanged = new EventEmitter();
 
-  constructor(private _api: ApiService,
-              public snackBar: MatSnackBar) { }
+  constructor(
+    private _api: ApiService,
+    public snackBar: MatSnackBar,
+  ) { }
 
   removeGateway() {
     const r = confirm('Confirm deletion!');
@@ -33,8 +35,8 @@ export class GatewayComponent implements OnInit {
     }
     if (this.gateway.ip_address === undefined) {
       this.gateway.ip_address = { ip: '0.0.0.0',
-                                  port: undefined,
-                                  ver: undefined };
+      port: undefined,
+      ver: undefined };
     }
   }
 

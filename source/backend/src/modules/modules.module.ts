@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { MeteoService } from './services/meteo/meteo.service';
-import { GotthardpService } from './services/gotthardp/gotthardp.service';
-import { GotthardpwsService } from './services/gotthardpws/gotthardpws.service';
-import { SetupService } from './services/setup/setup.service';
-import { GeneratorService } from './services/generator/generator.service';
 import { APIController } from './controllers/api.controller';
 import { LoraGateway } from './gateways/lora.gateway';
+import { GeneratorService } from './services/generator/generator.service';
+import { GotthardpService } from './services/gotthardp/gotthardp.service';
+import { GotthardpwsService } from './services/gotthardpws/gotthardpws.service';
+import { MeteoService } from './services/meteo/meteo.service';
+import { SetupService } from './services/setup/setup.service';
 
 @Module({
   imports: [
@@ -15,11 +15,11 @@ import { LoraGateway } from './gateways/lora.gateway';
   ],
   components: [
     LoraGateway,
-    SetupService,
-    MeteoService,
+    GeneratorService,
     GotthardpService,
     GotthardpwsService,
-    GeneratorService,
+    MeteoService,
+    SetupService,
   ],
 })
 export class ModulesModule {}

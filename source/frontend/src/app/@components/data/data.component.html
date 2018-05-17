@@ -24,7 +24,7 @@
               <mat-datepicker #pickerEnd></mat-datepicker>
             </mat-form-field>
           </mat-expansion-panel>
-          
+
           <mat-expansion-panel>
             <mat-expansion-panel-header>
               <mat-panel-title>
@@ -33,13 +33,13 @@
             </mat-expansion-panel-header>
             <app-map [roomList]="roomList" (roomClicked)="roomClicked($event)"></app-map>
           </mat-expansion-panel>
-          
+
         </mat-accordion>
 
         <div id="spacer">
           <span>ROOMS</span>
         </div>
-        
+
         <mat-accordion>
           <mat-expansion-panel *ngFor="let d of devicesByRoom" [expanded]="d.expanded">
             <mat-expansion-panel-header>
@@ -56,25 +56,25 @@
                 <button mat-button color="primary" (click)="toggleLiveView(r.deveui)" *ngIf="deveui.length === 0 || (r.deveui !== '' && deveui !== r.deveui)">Live visualisation</button>
                 <button mat-button color="primary" (click)="toggleLiveView(r.deveui)" *ngIf="r.deveui !== '' && deveui === r.deveui">
                   Close live visualisation</button>
-              </mat-list-item>
-            </mat-list>
-          </mat-expansion-panel>
-        </mat-accordion>
-      </split-area>
+                </mat-list-item>
+              </mat-list>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </split-area>
 
-      <!-- right part -->
+        <!-- right part -->
 
-      <split-area size="60">
-        <mat-progress-bar [mode]="barMode"></mat-progress-bar>
+        <split-area size="60">
+          <mat-progress-bar [mode]="barMode"></mat-progress-bar>
 
-        <!-- space -->
+          <!-- space -->
 
-        <app-card [deveui]="deveui" [startDate]="startDate.value" *ngIf="deveui.length > 0; else static_view"></app-card>
-        <ng-template #static_view>
-          <mat-tab-group *ngIf="lineChartLabels.length > 0;">
-            <ng-container *ngFor="let d of dataArray;">
-              <mat-tab *ngIf="hasValues(d.avg)" label="{{d.label}}">
-                <app-graph-simple [min]="d.min" [max]="d.max" [avg]="d.avg" [specialColor]="false" [lineChartData]="d.lineChartData" [lineChartLabels]="lineChartLabels"
+          <app-card [deveui]="deveui" [startDate]="startDate.value" *ngIf="deveui.length > 0; else static_view"></app-card>
+          <ng-template #static_view>
+            <mat-tab-group *ngIf="lineChartLabels.length > 0;">
+              <ng-container *ngFor="let d of dataArray;">
+                <mat-tab *ngIf="hasValues(d.avg)" label="{{d.label}}">
+                  <app-graph-simple [min]="d.min" [max]="d.max" [avg]="d.avg" [specialColor]="false" [lineChartData]="d.lineChartData" [lineChartLabels]="lineChartLabels"
                   [unit]="d.unit" [label]="d.label">
                 </app-graph-simple>
               </mat-tab>

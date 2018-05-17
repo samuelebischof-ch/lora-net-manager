@@ -22,26 +22,28 @@ export function toggleFullScreen(): void {
   if (!isFullScreen()) {
     const fsDocElem = <FsDocumentElement> document.documentElement;
 
-    if (fsDocElem.requestFullscreen)
+    if (fsDocElem.requestFullscreen) {
       fsDocElem.requestFullscreen();
-    else if (fsDocElem.msRequestFullscreen)
+    } else if (fsDocElem.msRequestFullscreen) {
       fsDocElem.msRequestFullscreen();
-    else if (fsDocElem.mozRequestFullScreen)
+    } else if (fsDocElem.mozRequestFullScreen) {
       fsDocElem.mozRequestFullScreen();
-    else if (fsDocElem.webkitRequestFullscreen)
+    } else if (fsDocElem.webkitRequestFullscreen) {
       fsDocElem.webkitRequestFullscreen();
-  }
-  else if (fsDoc.exitFullscreen)
+    }
+  } else if (fsDoc.exitFullscreen) {
     fsDoc.exitFullscreen();
-  else if (fsDoc.msExitFullscreen)
+  } else if (fsDoc.msExitFullscreen) {
     fsDoc.msExitFullscreen();
-  else if (fsDoc.mozCancelFullScreen)
+  } else if (fsDoc.mozCancelFullScreen) {
     fsDoc.mozCancelFullScreen();
-  else if (fsDoc.webkitExitFullscreen)
+  } else if (fsDoc.webkitExitFullscreen) {
     fsDoc.webkitExitFullscreen();
+  }
 }
 
 export function setFullScreen(full: boolean): void {
-  if (full !== isFullScreen())
+  if (full !== isFullScreen()) {
     toggleFullScreen();
+  }
 }

@@ -8,7 +8,9 @@ import { NotificationsService } from './@services/notifications.service/notifica
 })
 export class AppComponent implements OnInit {
 
-  constructor(private _notifications: NotificationsService) {}
+  constructor(
+    private _notifications: NotificationsService,
+  ) {}
 
   private iconName = 'keyboard_arrow_left';
   private opened = true;

@@ -6,6 +6,7 @@ import { ChartsModule } from 'ng2-charts-x';
 import { AngularSplitModule } from 'angular-split';
 import { MatNativeDateModule} from '@angular/material';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { WebWorkerService } from 'angular2-web-worker';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatListModule } from '@angular/material/list';
@@ -123,6 +124,7 @@ import { environment } from '../environments/environment';
   providers: [
     AuthenticationService,
     NotificationsService,
+    WebWorkerService,
     ApiService,
     WsService,
     DatePipe,

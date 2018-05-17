@@ -4,6 +4,7 @@ import { WsService } from '../../@services/ws.service/ws.service';
 import { Subscription } from 'rxjs';
 import { forEach } from '@angular/router/src/utils/collection';
 import { FormControl } from '@angular/forms';
+import { WebWorkerService } from 'angular2-web-worker';
 
 @Component({
   selector: 'app-data',
@@ -29,7 +30,10 @@ export class DataComponent implements OnInit, OnChanges {
   public startDate = new FormControl(new Date(new Date(Date.now()).setUTCHours(0, 0, 0, 0)));
   public endDate = new FormControl(new Date(new Date(Date.now()).setUTCHours(24, 0, 0, 0)));
 
-  constructor(private _api: ApiService) { }
+  constructor(
+    private _api: ApiService,
+    private _webWorkerService: WebWorkerService,
+  ) { }
 
   toggleLiveView(deveui: string | undefined) {
     if (deveui === undefined || this.deveui !== '') {
@@ -62,8 +66,7 @@ export class DataComponent implements OnInit, OnChanges {
       }
     }
     this.initializeDataArray();
-    this.initializeData();
-    // this.statistics();
+    await this.initializeData();
     this.barMode = 'determinate';
   }
 
@@ -103,9 +106,9 @@ export class DataComponent implements OnInit, OnChanges {
   }
 
   /**
-   * @name initializeDataArray
-   * @description initializes dataArray
-   */
+  * @name initializeDataArray
+  * @description initializes dataArray
+  */
   initializeDataArray() {
     if (this.apiDataArray.length > 0) {
       for (let i = 0; i < this.apiDataArray[0].data.length; i++) {
@@ -123,6 +126,8 @@ export class DataComponent implements OnInit, OnChanges {
 
   normalizeData(dataApiArray: Array<ApiData>) { // TODO: check for null data
 
+    console.log('Running on new thread');
+
     const timeline: Array<string> = [];
     const temp: Array<Temp> = [];
 
@@ -137,7 +142,7 @@ export class DataComponent implements OnInit, OnChanges {
         if (tPointer < temp.length && new Date(apiDataEl.date[dPointer]) > new Date(temp[tPointer].date)) { // se piu grande muovi a destra su temp
           // console.log('bigger')
           tPointer++;
-        // tslint:disable-next-line:max-line-length
+          // tslint:disable-next-line:max-line-length
         } else if (tPointer < temp.length && new Date(apiDataEl.date[dPointer]).setMilliseconds(0) === new Date(temp[tPointer].date).setMilliseconds(0)) { // se uguale inserisci
           const t: Temp = { date: '', data: [] };
           t.date = apiDataEl.date[dPointer];
@@ -197,8 +202,8 @@ export class DataComponent implements OnInit, OnChanges {
     return timeline;
   }
 
-  initializeData() {
-    this.lineChartLabels = this.normalizeData(this.apiDataArray);
+  async initializeData() {
+    this.lineChartLabels = await this.runNormalizeDataOnNewThread(this.apiDataArray);
 
     // puts data to dataArray and makes statistics
     for (let c = 0; c < this.apiDataArray.length; c++) {
@@ -243,6 +248,10 @@ export class DataComponent implements OnInit, OnChanges {
       if (element !== null) { hasValue = true; }
     });
     return hasValue;
+  }
+
+  runNormalizeDataOnNewThread(input) {
+    return this._webWorkerService.run(this.normalizeData, input);
   }
 
 }

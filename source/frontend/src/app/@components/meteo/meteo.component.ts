@@ -14,41 +14,43 @@ export class MeteoComponent implements OnInit {
   public location = '';
   public panelOpenState: boolean;
 
-  constructor(private _api: ApiService,
-              public snackBar: MatSnackBar) { }
+  constructor(
+    private _api: ApiService,
+    public snackBar: MatSnackBar,
+  ) { }
 
-    addLocation() {
-      if (this.isNewLocation(this.location)) {
-        this._api.saveLocation(this.location).subscribe(res => this.getLocations());
-        this.snackBar.open(this.location + ' added', 'Close', {
-          duration: 3000
-        });
-        this.location = '';
-      } else {
-        this.snackBar.open('Location already in Database', 'Close', {
-          duration: 3000
-        });
-      }
-    }
-
-    getLocations() {
-      this._api.getLocations().subscribe((meteo: any) => {
-        this.locations = meteo.locations;
+  addLocation() {
+    if (this.isNewLocation(this.location)) {
+      this._api.saveLocation(this.location).subscribe(res => this.getLocations());
+      this.snackBar.open(this.location + ' added', 'Close', {
+        duration: 3000
+      });
+      this.location = '';
+    } else {
+      this.snackBar.open('Location already in Database', 'Close', {
+        duration: 3000
       });
     }
-
-    isNewLocation(location: string): Boolean {
-      let isNew = true;
-      this.locations.forEach(loc => {
-        if (location === loc) {
-          isNew = false;
-        }
-      });
-      return isNew;
-    }
-
-    ngOnInit() {
-      this.getLocations();
-    }
-
   }
+
+  getLocations() {
+    this._api.getLocations().subscribe((meteo: any) => {
+      this.locations = meteo.locations;
+    });
+  }
+
+  isNewLocation(location: string): Boolean {
+    let isNew = true;
+    this.locations.forEach(loc => {
+      if (location === loc) {
+        isNew = false;
+      }
+    });
+    return isNew;
+  }
+
+  ngOnInit() {
+    this.getLocations();
+  }
+
+}

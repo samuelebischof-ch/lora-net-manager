@@ -1,13 +1,13 @@
 <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-  
+
   <mat-expansion-panel-header>
-    
+
     <mat-panel-title>
       DEVICES
     </mat-panel-title>
-    
+
   </mat-expansion-panel-header>
-  
+
   <span style="height: 80px;"></span>
   <div class="line">
     <mat-form-field>
@@ -26,7 +26,7 @@
     </mat-form-field>
   </div>
   <mat-accordion>
-    
+
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -40,14 +40,14 @@
         <input matInput placeholder="Room description" type="string" [ngModel]="room.description" (ngModelChange)="room.description = $event">
       </mat-form-field>
     </mat-expansion-panel>
-    
+
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
           Sensor
         </mat-panel-title>
       </mat-expansion-panel-header>
-      
+
       <mat-accordion>
         <mat-expansion-panel *ngFor="let key of dataSheet | objectkeys">
           <mat-expansion-panel-header>
@@ -76,21 +76,21 @@
             <input matInput placeholder="Description" type="string" [ngModel]="dataSheet[key].description" (ngModelChange)="dataSheet[key].description = $event">
           </mat-form-field>
         </mat-expansion-panel>
-        
+
       </mat-accordion>
-      
+
     </mat-expansion-panel>
-    
+
   </mat-accordion>
   <!-- <mat-form-field>
     <input matInput placeholder="DEVADDR" (keyup.enter)="createDevice()" type="string" [ngModel]="deveui" (ngModelChange)="deveui = $event">
   </mat-form-field> -->
   <button mat-button color="primary" (click)="addDevice()" style="width: 100%;">Add device</button>
-  
+
   <!-- <hr> -->
-  
+
   <mat-list role="list">
     <app-device *ngFor="let n of devices" [device]="n" (valuesChanged)='getDevices()'></app-device>
   </mat-list>
-  
+
 </mat-expansion-panel>

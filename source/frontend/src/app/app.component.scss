@@ -8,27 +8,19 @@
   right: 0;
 }
 
-// button {
-//   position: absolute;
-//   width: 40px !important;
-//   height: 40px;
-//   left: 0;
-//   top: 0;
-// }
-
 #button-div {
-    left: 0;
-    bottom: 0;
-    height: 50px;
-    width: 30px;
-    background: $primaryColor;
-    cursor: pointer;
-    position: absolute;
-    z-index: 100;
+  left: 0;
+  bottom: 0;
+  height: 50px;
+  width: 30px;
+  background: $primaryColor;
+  cursor: pointer;
+  position: absolute;
+  z-index: 100;
 }
 
 #toggleMenu {
-    padding-top: 12px;
-    padding-left: 2px;
-    display: block;
+  padding-top: 12px;
+  padding-left: 2px;
+  display: block;
 }

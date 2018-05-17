@@ -1,8 +1,12 @@
 {
+  "extends": [
+    "tslint-eslint-rules"
+  ],
   "rulesDirectory": [
     "node_modules/codelyzer"
   ],
   "rules": {
+    "no-constant-condition": true,
     "arrow-return-shorthand": true,
     "callable-types": true,
     "class-name": true,

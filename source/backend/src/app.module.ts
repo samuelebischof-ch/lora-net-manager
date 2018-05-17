@@ -5,12 +5,12 @@ import { GlobalModule } from './modules/global.module';
 import { AngularModule } from './modules/angular.module';
 
 @Module({
-  imports: [
-    ModulesModule,
-    AuthModule,
-    AngularModule,
-    GlobalModule,
-  ],
-  components: [],
+	imports: [
+		ModulesModule,
+		AuthModule,
+		AngularModule,
+		GlobalModule,
+	],
+	components: [],
 })
 export class ApplicationModule {}

@@ -1,19 +1,19 @@
 {
-    "jwt": {
-        "user": "admin",
-        "secret": "admin",
-        "expiration": 3600
+  "jwt": {
+    "user": "admin",
+    "secret": "admin",
+    "expiration": 3600
+  },
+  "gotthardpws": "ws://localhost:8080/ws/uplinks/LoRaHandler",
+  "gotthardpevtws": "ws://localhost:8080/ws/events",
+  "loRaServerOptions": {
+    "uri": "http://localhost:8080/",
+    "auth": {
+      "user": "admin",
+      "pass": "admin",
+      "sendImmediately": false
     },
-    "gotthardpws": "ws://localhost:8080/ws/uplinks/LoRaHandler",
-    "gotthardpevtws": "ws://localhost:8080/ws/events",
-    "loRaServerOptions": {
-        "uri": "http://localhost:8080/",
-        "auth": {
-            "user": "admin",
-            "pass": "admin",
-            "sendImmediately": false
-        },
-        "accept": "*/*"
-    },
-    "OWMApiKey": "7c319323c40f24a61f4fe2ec0fafbe0f"
+    "accept": "*/*"
+  },
+  "OWMApiKey": "7c319323c40f24a61f4fe2ec0fafbe0f"
 }

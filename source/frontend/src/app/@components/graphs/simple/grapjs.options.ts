@@ -11,13 +11,13 @@ export const Options = {
       id: 'x-axis-1',
     },
   ],
-    yAxes: [{
-      display: true,
-      type: 'linear',
-      position: 'left',
-      id: 'y-axis-1',
-    },
-  ]
+  yAxes: [{
+    display: true,
+    type: 'linear',
+    position: 'left',
+    id: 'y-axis-1',
+  },
+]
 },
 tooltips: {
   callbacks: {
