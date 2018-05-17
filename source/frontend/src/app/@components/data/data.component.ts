@@ -133,7 +133,7 @@ export class DataComponent implements OnInit, OnChanges {
 
     // (1) iterate over all different datasets and extract data
     let counter = 0;
-    dataApiArray.forEach(apiDataEl => {
+    for (const apiDataEl of dataApiArray) {
       // iterate in every dataset and push data to temp
       let dPointer = 0;
       let tPointer = 0;
@@ -182,7 +182,7 @@ export class DataComponent implements OnInit, OnChanges {
       }
 
       counter++;
-    });
+    }
 
     // (2) write data back to dataApiArray
     for (let i = 0; i < dataApiArray.length; i++) { // loop on different datasets
@@ -199,11 +199,11 @@ export class DataComponent implements OnInit, OnChanges {
       timeline.push(element.date);
     });
 
-    return timeline;
+    return [dataApiArray, timeline];
   }
 
   async initializeData() {
-    this.lineChartLabels = await this.runNormalizeDataOnNewThread(this.apiDataArray);
+    [this.apiDataArray, this.lineChartLabels] = await this.runNormalizeDataOnNewThread(this.apiDataArray);
 
     // puts data to dataArray and makes statistics
     for (let c = 0; c < this.apiDataArray.length; c++) {
