@@ -18,6 +18,10 @@ export class DeviceComponent {
     public snackBar: MatSnackBar,
   ) { }
 
+  /**
+   * @name removeDevice
+   * @description removes the device from the server
+   */
   removeDevice() {
     const r = confirm('Confirm deletion!');
     if (r === true) {
@@ -30,10 +34,18 @@ export class DeviceComponent {
     }
   }
 
+  /**
+   * @name getINO
+   * @description asks the server to generate the INO file
+   */
   getINO() {
     this._api.getDeviceINO(this.device.deveui);
   }
 
+  /**
+   * @name getCSV
+   * @description asks the server to generate a CSV with all sensor data
+   */
   getCSV() {
     this._api.getDataCSV(this.device.deveui);
   }

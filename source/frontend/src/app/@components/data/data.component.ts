@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ApiService } from '../../@services/api.service/api.service';
 import { WsService } from '../../@services/ws.service/ws.service';
 import { Subscription } from 'rxjs';
@@ -11,11 +11,10 @@ import { WebWorkerService } from 'angular2-web-worker';
   templateUrl: './data.component.html',
   styleUrls: ['./data.component.scss'],
 })
-export class DataComponent implements OnInit, OnChanges {
+export class DataComponent implements OnInit {
 
   public devicesByRoom;
   private apiDataArray: Array<ApiData> = [];
-  // Input of child element graph
   private dataArray: Array<DataArrayEl> = [];
   private lineChartLabels: Array<string> = [];
 
@@ -27,6 +26,8 @@ export class DataComponent implements OnInit, OnChanges {
 
   public direction = 'horizontal';
 
+  public liveMode = false;
+
   public startDate = new FormControl(new Date(new Date(Date.now()).setUTCHours(0, 0, 0, 0)));
   public endDate = new FormControl(new Date(new Date(Date.now()).setUTCHours(24, 0, 0, 0)));
 
@@ -35,48 +36,98 @@ export class DataComponent implements OnInit, OnChanges {
     private _webWorkerService: WebWorkerService,
   ) { }
 
-  toggleLiveView(deveui: string | undefined) {
-    if (deveui === undefined || this.deveui !== '') {
-      this.deveui = '';
-      this.barMode = 'determinate';
-    } else {
-      this.deveui = deveui;
-      this.barMode = 'query';
-    }
-  }
-
-  async reloadData() {
-    this.barMode = 'query';
-    this.apiDataArray = [];
-    this.dataArray = [];
-    this.lineChartLabels = [];
-    for (const k in this.devicesByRoom) {
-      if (this.devicesByRoom.hasOwnProperty(k)) {
-        for (const l in this.devicesByRoom[k].devices) {
-          if (this.devicesByRoom[k].devices.hasOwnProperty(l)) {
-            if (this.devicesByRoom[k].devices[l].checked) {
-              // tslint:disable-next-line:max-line-length
-              const response = await this._api.getData(this.devicesByRoom[k].devices[l].deveui, Number(new Date(this.startDate.value)), Number(new Date(this.endDate.value)));
-              if (response !== null && response !== undefined) {
-                this.apiDataArray.push(response);
-              }
-            }
-          }
-        }
-      }
-    }
-    this.initializeDataArray();
-    await this.initializeData();
-    this.barMode = 'determinate';
-  }
-
   async ngOnInit() {
     await this.getDevicesByRoom();
   }
 
-  ngOnChanges() {
+  toggleView(modus) {
+    if (modus.value === 'normal') {
+      this.liveMode = false;
+      this.barMode = 'determinate';
+      this.reloadData(null, this.deveui);
+    } else {
+      this.liveMode = true;
+      this.barMode = 'indeterminate';
+      for (const room of this.devicesByRoom) {
+        for (const device of room.devices) {
+          if (device.deveui !== this.deveui) {
+            device.checked = false;
+          }
+        }
+      }
+    }
   }
 
+  /**
+  * @name reloadData
+  * @description requests new sensor data to the api and check visualisation mode
+  */
+  async reloadData(event, deveui: string) {
+    // uncheck device if necessary
+    let noneChecked = true;
+    let deveuiFull = true;
+    for (const room of this.devicesByRoom) {
+      for (const device of room.devices) {
+        if (device.checked) {
+          noneChecked = false;
+        }
+        if (deveui === this.deveui) {
+          if (event !== undefined && !event.checked) {
+            this.deveui = '';
+            deveuiFull = false;
+          }
+        }
+      }
+    }
+    if (deveuiFull) {
+      this.deveui = deveui;
+    }
+    if (noneChecked) {
+      this.deveui = '';
+    }
+
+    // if mode is live
+    if (this.liveMode) {
+      // uncheck all but device with deveui === deveui
+      for (const room of this.devicesByRoom) {
+        for (const device of room.devices) {
+          if (device.deveui === deveui) {
+            device.checked = true;
+          } else {
+            device.checked = false;
+          }
+        }
+      }
+      // if mode is normal
+    } else {
+      this.barMode = 'query';
+      this.apiDataArray = [];
+      this.dataArray = [];
+      this.lineChartLabels = [];
+      for (const room of this.devicesByRoom) {
+        for (const device of room.devices) {
+          if (device.checked) {
+            const response = await this._api.getData(
+              device.deveui, Number(new Date(this.startDate.value)),
+              Number(new Date(this.endDate.value))
+            );
+            if (response !== null && response !== undefined) {
+              this.apiDataArray.push(response);
+            }
+          }
+        }
+      }
+      this.initializeDataArray();
+      await this.initializeData();
+      this.barMode = 'determinate';
+    }
+  }
+
+  /**
+  * @name roomClicked
+  * @param name
+  * @description loads the data when a room is clicked on the map
+  */
   roomClicked(name) {
     this.devicesByRoom.forEach(room => {
       if (room.name === name) {
@@ -94,6 +145,10 @@ export class DataComponent implements OnInit, OnChanges {
     this.reloadData();
   }
 
+  /**
+  * @name getDevicesByRoom
+  * @description requests the room list with associated devices
+  */
   getDevicesByRoom() {
     this._api.getDevicesByRoom().subscribe(res => {
       if (res !== undefined) {
@@ -124,6 +179,12 @@ export class DataComponent implements OnInit, OnChanges {
     }
   }
 
+  /**
+  * @name normalizeData
+  * @param dataApiArray
+  * @returns normalizes dataApiArray, normalized timeline
+  * @description normalizes data from multiple devices to display with one single time axis
+  */
   normalizeData(dataApiArray: Array<ApiData>) { // TODO: check for null data
 
     console.log('Running on new thread');
@@ -202,6 +263,10 @@ export class DataComponent implements OnInit, OnChanges {
     return [dataApiArray, timeline];
   }
 
+  /**
+  * @name initializeData
+  * @description initializes the data after devices are selected
+  */
   async initializeData() {
     [this.apiDataArray, this.lineChartLabels] = await this.runNormalizeDataOnNewThread(this.apiDataArray);
 
@@ -224,6 +289,12 @@ export class DataComponent implements OnInit, OnChanges {
   }
 
   // avg is the average of all the averages of graphs displayed
+  /**
+  * @name makeStatistics
+  * @param input Array<number>
+  * @param output DataArrayEl
+  * @description makes some minimal statistics on the readings
+  */
   makeStatistics(input: Array<number>, output: DataArrayEl) {
     let sum = 0;
     let count = 0;
@@ -242,6 +313,11 @@ export class DataComponent implements OnInit, OnChanges {
     }
   }
 
+  /**
+  * @name hasValue
+  * @param avg Array<any>
+  * @returns true if the array has elements different from null
+  */
   hasValues(avg: Array<any>): boolean {
     let hasValue = false;
     avg.forEach(element => {
@@ -250,6 +326,11 @@ export class DataComponent implements OnInit, OnChanges {
     return hasValue;
   }
 
+  /**
+  * @name runNormalizeDataOnNewThread
+  * @param input
+  * @description runs normalizeData on input in another thread
+  */
   runNormalizeDataOnNewThread(input) {
     return this._webWorkerService.run(this.normalizeData, input);
   }

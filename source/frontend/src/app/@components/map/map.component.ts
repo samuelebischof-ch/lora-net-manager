@@ -44,12 +44,6 @@ export class MapComponent implements OnInit {
     public dialog: MatDialog,
   ) {}
 
-  async ngOnInit() {
-    // reload the canvas from server
-    this.selectImage();
-    await this.loadKonvaFromServer();
-  }
-
   fileChangeEvent(event) {
     const file = event.target.files[0];
     const uploadData = new FormData();
@@ -450,6 +444,12 @@ export class MapComponent implements OnInit {
       });
       this.loadKonva();
     }
+  }
+
+  ngOnInit() {
+    // reload the canvas from server
+    this.selectImage();
+    this.loadKonvaFromServer();
   }
 
 }

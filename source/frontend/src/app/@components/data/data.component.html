@@ -51,37 +51,47 @@
             <mat-list role="list">
               <mat-divider></mat-divider>
               <mat-list-item *ngFor="let r of d.devices">
-                <mat-checkbox (change)="reloadData(); toggleLiveView(undefined);" [(ngModel)]="r.checked">{{r.desc}}</mat-checkbox>
+                <mat-checkbox (change)="reloadData($event, r.deveui)" [(ngModel)]="r.checked">{{r.desc}}</mat-checkbox>
                 <span style="width: 20px"></span>
-                <button mat-button color="primary" (click)="toggleLiveView(r.deveui)" *ngIf="deveui.length === 0 || (r.deveui !== '' && deveui !== r.deveui)">Live visualisation</button>
-                <button mat-button color="primary" (click)="toggleLiveView(r.deveui)" *ngIf="r.deveui !== '' && deveui === r.deveui">
-                  Close live visualisation</button>
-                </mat-list-item>
-              </mat-list>
-            </mat-expansion-panel>
-          </mat-accordion>
-        </split-area>
+              </mat-list-item>
+            </mat-list>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </split-area>
 
-        <!-- right part -->
+      <!-- right part -->
 
-        <split-area size="60">
-          <mat-progress-bar [mode]="barMode"></mat-progress-bar>
+      <split-area size="60">
 
-          <!-- space -->
+        <mat-progress-bar [mode]="barMode"></mat-progress-bar>
 
-          <app-card [deveui]="deveui" [startDate]="startDate.value" *ngIf="deveui.length > 0; else static_view"></app-card>
-          <ng-template #static_view>
-            <mat-tab-group *ngIf="lineChartLabels.length > 0;">
-              <ng-container *ngFor="let d of dataArray;">
-                <mat-tab *ngIf="hasValues(d.avg)" label="{{d.label}}">
-                  <app-graph-simple [min]="d.min" [max]="d.max" [avg]="d.avg" [specialColor]="false" [lineChartData]="d.lineChartData" [lineChartLabels]="lineChartLabels"
+        <div id="modeToggleBar">
+          <mat-button-toggle-group id="modeToggle" #group="matButtonToggleGroup" (change)="toggleView($event)">
+            <mat-button-toggle checked="true" value="normal" matTooltip="Normal visualisation">
+              Static
+            </mat-button-toggle>
+            <mat-button-toggle checked="false" value="live" matTooltip="Live visualisation, maximum one device">
+              Live
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+
+        <!-- space -->
+
+        <app-card [deveui]="deveui" [startDate]="startDate.value" *ngIf="liveMode && deveui.length > 0; else static_view"></app-card>
+        <ng-template #static_view>
+          <mat-tab-group *ngIf="!liveMode && lineChartLabels.length > 0;">
+            <ng-container *ngFor="let d of dataArray;">
+              <mat-tab *ngIf="hasValues(d.avg)" label="{{d.label}}">
+                <app-graph-simple [min]="d.min" [max]="d.max" [avg]="d.avg" [specialColor]="false" [lineChartData]="d.lineChartData" [lineChartLabels]="lineChartLabels"
                   [unit]="d.unit" [label]="d.label">
                 </app-graph-simple>
               </mat-tab>
             </ng-container>
           </mat-tab-group>
           <span *ngIf="lineChartLabels.length === 0 && barMode === 'indeterminate'" style="padding: 20px; display: inline-block">Loading data from server...</span>
-          <span *ngIf="lineChartLabels.length === 0 && barMode === 'determinate'" style="padding: 20px; display: inline-block">Select at least a device to display data in this area</span>
+          <span *ngIf="lineChartLabels.length === 0 && barMode === 'determinate' && deveui.length === 0" style="padding: 20px; display: inline-block">Select at least a device to display data in this area</span>
+          <span *ngIf="lineChartLabels.length === 0 && barMode === 'determinate' && deveui.length > 0" style="padding: 20px; display: inline-block">There is no data to display</span>
         </ng-template>
       </split-area>
     </split>

@@ -38,6 +38,10 @@ export class SimpleComponent implements OnChanges  {
     // console.log(e);
   }
 
+  /**
+   * @name setup
+   * @description runs the setup fro the graph
+   */
   setup() {
     const self = this;
 
@@ -109,7 +113,9 @@ export class SimpleComponent implements OnChanges  {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.setup();
+    if (changes.unit !== undefined) {
+      this.setup();
+    }
   }
 
 }

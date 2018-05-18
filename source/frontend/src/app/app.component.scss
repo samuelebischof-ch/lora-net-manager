@@ -24,3 +24,14 @@
   padding-left: 2px;
   display: block;
 }
+
+#logoutBtn {
+  color: white;
+  // cursor: pointer;
+  // width: 250;
+  // height: 50px;
+  position: absolute;
+  z-index: 2;
+  right: 10px;
+  top: 10px;
+}

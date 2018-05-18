@@ -1045,8 +1045,8 @@ input.mat-input-element {
 }
 
 .mat-button-toggle-checked {
-  background-color: #212121;
-  color: rgba(0, 0, 0, .7)
+  background-color: $primaryColor;
+  color: white
 }
 
 .mat-button-toggle-disabled {

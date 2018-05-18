@@ -14,6 +14,10 @@ export class ApiService {
 
   /********************************** gateways *********************************/
 
+  /**
+   * @name getGateways
+   * @description gets a list of gateways from the backend
+   */
   getGateways() {
     if (this._authentication.isAuthenticated()) {
       return this._http.get('/api/gateways', {
@@ -22,6 +26,11 @@ export class ApiService {
     }
   }
 
+  /**
+   * @name addGateway
+   * @param mac string
+   * @description posts a new gateway to the backend
+   */
   addGateway(mac: string) {
     if (this._authentication.isAuthenticated()) {
       return this._http.post('/api/gateway/', { mac }, {
@@ -31,6 +40,11 @@ export class ApiService {
     }
   }
 
+  /**
+   * @name removeGateway
+   * @param mac string
+   * @description removes a gateway from the backend
+   */
   removeGateway(mac: string) {
     if (this._authentication.isAuthenticated()) {
       return this._http.delete('/api/gateway/' + mac, {
@@ -41,6 +55,10 @@ export class ApiService {
 
   /********************************** device *********************************/
 
+  /**
+   * @name getDevices
+   * @description asks for a list of devices to the backend
+   */
   getDevices() {
     if (this._authentication.isAuthenticated()) {
       return this._http.get('/api/devices', {
@@ -49,6 +67,10 @@ export class ApiService {
     }
   }
 
+  /**
+   * @name getDevicesByRoom
+   * @description asks for a list of devices divided by room to the backend
+   */
   getDevicesByRoom() {
     if (this._authentication.isAuthenticated()) {
       return this._http.get('/api/devicesbyroom', {
@@ -57,6 +79,11 @@ export class ApiService {
     }
   }
 
+  /**
+   * @name addDevice
+   * @param options
+   * @description posts a new device to the backend
+   */
   addDevice(options) {
     if (this._authentication.isAuthenticated()) {
       return this._http.post('/api/device/', options, {
@@ -66,6 +93,11 @@ export class ApiService {
     }
   }
 
+  /**
+   * @name getDeviceINO
+   * @param deveui string
+   * @description gets an INO file from the backend
+   */
   async getDeviceINO(deveui: string) {
     if (this._authentication.isAuthenticated()) {
     const file = await this._http.get<Blob>(
@@ -77,6 +109,11 @@ export class ApiService {
       }
   }
 
+  /**
+   * @name removeDevice
+   * @param deveui string
+   * @description removes device deveui from the backend
+   */
   removeDevice(deveui: string) {
     if (this._authentication.isAuthenticated()) {
       return this._http.delete('/api/device/' + deveui, {
@@ -85,6 +122,13 @@ export class ApiService {
     }
   }
 
+  /**
+   * @name getData
+   * @param deveui string
+   * @param min number
+   * @param max number
+   * @description gets data from server in range min max
+   */
   async getData(deveui: string, min: number, max: number): Promise<any> {
     if (this._authentication.isAuthenticated()) {
       const response = await this._http.get('/api/data?deveui=' + deveui + '&start=' + min + '&end=' + max, {
@@ -95,6 +139,11 @@ export class ApiService {
     }
   }
 
+  /**
+   * @name getDataCSV
+   * @param deveui string
+   * @description gets a CSV with all sensor data from the backend
+   */
   async getDataCSV(deveui: string) {
     if (this._authentication.isAuthenticated()) {
     const file = await this._http.get<Blob>(
@@ -106,6 +155,11 @@ export class ApiService {
       }
   }
 
+  /**
+   * @name getDEVEUI
+   * @returns a nen DEVEUI
+   * @description asks the backend for a new DEVEUI
+   */
   getDEVEUI() {
     if (this._authentication.isAuthenticated()) {
       return this._http.get('/api/gendeveui/', {
@@ -115,6 +169,11 @@ export class ApiService {
     }
   }
 
+  /**
+   * @name getDEVADDR
+   * @returns a nen DEVADDR
+   * @description asks the backend for a new DEVADDR
+   */
   getDEVADDR() {
     if (this._authentication.isAuthenticated()) {
       return this._http.get('/api/gendevaddr/', {
@@ -126,6 +185,11 @@ export class ApiService {
 
   /********************************** konva **********************************/
 
+  /**
+   * @name loadKonva
+   * @return konva serialize canvas
+   * @description askt tha backend for the konva object
+   */
   loadKonva() {
     if (this._authentication.isAuthenticated()) {
       return this._http.get('/api/konva/', {
@@ -135,6 +199,11 @@ export class ApiService {
     }
   }
 
+  /**
+   * @name saveKonva
+   * @param data
+   * @description posts konva to server
+   */
   saveKonva(data) {
     if (this._authentication.isAuthenticated()) {
       return this._http.post('/api/konva/', data, {
@@ -144,13 +213,22 @@ export class ApiService {
     }
   }
 
+  /**
+   * @name uploadImage
+   * @param uploadData
+   * @description posts an image to the server
+   */
   uploadImage(uploadData) {
-    console.log(uploadData);
     return this._http.post('/api/konva/image', uploadData, {
       headers: new HttpHeaders().set('Authorization', 'bearer ' + this._authentication.getToken())
     });
   }
 
+  /**
+   * @name downloadImage
+   * @returns a blob
+   * @description gets an image from server
+   */
   downloadImage() {
     return this._http.get('/api/konva/image', {
       headers: new HttpHeaders().set('Authorization', 'bearer ' + this._authentication.getToken()),
@@ -160,15 +238,9 @@ export class ApiService {
 
   /********************************** meteo **********************************/
 
-  getMeteo() {
-    if (this._authentication.isAuthenticated()) {
-      return this._http.get('/api/meteo/', {
-        headers: new HttpHeaders().set('Authorization', 'bearer ' + this._authentication.getToken())
-        .append('Content-Type', 'application/json')
-      });
-    }
-  }
-
+  /**
+   * @
+   */
   getLocations() {
     if (this._authentication.isAuthenticated()) {
       return this._http.get('/api/meteo/locations/', {
@@ -178,6 +250,11 @@ export class ApiService {
     }
   }
 
+  /**
+   * @name location
+   * @param location string
+   * @description posts a new location to server
+   */
   saveLocation(location: string) {
     if (this._authentication.isAuthenticated()) {
       return this._http.post('/api/meteo/', { location }, {
@@ -187,6 +264,11 @@ export class ApiService {
     }
   }
 
+  /**
+   * @name removeLocation
+   * @param location string
+   * @description removes a location from the backend
+   */
   removeLocation(location: string) {
     if (this._authentication.isAuthenticated()) {
       return this._http.delete('/api/meteo/' + location, {
@@ -197,6 +279,10 @@ export class ApiService {
 
   /******************************* authentication ******************************/
 
+  /**
+   * @name login
+   * @description logins to the backend
+   */
   async login(username: string, secret: string) {
       await this._http.post('/auth/token/', {username, secret})
       .subscribe( async res => {

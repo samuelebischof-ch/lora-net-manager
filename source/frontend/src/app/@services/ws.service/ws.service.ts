@@ -7,16 +7,23 @@ import { AuthenticationService } from '../authentication.service/authentication.
 @Injectable()
 export class WsService {
 
-  constructor(private _authentication: AuthenticationService) {
-
-  }
+  constructor(
+    private _authentication: AuthenticationService,
+  ) {}
 
   dataSocket: Socket;
   eventsSocket: Socket;
   dataObserver: Observer<any>;
   eventsObserver: Observer<any>;
 
-  getData(deveui: string, min, max): Observable<any> {
+  /**
+   * @name getData
+   * @param deveui string
+   * @param min number
+   * @param max numner
+   * @description connects to the data ws server
+   */
+  getData(deveui: string, min: number, max: number): Observable<any> {
 
     this.dataSocket = socketIo({
       path: '/socket.io',
@@ -41,6 +48,10 @@ export class WsService {
     });
   }
 
+  /**
+   * @name getEvents
+   * @description connects to the events ws server
+   */
   getEvents(): Observable<any> {
 
     this.eventsSocket = socketIo({
@@ -66,6 +77,10 @@ export class WsService {
     });
   }
 
+  /**
+   * @name disconnect
+   * @description handles disconnection
+   */
   disconnect() {
     this.dataSocket.disconnect();
   }

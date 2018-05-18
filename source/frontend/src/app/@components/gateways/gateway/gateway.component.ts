@@ -18,6 +18,10 @@ export class GatewayComponent implements OnInit {
     public snackBar: MatSnackBar,
   ) { }
 
+  /**
+   * @name removeGateway
+   * @description removes a gateway from the backend
+   */
   removeGateway() {
     const r = confirm('Confirm deletion!');
     if (r === true) {

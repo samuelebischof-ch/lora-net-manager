@@ -1,5 +1,4 @@
 @import '~sass/variables';
-
 mat-card {
   height: 100%;
   padding: 0;
@@ -32,7 +31,7 @@ mat-card-content {
 }
 
 mat-card-content::-webkit-scrollbar {
-  display: none;  // Safari and Chrome
+  display: none; // Safari and Chrome
 }
 
 mat-tab-group {
@@ -62,4 +61,15 @@ mat-form-field {
 #spacer span {
   padding: 20px;
   vertical-align: middle;
+}
+
+#modeToggle {
+  background: white;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  position: absolute;
+  margin: 10px;
+  right: 10px;
+  top: 50px;
+  z-index: 3;
 }

@@ -1,4 +1,7 @@
-<mat-sidenav-container class="example-container" *ngIf="true">
+<button *ngIf="isAuthenticated" mat-icon-button id="logoutBtn" (click)='logout()' routerLink="/login" matTooltip="Logout">
+  <mat-icon aria-label="Logout">exit_to_app</mat-icon>
+</button>
+<mat-sidenav-container class="example-container">
   <mat-sidenav #sidenav mode="side" [(opened)]="opened">
     <app-sidebar></app-sidebar>
   </mat-sidenav>

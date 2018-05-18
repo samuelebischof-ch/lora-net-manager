@@ -19,6 +19,10 @@ export class MeteoComponent implements OnInit {
     public snackBar: MatSnackBar,
   ) { }
 
+  /**
+   * @name addLocation
+   * @description add a location to the backend
+   */
   addLocation() {
     if (this.isNewLocation(this.location)) {
       this._api.saveLocation(this.location).subscribe(res => this.getLocations());
@@ -33,12 +37,21 @@ export class MeteoComponent implements OnInit {
     }
   }
 
+  /**
+   * @name getLocations
+   * @description ask the server for a list of locations
+   */
   getLocations() {
     this._api.getLocations().subscribe((meteo: any) => {
       this.locations = meteo.locations;
     });
   }
 
+  /**
+   * @name isNewLocation
+   * @param location string
+   * @returns true if the location is new
+   */
   isNewLocation(location: string): Boolean {
     let isNew = true;
     this.locations.forEach(loc => {

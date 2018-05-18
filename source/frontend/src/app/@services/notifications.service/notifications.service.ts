@@ -8,7 +8,7 @@ import { SwPush } from '@angular/service-worker';
 @Injectable()
 export class NotificationsService {
 
-  readonly VAPID_PUBLIC_KEY =  'BGD4aWIT3MZUKkTplneabA0teALU2pATr4XgvwPcfoekzo21LFWtdrSe_CehSMA1ch-DJJslQmW79fzRSbSFn9E'
+  readonly VAPID_PUBLIC_KEY =  'BGD4aWIT3MZUKkTplneabA0teALU2pATr4XgvwPcfoekzo21LFWtdrSe_CehSMA1ch-DJJslQmW79fzRSbSFn9E';
 
   constructor(private _ws: WsService,
     private _authentication: AuthenticationService,
@@ -16,6 +16,10 @@ export class NotificationsService {
     private swPush: SwPush,
   ) {}
 
+  /**
+   * @name subscribeToNotifications
+   * @description subscribes to the notifications
+   */
   subscribeToNotifications() {
 
     this.swPush.requestSubscription({
@@ -25,6 +29,10 @@ export class NotificationsService {
     .catch(err => console.error('Could not subscribe to notifications', err));
   }
 
+  /**
+   * @name connectEvents
+   * @description connects to the events websocket
+   */
   async connectEvents() {
     this.checkAndConnect();
     while (!this._authentication.isAuthenticated()) {
@@ -33,12 +41,14 @@ export class NotificationsService {
     }
   }
 
-  // TODO: force reconnection
+  /**
+   * @name checkAndConnect
+   * @description if not connected connectEvents()
+   */
   async checkAndConnect() {
     if (this._authentication.isAuthenticated()) {
       this.subscribeToNotifications();
       this._ws.getEvents().subscribe(res => {
-        console.log(res);
         this.snackBar.open(res.deveui + ' ' + res.event, 'Close');
       });
     }

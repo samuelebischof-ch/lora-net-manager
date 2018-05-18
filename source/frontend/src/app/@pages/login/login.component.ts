@@ -19,6 +19,10 @@ export class LoginComponent {
 
   public hide = true;
 
+  /**
+   * @name clickLogin
+   * @description handles authentication with the backend
+   */
   async clickLogin() {
     await this._api.login(this.username, this.secret);
     if (!(await this._authentication.isAuthenticated())) {

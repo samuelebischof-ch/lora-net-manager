@@ -19,6 +19,10 @@ export class GatewaysComponent implements OnInit {
     public snackBar: MatSnackBar,
   ) { }
 
+  /**
+   * @name createGateway
+   * @description creates a new gateway in the backend
+   */
   createGateway() {
     if (this.isMAC(this.mac)) {
       this._api.addGateway(this.mac).subscribe(res => this.getGateways());
@@ -33,15 +37,24 @@ export class GatewaysComponent implements OnInit {
     }
   }
 
+  /**
+   * @name getGateways
+   * @description asks the server for a list of gateways
+   */
   getGateways() {
     this._api.getGateways().subscribe(data => {
       this.gateways = data;
     });
   }
 
-  isMAC(h: string): Boolean {
+  /**
+   * @name isMac
+   * @param macT string
+   * @return true if macT is in the right format
+   */
+  isMAC(macT: string): Boolean {
     const re = /[0-9A-Fa-f]{16}/g;
-    return (h.length === 16 && re.test(h));
+    return (macT.length === 16 && re.test(macT));
   }
 
   ngOnInit() {

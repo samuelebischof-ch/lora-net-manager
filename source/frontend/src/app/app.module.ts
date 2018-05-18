@@ -22,6 +22,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { AppRoutingModule } from './app-routing.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -89,6 +90,7 @@ import { environment } from '../environments/environment';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    MatButtonToggleModule,
     MatSelectModule,
     MatBadgeModule,
     AngularSplitModule,

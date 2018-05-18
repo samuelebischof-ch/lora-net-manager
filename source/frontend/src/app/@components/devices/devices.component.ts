@@ -25,6 +25,10 @@ export class DevicesComponent implements OnInit {
     public snackBar: MatSnackBar,
   ) { }
 
+  /**
+   * @name addDevice
+   * @description adds a device to the backend
+   */
   addDevice() {
     if (this.isDEVEUI(this.deveui) && this.isDEVADDR(this.devaddr)) {
       const device = new DeviceDB();
@@ -47,28 +51,50 @@ export class DevicesComponent implements OnInit {
     }
   }
 
+  /**
+   * @name getDevices
+   * @description loads a list of devices from the backend
+   */
   getDevices() {
     this._api.getDevices().subscribe(data => {
       this.devices = data;
     });
   }
 
-  isDEVEUI(h: string): Boolean {
+  /**
+   * @name isDEVEUI
+   * @param deveuiT string
+   * @returns true if deveuiT has the right format
+   */
+  isDEVEUI(deveuiT: string): Boolean {
     const re = /[0-9A-Fa-f]{16}/g;
-    return (h.length === 16 && re.test(h));
+    return (deveuiT.length === 16 && re.test(deveuiT));
   }
 
-  isDEVADDR(h: string): Boolean {
+   /**
+   * @name isDEVADDR
+   * @param deveuiT string
+   * @returns true if deveuiT has the right format
+   */
+  isDEVADDR(devaddrT: string): Boolean {
     const re = /[0-9A-Fa-f]{8}/g;
-    return (h.length === 8 && re.test(h));
+    return (devaddrT.length === 8 && re.test(devaddrT));
   }
 
+  /**
+   * @name genDEVEUI
+   * @description requests a new DEVEUI to the server
+   */
   genDEVEUI() {
     this._api.getDEVEUI().subscribe(res => {
       this.deveui = ((res as any).deveui as string).toUpperCase();
     });
   }
 
+  /**
+   * @name genDEVADDR
+   * @description requests a new DEVADDR to the server
+   */
   genDEVADDR() {
     this._api.getDEVADDR().subscribe(res => {
       this.devaddr = ((res as any).devaddr as string).toUpperCase();
