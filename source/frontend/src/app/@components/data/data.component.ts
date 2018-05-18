@@ -142,7 +142,7 @@ export class DataComponent implements OnInit {
         });
       }
     });
-    this.reloadData();
+    this.reloadData(null, this.deveui);
   }
 
   /**
