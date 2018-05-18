@@ -14,8 +14,8 @@ export class AppComponent implements OnInit {
     private _authentication: AuthenticationService,
   ) {}
 
-  private iconName = 'keyboard_arrow_left';
-  private opened = true;
+  public iconName = 'keyboard_arrow_left';
+  public opened = true;
   public isAuthenticated: boolean;
 
   ngOnInit() {
