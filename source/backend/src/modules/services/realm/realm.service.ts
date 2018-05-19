@@ -57,8 +57,8 @@ export class RealmService {
         SettingSchema,
       ],
       schemaVersion: 0,
-      migration: (oldRealm, newRealm) => {}
-    }
+      migration: (oldRealm, newRealm) => {},
+    },
   );
 
   /********************************** keys ***********************************/
@@ -330,7 +330,7 @@ export class RealmService {
             value_light,
           });
         });
-        this._logger.success('new data stored to db')
+        this._logger.success('new data stored to db');
       } catch (error) {
         this._logger.error('1 at storeSensorData(): ' + error);
       }
@@ -431,7 +431,7 @@ export class RealmService {
 
     await this.OpenedRealm.then(realm => {
       try { // different range cases
-        const device = realm.objectForPrimaryKey('Device', body.deveui)
+        const device = realm.objectForPrimaryKey('Device', body.deveui);
         DataSheet = (device as DeviceDB).data_sheet;
         devDescription = (device as DeviceDB).desc;
         if (body.start !== undefined && body.end === undefined) {
@@ -758,9 +758,9 @@ export class RealmService {
         last_seen: new Date(Date.now()),
         model: '',
         data_sheet: {
-          sensor_temperature: { has_sensor: true },
-          sensor_pressure: { has_sensor: true },
-          sensor_humidity: { has_sensor: true },
+          sensor_temperature: { has_sensor: true, unit: '˚C' },
+          sensor_pressure: { has_sensor: true, unit: 'hPa' },
+          sensor_humidity: { has_sensor: true, unit: '%' },
         },
       } as DeviceDB,
     ).then(async response => {
@@ -803,7 +803,7 @@ export class RealmService {
             locationsArray.push(loc);
           }
         }
-        locations = { locations: locationsArray, apikey: locationData.apikey }
+        locations = { locations: locationsArray, apikey: locationData.apikey };
       } catch (error) {
         this._logger.error('at getLocations(): ' + error);
       }

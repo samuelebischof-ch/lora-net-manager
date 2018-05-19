@@ -60,7 +60,9 @@ export class DataComponent implements OnInit {
 
   /**
   * @name reloadData
-  * @description requests new sensor data to the api and check visualisation mode
+  * @param event
+  * @param deveui
+  * @description checks visualisation mode and requests new sensor data to the api
   */
   async reloadData(event, deveui: string) {
     // uncheck device if necessary
@@ -72,7 +74,7 @@ export class DataComponent implements OnInit {
           noneChecked = false;
         }
         if (deveui === this.deveui) {
-          if (event !== undefined && !event.checked) {
+          if (event !== null && event !== undefined && !event.checked) {
             this.deveui = '';
             deveuiFull = false;
           }
@@ -134,6 +136,7 @@ export class DataComponent implements OnInit {
         room.expanded = true;
         room.devices.forEach(device => {
           device.checked = true;
+          this.deveui = device.deveui;
         });
       } else {
         room.expanded = false;
@@ -142,7 +145,7 @@ export class DataComponent implements OnInit {
         });
       }
     });
-    this.reloadData(null, this.deveui);
+    this.reloadData({checked: true}, this.deveui);
   }
 
   /**
