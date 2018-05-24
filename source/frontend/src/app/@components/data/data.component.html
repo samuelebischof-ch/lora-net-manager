@@ -14,12 +14,12 @@
               </mat-panel-title>
             </mat-expansion-panel-header>
             <mat-form-field class="dateField">
-              <input matInput [matDatepicker]="pickerStart" [formControl]="startDate" placeholder="Choose start date">
+              <input matInput (dateChange)="rangeChanged()" [matDatepicker]="pickerStart" [formControl]="startDate" placeholder="Choose start date">
               <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
               <mat-datepicker #pickerStart></mat-datepicker>
             </mat-form-field>
             <mat-form-field class="dateField">
-              <input matInput [matDatepicker]="pickerEnd" [formControl]="endDate" placeholder="Choose end date">
+              <input matInput (dateChange)="rangeChanged()" [matDatepicker]="pickerEnd" [formControl]="endDate" placeholder="Choose end date">
               <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
               <mat-datepicker #pickerEnd></mat-datepicker>
             </mat-form-field>

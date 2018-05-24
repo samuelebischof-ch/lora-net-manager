@@ -40,6 +40,10 @@ export class DataComponent implements OnInit {
     await this.getDevicesByRoom();
   }
 
+  rangeChanged() {
+    this.reloadData(null, this.deveui);
+  }
+
   toggleView(modus) {
     if (modus.value === 'normal') {
       this.liveMode = false;
