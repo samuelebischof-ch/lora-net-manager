@@ -113,9 +113,8 @@ export class SimpleComponent implements OnChanges  {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.unit !== undefined) {
-      this.setup();
-    }
+    console.log(this.lineChartData)
+    this.setup();
   }
 
 }

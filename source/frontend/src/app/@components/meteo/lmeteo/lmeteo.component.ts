@@ -18,6 +18,10 @@ export class LmeteoComponent {
     public snackBar: MatSnackBar,
   ) { }
 
+  /**
+   * @name removeLocation
+   * @description removes a location from the backend
+   */
   removeLocation() {
     const r = confirm('Confirm deletion!');
     if (r === true) {
@@ -28,6 +32,14 @@ export class LmeteoComponent {
         });
       });
     }
+  }
+
+  /**
+   * @name getCSV
+   * @description asks the server to generate a CSV with all sensor data
+   */
+  getCSV() {
+    this._api.getDataCSV(this.location);
   }
 
 }

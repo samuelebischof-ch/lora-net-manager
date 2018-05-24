@@ -273,7 +273,7 @@ export class APIController {
     const newpath = './src/blob/plan.png';
     fs.rename(oldpath, newpath, (error) => {
       if (error) {
-        this._logger.error(error)
+        // this._logger.error(error);
       }
     });
   }

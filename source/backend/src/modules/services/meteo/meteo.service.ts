@@ -27,7 +27,6 @@ export class MeteoService {
    * @returns a Promise of the meteo
    */
   async getMeteo(): Promise<any> {
-    this._logger.print('getMeteo');
     const locationData = await this._realm.getLocations();
     const apikey = locationData.apikey;
     const arrayMeteo = [];
@@ -55,7 +54,6 @@ export class MeteoService {
     const run = true;
     while (run) {
       const meteo = await this.getMeteo();
-      this._logger.print(meteo);
       for (const element of meteo) {
         const msg = {} as DataWS;
         msg.datetime = new Date(Date.now());

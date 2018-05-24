@@ -184,7 +184,7 @@ export class SetupService {
     await this.delay(2000);
     this._gotthardp.addConnectors();
     await this.delay(2000);
-    this.seedDataFromFile();
+    // this.seedDataFromFile();
   }
 
   /**

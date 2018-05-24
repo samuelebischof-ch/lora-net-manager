@@ -324,7 +324,7 @@ export class DataComponent implements OnInit {
   hasValues(avg: Array<any>): boolean {
     let hasValue = false;
     avg.forEach(element => {
-      if (element !== null) { hasValue = true; }
+      if (!isNaN(element)) { hasValue = true; }
     });
     return hasValue;
   }

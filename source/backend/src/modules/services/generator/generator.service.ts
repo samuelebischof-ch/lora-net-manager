@@ -53,7 +53,7 @@ export class GeneratorService {
     const rl = readline(this.templatePath);
 
     const rdLinePromise = () => new Promise((resolve, reject) => {
-      rl.on('line', (line) => {
+      rl.on('line', async (line) => {
         if (line === '<END>') {
           resolve();
         } else {
@@ -61,15 +61,15 @@ export class GeneratorService {
             const key = otaaKeys[otaaKeysCounter];
             const mapping = otaa[key];
             const newLine = line.replace(key, mapping);
-            self.appendLine(this.inoPath, newLine);
+            await self.appendLine(this.inoPath, newLine);
             otaaKeysCounter++;
           } else if ((devicesKeysCounter < devicesKeys.length) && (line === devicesKeys[devicesKeysCounter])) {
             const key = devicesKeys[devicesKeysCounter];
             const mapping = esp32[key];
-            self.appendLine(this.inoPath, mapping);
+            await self.appendLine(this.inoPath, mapping);
             devicesKeysCounter++;
           } else {
-            self.appendLine(this.inoPath, line);
+            await self.appendLine(this.inoPath, line);
           }
         }
       }).on('error', reject);
@@ -94,12 +94,12 @@ export class GeneratorService {
     const self = this,
     csv = path.join(__dirname, 'temp/' + deveui + '.csv');
 
-    await (csv);
+    await this.deleteFile(csv);
 
     const dataStream = await this._realm.getSensorDataStream(deveui);
 
     const outStream = new Writable({
-      write(chunk, encoding, callback) {
+      async write(chunk, encoding, callback) {
         const obj = JSON.parse(chunk.toString());
         const length = Object.keys(obj).length;
         let line = '';
@@ -116,7 +116,7 @@ export class GeneratorService {
             counter++;
           }
         }
-        self.appendLine(csv, line);
+        await self.appendLine(csv, line);
         callback();
       },
     });
@@ -146,8 +146,8 @@ export class GeneratorService {
   * @param fileName
   */
   deleteFile(fileName) {
-    return new Promise((resolve, reject) => {
-      const exists = fs.existsSync(fileName);
+    return new Promise(async (resolve, reject) => {
+      const exists = await this.existsPromise(fileName);
       if (exists) {
         fs.unlink(fileName, (err) => {
           if (err) {
@@ -156,7 +156,17 @@ export class GeneratorService {
             resolve();
           }
         });
+      } else {
+        resolve();
       }
+    });
+  }
+
+  existsPromise(fileName) {
+    return new Promise((resolve, reject) => {
+      fs.exists(fileName, exists => {
+        resolve(exists);
+      });
     });
   }
 

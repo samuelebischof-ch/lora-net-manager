@@ -3,5 +3,8 @@
   <button mat-button color="primary" (click)="removeLocation()">
     <mat-icon mat-list-icon>delete_forever</mat-icon>
   </button>
+  <button matTooltip="Download data" mat-button color="primary" (click)="getCSV()">
+    <mat-icon mat-list-icon>cloud_download</mat-icon>
+  </button>
   <h4 mat-line>{{location}}</h4>
 </mat-list-item>

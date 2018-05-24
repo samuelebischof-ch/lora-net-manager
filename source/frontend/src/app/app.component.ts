@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
   public isAuthenticated: boolean;
 
   ngOnInit() {
-    this._notifications.subscribeToNotifications();
+    // this._notifications.subscribeToNotifications();
     this._notifications.connectEvents();
     this.isAuthenticated = this._authentication.isAuthenticated();
     this._authentication.getObservable().subscribe((next: boolean) => {

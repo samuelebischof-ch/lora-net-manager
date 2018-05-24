@@ -1,6 +1,6 @@
 <mat-tab-group *ngIf="data">
   <ng-container *ngFor="let d of data.data; trackBy: trackByLength">
-    <mat-tab label="{{d.label}}">
+    <mat-tab *ngIf="d.data[0].data.length > 0" label="{{d.label}}">
       <app-graph-simple [min]="0" [max]="0" [avg]="0" [specialColor]="true" [lineChartData]="d.data" [lineChartLabels]="data.date"
       [unit]="d.unit" [label]="d.label"></app-graph-simple>
     </mat-tab>

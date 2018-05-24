@@ -319,6 +319,8 @@ export class RealmService {
           const value_door = node.data_sheet.sensor_door.has_sensor ? data.field6 : null;
           const value_light = node.data_sheet.sensor_light.has_sensor ? data.field7 : null;
 
+          data.datetime.setMilliseconds(0);
+
           node.sensor_readings.push({
             read: data.datetime,
             value_temperature,
@@ -488,13 +490,27 @@ export class RealmService {
       if (DBreadings[i]) {
         const sensorReadingAtI = (DBreadings[i] as SensorDB);
         returnDate.push(sensorReadingAtI.read);
-        temperature.push(sensorReadingAtI.value_temperature);
-        pressure.push(sensorReadingAtI.value_pressure);
-        humidity.push(sensorReadingAtI.value_humidity);
-        moisture.push(sensorReadingAtI.value_moisture);
-        movement.push(sensorReadingAtI.value_movement);
-        door.push(sensorReadingAtI.value_door);
-        light.push(sensorReadingAtI.value_light);
+        if (DataSheet.sensor_temperature.has_sensor) {
+          temperature.push(sensorReadingAtI.value_temperature);
+        }
+        if (DataSheet.sensor_pressure.has_sensor) {
+          pressure.push(sensorReadingAtI.value_pressure);
+        }
+        if (DataSheet.sensor_humidity.has_sensor) {
+          humidity.push(sensorReadingAtI.value_humidity);
+        }
+        if (DataSheet.sensor_moisture.has_sensor) {
+          moisture.push(sensorReadingAtI.value_moisture);
+        }
+        if (DataSheet.sensor_movement.has_sensor) {
+          movement.push(sensorReadingAtI.value_movement);
+        }
+        if (DataSheet.sensor_door.has_sensor) {
+          door.push(sensorReadingAtI.value_door);
+        }
+        if (DataSheet.sensor_light.has_sensor) {
+          light.push(sensorReadingAtI.value_light);
+        }
       }
     }
 
