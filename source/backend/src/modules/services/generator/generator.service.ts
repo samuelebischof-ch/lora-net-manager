@@ -53,7 +53,7 @@ export class GeneratorService {
     const rl = readline(this.templatePath);
 
     const rdLinePromise = () => new Promise((resolve, reject) => {
-      rl.on('line', async (line) => {
+      rl.on('line', (line) => {
         if (line === '<END>') {
           resolve();
         } else {
@@ -61,15 +61,15 @@ export class GeneratorService {
             const key = otaaKeys[otaaKeysCounter];
             const mapping = otaa[key];
             const newLine = line.replace(key, mapping);
-            await self.appendLine(this.inoPath, newLine);
+            self.appendLine(this.inoPath, newLine);
             otaaKeysCounter++;
           } else if ((devicesKeysCounter < devicesKeys.length) && (line === devicesKeys[devicesKeysCounter])) {
             const key = devicesKeys[devicesKeysCounter];
             const mapping = esp32[key];
-            await self.appendLine(this.inoPath, mapping);
+            self.appendLine(this.inoPath, mapping);
             devicesKeysCounter++;
           } else {
-            await self.appendLine(this.inoPath, line);
+            self.appendLine(this.inoPath, line);
           }
         }
       }).on('error', reject);
