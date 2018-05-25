@@ -113,7 +113,6 @@ export class SimpleComponent implements OnChanges  {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(this.lineChartData)
     this.setup();
   }
 

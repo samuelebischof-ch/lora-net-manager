@@ -93,11 +93,8 @@ export class GeneratorService {
   async genCSV(deveui: string): Promise<string> {
     const self = this,
     csv = path.join(__dirname, 'temp/' + deveui + '.csv');
-
     await this.deleteFile(csv);
-
     const dataStream = await this._realm.getSensorDataStream(deveui);
-
     const outStream = new Writable({
       async write(chunk, encoding, callback) {
         const obj = JSON.parse(chunk.toString());
@@ -116,7 +113,7 @@ export class GeneratorService {
             counter++;
           }
         }
-        await self.appendLine(csv, line);
+        await self.appendLinePromise(csv, line);
         callback();
       },
     });
@@ -162,6 +159,11 @@ export class GeneratorService {
     });
   }
 
+  /**
+   * @name existsPromise
+   * @param fileName
+   * @description promisified fs.exists
+   */
   existsPromise(fileName) {
     return new Promise((resolve, reject) => {
       fs.exists(fileName, exists => {

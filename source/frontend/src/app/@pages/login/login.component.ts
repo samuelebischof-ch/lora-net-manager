@@ -15,7 +15,6 @@ export class LoginComponent {
 
   public username = '';
   public secret = '';
-  public loginText = this._authentication.isAuthenticated() ? '(Logged in)' : '';
 
   public hide = true;
 
@@ -25,8 +24,5 @@ export class LoginComponent {
    */
   async clickLogin() {
     await this._api.login(this.username, this.secret);
-    if (!(await this._authentication.isAuthenticated())) {
-      this.loginText = 'User not authorized';
-    }
   }
 }
