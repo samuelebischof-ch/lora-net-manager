@@ -68,7 +68,11 @@ export class CardComponent implements OnInit, OnChanges, OnDestroy {
       } else if (res.newData !== undefined) {
         const _data = JSON.parse(JSON.stringify(this.data));
         for (let i = 0; i < res.newData.length; i++) {
-          _data.data[i].data[0].data.push(res.newData[i].data);
+          const hasSensor = (res.newData[i].hasSensor !== undefined) ? res.newData[i].hasSensor : false;
+          const newTempData = res.newData[i].data;
+          if (hasSensor) {
+            _data.data[i].data[0].data.push(newTempData);
+          }
         }
         _data.date.push(res.newDate);
         this.data = _data;

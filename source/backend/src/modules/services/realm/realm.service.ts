@@ -607,13 +607,13 @@ export class RealmService {
         return {
           newDate: node.last_seen,
           newData: [
-            {label: 'Temperature', data: temperature},
-            {label: 'Pressure', data: pressure},
-            {label: 'Humidity', data: humidity},
-            {label: 'Moisture', data: moisture},
-            {label: 'Movement', data: movement},
-            {label: 'Door', data: door},
-            {label: 'Light', data: light},
+            {label: 'Temperature', data: temperature, hasSensor: node.data_sheet.sensor_temperature.has_sensor},
+            {label: 'Pressure', data: pressure, hasSensor: node.data_sheet.sensor_pressure.has_sensor },
+            {label: 'Humidity', data: humidity, hasSensor: node.data_sheet.sensor_humidity.has_sensor },
+            {label: 'Moisture', data: moisture, hasSensor: node.data_sheet.sensor_moisture.has_sensor },
+            {label: 'Movement', data: movement, hasSensor: node.data_sheet.sensor_movement.has_sensor },
+            {label: 'Door', data: door, hasSensor: node.data_sheet.sensor_door.has_sensor },
+            {label: 'Light', data: light, hasSensor: node.data_sheet.sensor_light.has_sensor },
           ],
         };
       } catch (error) {
