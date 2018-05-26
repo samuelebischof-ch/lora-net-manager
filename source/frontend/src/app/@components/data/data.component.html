@@ -82,7 +82,7 @@
         <ng-template #static_view>
           <mat-tab-group *ngIf="!liveMode && lineChartLabels.length > 0;">
             <ng-container *ngFor="let d of dataArray;">
-              <mat-tab *ngIf="hasValues(d.avg)" label="{{d.label}}">
+              <mat-tab *ngIf="d.hasSensor" label="{{d.label}}">
                 <app-graph-simple [min]="d.min" [max]="d.max" [avg]="d.avg" [specialColor]="false" [lineChartData]="d.lineChartData" [lineChartLabels]="lineChartLabels"
                   [unit]="d.unit" [label]="d.label">
                 </app-graph-simple>

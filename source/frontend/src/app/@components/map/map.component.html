@@ -1,10 +1,10 @@
 <input style="display: none;" type="file" accept="image/*" (change)="fileChangeEvent($event)" placeholder="Upload file..."
-  #fileInput/>
-<span>
-  <button mat-button color="primary" style="width: 100%; display: inline-block;" (click)="selectImage(); fileInput.click();">SELECT IMAGE</button>
-</span>
-<button mat-button color="primary" style="width: 100%;" (click)="toggleMode();">
+#fileInput/>
+<div id="buttons">
+<button mat-button color="primary" (click)="fileInput.click();">SELECT IMAGE</button>
+<button mat-button color="primary" (click)="toggleMode();">
   <span *ngIf="modus === 'click'">MODIFY</span>
   <span *ngIf="modus === 'draw'">SAVE</span>
 </button>
+</div>
 <div id="container" #container>reg</div>

@@ -431,9 +431,11 @@ export class RealmService {
     let DBreadings;
     let DataSheet: DeviceDB['data_sheet'];
 
+    let device;
+
     await this.OpenedRealm.then(realm => {
       try { // different range cases
-        const device = realm.objectForPrimaryKey('Device', body.deveui);
+        device = realm.objectForPrimaryKey('Device', body.deveui);
         DataSheet = (device as DeviceDB).data_sheet;
         devDescription = (device as DeviceDB).desc;
         if (body.start !== undefined && body.end === undefined) {
@@ -515,13 +517,20 @@ export class RealmService {
     }
 
     const returnData = [
-      { label: 'Temperature', unit: unitTemperature, data: temperature, deveui: body.deveui, desc: devDescription },
-      { label: 'Pressure', unit: unitPressure, data: pressure, deveui: body.deveui, desc: devDescription },
-      { label: 'Humidity', unit: unitHumidity, data: humidity, deveui: body.deveui, desc: devDescription },
-      { label: 'Moisture', unit: unitMoisture, data: moisture, deveui: body.deveui, desc: devDescription },
-      { label: 'Movement', unit: '', data: movement, deveui: body.deveui, desc: devDescription },
-      { label: 'Door', unit: '', data: door, deveui: body.deveui, desc: devDescription },
-      { label: 'Light', unit: '', data: light, deveui: body.deveui, desc: devDescription },
+      { label: 'Temperature', unit: unitTemperature, data: temperature, deveui: body.deveui,
+      desc: devDescription, hasSensor: device.data_sheet.sensor_temperature.has_sensor },
+      { label: 'Pressure', unit: unitPressure, data: pressure, deveui: body.deveui,
+      desc: devDescription, hasSensor: device.data_sheet.sensor_pressure.has_sensor },
+      { label: 'Humidity', unit: unitHumidity, data: humidity, deveui: body.deveui,
+      desc: devDescription, hasSensor: device.data_sheet.sensor_humidity.has_sensor },
+      { label: 'Moisture', unit: unitMoisture, data: moisture, deveui: body.deveui,
+      desc: devDescription, hasSensor: device.data_sheet.sensor_moisture.has_sensor },
+      { label: 'Movement', unit: '', data: movement, deveui: body.deveui,
+      desc: devDescription, hasSensor: device.data_sheet.sensor_movement.has_sensor },
+      { label: 'Door', unit: '', data: door, deveui: body.deveui,
+      desc: devDescription, hasSensor: device.data_sheet.sensor_door.has_sensor },
+      { label: 'Light', unit: '', data: light, deveui: body.deveui,
+      desc: devDescription, hasSensor: device.data_sheet.sensor_light.has_sensor },
     ];
 
     return {date: returnDate, data: returnData};

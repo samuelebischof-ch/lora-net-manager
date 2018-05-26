@@ -176,6 +176,7 @@ export class DataComponent implements OnInit {
       for (let i = 0; i < this.apiDataArray[0].data.length; i++) {
         this.dataArray.push({
           label: '',
+          hasSensor: false,
           lineChartData: [],
           unit: '',
           min: Number.POSITIVE_INFINITY,
@@ -284,6 +285,7 @@ export class DataComponent implements OnInit {
         for (let i = 0; i < this.apiDataArray[0].data.length; i++) {
           this.dataArray[i].label = this.apiDataArray[c].data[i].label;
           this.dataArray[i].unit = this.apiDataArray[c].data[i].unit; // TODO check loop to much overhead
+          this.dataArray[i].hasSensor = this.apiDataArray[c].data[i].hasSensor;
           this.dataArray[i].lineChartData.push({
             data: this.apiDataArray[c].data[i].data,
             label: this.apiDataArray[c].data[i].desc,
@@ -321,19 +323,6 @@ export class DataComponent implements OnInit {
   }
 
   /**
-  * @name hasValue
-  * @param avg Array<any>
-  * @returns true if the array has elements different from null
-  */
-  hasValues(avg: Array<any>): boolean {
-    let hasValue = false;
-    avg.forEach(element => {
-      if (!isNaN(element)) { hasValue = true; }
-    });
-    return hasValue;
-  }
-
-  /**
   * @name runNormalizeDataOnNewThread
   * @param input
   * @description runs normalizeData on input in another thread
@@ -355,6 +344,7 @@ interface ApiData {
 }
 
 interface ApiDataEl {
+  hasSensor: boolean;
   label: string;
   unit: string;
   data: Array<number>;
@@ -364,6 +354,7 @@ interface ApiDataEl {
 
 interface DataArrayEl {
   label: string;
+  hasSensor: boolean;
   lineChartData: Array<{
     data: Array<number>,
     label: string,

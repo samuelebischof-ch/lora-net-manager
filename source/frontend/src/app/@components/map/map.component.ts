@@ -14,9 +14,6 @@ export class MapComponent implements OnInit {
   @ViewChild('container')
   container: ElementRef;
 
-  animal: string;
-  name: string;
-
   private stage;
   private layer;
   private bgLayer;
@@ -48,9 +45,16 @@ export class MapComponent implements OnInit {
     const file = event.target.files[0];
     const uploadData = new FormData();
     uploadData.append('file', file, file.name);
+    const img = new Image();
+    img.src = window.URL.createObjectURL(file);
     this._api.uploadImage(uploadData).subscribe(res => {
-      this.backgroundImg.src = '/api/konva/image/plan.png';
-      this.loadKonvaFromServer();
+      const ratio = img.naturalWidth / img.naturalHeight;
+      const height = 400;
+      this.backgroundImg.x = 0;
+      this.backgroundImg.y = 0;
+      this.backgroundImg.height = height;
+      this.backgroundImg.width = ratio * height;
+      this.saveToServer();
     });
   }
 
@@ -60,19 +64,11 @@ export class MapComponent implements OnInit {
       if (res !== null && res !== undefined) {
         self.backgroundImg = (res as StoreData).backgroundImg;
         self.roomsArray = (res as StoreData).roomsArray;
+        this.container.nativeElement.style.width = self.backgroundImg.width + 'px';
+        this.container.nativeElement.style.height = self.backgroundImg.height + 'px';
       }
       this.loadKonva();
     });
-  }
-
-  selectImage() {
-    const width = 1000;
-    const height = 400;
-    this.backgroundImg.src = '/api/konva/image/plan.png';
-    this.backgroundImg.width = width;
-    this.backgroundImg.height = height;
-    this.container.nativeElement.style.width = width + 'px';
-    this.container.nativeElement.style.height = height + 'px';
   }
 
   // click on room
@@ -112,6 +108,10 @@ export class MapComponent implements OnInit {
       this.backgroundImg.draggable = false;
     }
 
+    this.saveToServer();
+  }
+
+  saveToServer() {
     // send to server
     this._api.saveKonva({
       backgroundImg: this.backgroundImg,
@@ -447,8 +447,6 @@ export class MapComponent implements OnInit {
   }
 
   ngOnInit() {
-    // reload the canvas from server
-    this.selectImage();
     this.loadKonvaFromServer();
   }
 

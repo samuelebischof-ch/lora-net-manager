@@ -3,3 +3,14 @@
   height: 0;
   margin: 0;
 }
+
+#buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+button {
+  min-width: 100px;
+  flex-grow: 1;
+}
