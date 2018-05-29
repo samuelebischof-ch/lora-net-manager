@@ -164,8 +164,8 @@ export class APIController {
         if (err) {
           self._logger.error(err);
         }
+        this._generator.deleteFilePromise(filePath);
       });
-      this._generator.deleteFile(filePath);
     } catch (error) {
       this._logger.error(error);
     }
@@ -200,8 +200,8 @@ export class APIController {
         if (err) {
           self._logger.error(err);
         }
+        this._generator.deleteFilePromise(filePath);
       });
-      // this._generator.deleteFile(filePath);
     } catch (error) {
       this._logger.error(error);
     }

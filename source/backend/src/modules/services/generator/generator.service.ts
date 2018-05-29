@@ -4,7 +4,7 @@ import { RealmService } from '../realm/realm.service';
 import { Writable, Readable, Stream } from 'stream';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as readline from 'linebyline';
+import * as readline from 'readline';
 import * as devicesJSON from '../../../../../device/devices.json';
 
 @Component()
@@ -20,8 +20,8 @@ export class GeneratorService {
 
   /**
   * @name genFile
-  * @param devuei string
-  * @returns a Promise of the path
+  * @param {string} devuei
+  * @returns {Promise<string>} file path
   * @description creates a *.ino file and returns the path
   */
   async genFile(devuei: string): Promise<string> {
@@ -46,14 +46,17 @@ export class GeneratorService {
     let otaaKeysCounter = 0;
 
     try {
-      await this.deleteFile(this.inoPath);
+      await this.deleteFilePromise(this.inoPath);
     } catch (error) {
       this._logger.error(error);
     }
-    const rl = readline(this.templatePath);
 
-    const rdLinePromise = () => new Promise((resolve, reject) => {
-      rl.on('line', (line) => {
+    const rl = readline.createInterface({
+      input: require('fs').createReadStream(this.templatePath),
+    });
+
+    const rdLinesPromise = () => new Promise(async (resolve, reject) => {
+      await rl.on('line', async (line) => {
         if (line === '<END>') {
           resolve();
         } else {
@@ -61,22 +64,22 @@ export class GeneratorService {
             const key = otaaKeys[otaaKeysCounter];
             const mapping = otaa[key];
             const newLine = line.replace(key, mapping);
-            self.appendLine(this.inoPath, newLine);
+            await self.appendLinePromise(this.inoPath, newLine);
             otaaKeysCounter++;
           } else if ((devicesKeysCounter < devicesKeys.length) && (line === devicesKeys[devicesKeysCounter])) {
             const key = devicesKeys[devicesKeysCounter];
             const mapping = esp32[key];
-            self.appendLine(this.inoPath, mapping);
+            await self.appendLinePromise(this.inoPath, mapping);
             devicesKeysCounter++;
           } else {
-            self.appendLine(this.inoPath, line);
+            await self.appendLinePromise(this.inoPath, line);
           }
         }
-      }).on('error', reject);
+      });
     });
 
     try {
-      await rdLinePromise();
+      await rdLinesPromise();
     } catch (error) {
       this._logger.error(error);
     }
@@ -86,17 +89,20 @@ export class GeneratorService {
 
   /**
   * @name genCSV
-  * @param deveui string
-  * @returns a Promise of the path
+  * @param {string} deveui
+  * @returns {Promise<string>} a Promise of the path
   * @description creates a CSV file with all the data of a sensor and returns the path
   */
   async genCSV(deveui: string): Promise<string> {
-    const self = this,
-    csv = path.join(__dirname, 'temp/' + deveui + '.csv');
-    await this.deleteFile(csv);
+    const self = this;
+    const csv = path.join(__dirname, 'temp/' + deveui + '.csv');
+
+    await this.deleteFilePromise(csv);
+
     const dataStream = await this._realm.getSensorDataStream(deveui);
+
     const outStream = new Writable({
-      async write(chunk, encoding, callback) {
+      write(chunk, encoding, callback) {
         const obj = JSON.parse(chunk.toString());
         const length = Object.keys(obj).length;
         let line = '';
@@ -113,36 +119,31 @@ export class GeneratorService {
             counter++;
           }
         }
-        await self.appendLinePromise(csv, line);
-        callback();
+        self.appendLinePromise(csv, line).then(() => callback());
       },
     });
 
     const streamPromise = (stream) => {
       return new Promise((resolve, reject) => {
-        stream.pipe(outStream);
-        stream.on('end', () => {
-          resolve('end');
-        });
-        stream.on('finish', () => {
-          resolve('finish');
-        });
-        stream.on('error', (error) => {
+        stream.pipe(outStream)
+        .on('finish', () => {
+          resolve();
+        })
+        .on('error', (error) => {
           reject(error);
         });
       });
     };
 
     await streamPromise(dataStream);
-
     return csv;
   }
 
   /**
-  * @name deleteFile
+  * @name deleteFilePromise
   * @param fileName
   */
-  deleteFile(fileName) {
+  deleteFilePromise(fileName) {
     return new Promise(async (resolve, reject) => {
       const exists = await this.existsPromise(fileName);
       if (exists) {
@@ -160,10 +161,10 @@ export class GeneratorService {
   }
 
   /**
-   * @name existsPromise
-   * @param fileName
-   * @description promisified fs.exists
-   */
+  * @name existsPromise
+  * @param fileName
+  * @description promisified fs.exists
+  */
   existsPromise(fileName) {
     return new Promise((resolve, reject) => {
       fs.exists(fileName, exists => {
@@ -189,20 +190,6 @@ export class GeneratorService {
         }
       });
     });
-  }
-
-  /**
-  * @name appendLine
-  * @param fileName string
-  * @param newLine string
-  * @description appends a line to the file with name fileName
-  */
-  async appendLine(fileName: string, newLine: string) {
-    try {
-      await this.appendLinePromise(fileName, newLine);
-    } catch (error) {
-      this._logger.error(error);
-    }
   }
 
   /**
@@ -247,8 +234,8 @@ export class GeneratorService {
 
   /**
   * @name createGroupedArray
-  * @param key string
-  * @param chunkSize num
+  * @param {string} key
+  * @param {number} chunkSize
   * @returns an array with groups of size chunkSize
   */
   createGroupedArray(key: string, chunkSize: number) {
