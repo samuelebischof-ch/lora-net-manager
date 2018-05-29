@@ -110,11 +110,33 @@ export class GeneratorService {
         for (const key in obj) {
           if (obj.hasOwnProperty(key)) {
             const element = obj[key];
-            line += '"';
-            line += element;
-            line += '"';
-            if (counter !== length - 1) {
+            if (counter === 0 && element !== 'Date') {
+              const date = new Date(element);
+              line += date.getDate();
+              line += '.';
+              line += date.getMonth();
+              line += '.';
+              line += date.getFullYear();
+              line += ' ';
+              line += date.getHours();
+              line += ':';
+              line += date.getMinutes();
+              line += ':';
+              line += date.getSeconds();
               line += ',';
+            } else {
+              line += '"';
+              if (element !== null) {
+                if (!isNaN(element)) {
+                  line += ((Math.round(Number(element) * 100)) / 100);
+                } else {
+                  line += element;
+                }
+              }
+              line += '"';
+              if (counter !== length - 1) {
+                line += ',';
+              }
             }
             counter++;
           }

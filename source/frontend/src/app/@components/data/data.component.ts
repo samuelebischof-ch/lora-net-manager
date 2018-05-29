@@ -65,7 +65,7 @@ export class DataComponent implements OnInit {
   /**
   * @name reloadData
   * @param event
-  * @param deveui
+  * @param {string} deveui
   * @description checks visualisation mode and requests new sensor data to the api
   */
   async reloadData(event, deveui: string) {
@@ -283,9 +283,9 @@ export class DataComponent implements OnInit {
       // this.organizeLabels(c);
       if (this.apiDataArray.length > 0) {
         for (let i = 0; i < this.apiDataArray[0].data.length; i++) {
-          this.dataArray[i].label = this.apiDataArray[c].data[i].label;
-          this.dataArray[i].unit = this.apiDataArray[c].data[i].unit; // TODO check loop to much overhead
-          this.dataArray[i].hasSensor = this.apiDataArray[c].data[i].hasSensor;
+          this.dataArray[i].label = (this.dataArray[i].label.length > 0) ? this.dataArray[i].label : this.apiDataArray[c].data[i].label;
+          this.dataArray[i].unit = (this.dataArray[i].unit.length > 0) ? this.dataArray[i].unit : this.apiDataArray[c].data[i].unit;
+          this.dataArray[i].hasSensor = this.dataArray[i].hasSensor || this.apiDataArray[c].data[i].hasSensor;
           this.dataArray[i].lineChartData.push({
             data: this.apiDataArray[c].data[i].data,
             label: this.apiDataArray[c].data[i].desc,
