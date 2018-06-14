@@ -5,5 +5,5 @@
   </button>
   <h4 mat-line>MAC: {{gateway.mac}} </h4>
   <p mat-line class="gray_line"> IP address: {{gateway.ip_address.ip}} </p>
-  <p mat-line class="gray_line"> Last alive: {{gateway.last_alive}} </p>
+  <p mat-line class="gray_line"> Last alive: {{gateway.last_alive | date}} </p>
 </mat-list-item>

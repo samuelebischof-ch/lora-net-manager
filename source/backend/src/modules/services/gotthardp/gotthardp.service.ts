@@ -165,6 +165,7 @@ export class GotthardpService {
     options.method = 'GET';
     try {
       const devices = await rp(options);
+      console.log(JSON.parse(devices))
       return JSON.parse(devices);
     } catch (err) {
       this._logger.error('at getDevices(): ' + err);

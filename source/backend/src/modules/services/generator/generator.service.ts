@@ -33,6 +33,7 @@ export class GeneratorService {
 
     const keysDB = await this._realm.getKeys();
 
+
     const otaa = {
       '<APPEUI>': this.keyToLitEndHex(keysDB.appeui),
       '<DEVEUI>': this.keyToLitEndHex(devuei),
@@ -42,8 +43,9 @@ export class GeneratorService {
     const devicesKeys = Object.keys(esp32);
     const otaaKeys = Object.keys(otaa);
 
+
+
     let devicesKeysCounter = 0;
-    let otaaKeysCounter = 0;
 
     try {
       await this.deleteFilePromise(this.inoPath);
@@ -56,24 +58,25 @@ export class GeneratorService {
     });
 
     const rdLinesPromise = () => new Promise(async (resolve, reject) => {
-      await rl.on('line', async (line) => {
-        if (line === '<END>') {
-          resolve();
-        } else {
+      let otaaKeysCounter = 0;
+      await rl.on('line', (line) => {
+        if (line !== '<END>') {
           if ((otaaKeysCounter < otaaKeys.length) && (line.includes(otaaKeys[otaaKeysCounter]))) {
             const key = otaaKeys[otaaKeysCounter];
             const mapping = otaa[key];
             const newLine = line.replace(key, mapping);
-            await self.appendLinePromise(this.inoPath, newLine);
+            self.appendLineSync(this.inoPath, newLine);
             otaaKeysCounter++;
           } else if ((devicesKeysCounter < devicesKeys.length) && (line === devicesKeys[devicesKeysCounter])) {
             const key = devicesKeys[devicesKeysCounter];
             const mapping = esp32[key];
-            await self.appendLinePromise(this.inoPath, mapping);
+            self.appendLineSync(this.inoPath, mapping);
             devicesKeysCounter++;
           } else {
-            await self.appendLinePromise(this.inoPath, line);
+            self.appendLineSync(this.inoPath, line);
           }
+        } else {
+          resolve();
         }
       });
     });
@@ -212,6 +215,10 @@ export class GeneratorService {
         }
       });
     });
+  }
+
+  appendLineSync(fileName: string, newLine: string) {
+    fs.appendFileSync(fileName, newLine + '\n');
   }
 
   /**
