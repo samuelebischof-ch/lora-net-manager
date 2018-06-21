@@ -55,6 +55,7 @@ import { WsService } from './@services/ws.service/ws.service';
 
 import { DatePipe } from './@pipes/date/date.pipe';
 import { HourPipe } from './@pipes/hour/hour.pipe';
+import { BatteryPipe } from './@pipes/battery/battery.pipe';
 import { ObjectkeysPipe } from './@pipes/objectkeys/objectkeys.pipe';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { SensornamePipe } from './@pipes/sensorname/sensorname.pipe';
@@ -84,6 +85,7 @@ import { environment } from '../environments/environment';
     HourPipe,
     ObjectkeysPipe,
     SensornamePipe,
+    BatteryPipe,
     LmeteoComponent,
   ],
   imports: [

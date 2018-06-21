@@ -8,4 +8,5 @@ export interface Device {
     last_join: string;
     node: string;
     profile: string;
+    battery: number;
 }

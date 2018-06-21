@@ -8,6 +8,7 @@ import * as request from 'request';
 import * as rp from 'request-promise-native';
 import * as configJSON from '../../../../config.json';
 import * as gotthardpConfigJSON from '../../../../gotthardp.config.json';
+import { Node } from '../../../../../shared/interfaces/node.interface';
 
 const config: Config = configJSON as any;
 const gotthardpConfig: any = gotthardpConfigJSON as any;
@@ -165,10 +166,22 @@ export class GotthardpService {
     options.method = 'GET';
     try {
       const devices = await rp(options);
-      console.log(JSON.parse(devices))
       return JSON.parse(devices);
     } catch (err) {
       this._logger.error('at getDevices(): ' + err);
+      return err;
+    }
+  }
+
+  async getActiveDevices(): Promise<Array<Node>> {
+    const options: any = Object.assign({}, loRaServerOptions);
+    options.uri += 'api/nodes';
+    options.method = 'GET';
+    try {
+      const devices = await rp(options);
+      return JSON.parse(devices);
+    } catch (err) {
+      this._logger.error('at getActiveDevices(): ' + err);
       return err;
     }
   }

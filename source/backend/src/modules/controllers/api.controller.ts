@@ -82,9 +82,16 @@ export class APIController {
   async getDevices() {
     try {
       const devices = await this._gotthardp.getDevices();
+      const activeDevices = await this._gotthardp.getActiveDevices();
       const outDevices = [];
       for (const d of devices) {
         const device = {} as Device;
+        device.battery = null;
+        activeDevices.forEach(activeDevice => {
+          if (activeDevice.devaddr === d.node) {
+            device.battery = activeDevice.devstat[0].battery;
+          }
+        });
         device.appeui = d.appeui;
         device.appkey = d.appkey;
         device.deveui = d.deveui;
